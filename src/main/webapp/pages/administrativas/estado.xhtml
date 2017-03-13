@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:head>
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Estado</title>
+		<h:outputStylesheet library="css" name="estilos.css"></h:outputStylesheet>
+</h:head>
+
+
+<h:body>
+
+
+
+	<h:form id="statesform">
+		<p:growl id="msgGrowl" life="15000" />
+		
+
+		
+		
+		<h1>@ Encodetech</h1>
+	 	<p:menubar styleClass="menu">
+	        <p:submenu label="Menu Principal" icon="ui-icon-arrow-4-diag">
+		    	<p:menuitem value="Usuários" outcome="/pages/administrativas/usuario.xhtml" icon="fa-bars" update="messages"/>
+		        <p:menuitem value="Empresas" outcome="/pages/administrativas/empresa.xhtml" icon="fa-bars" update="messages"/>
+	        <p:menuitem value="Oportunidades" outcome="/pages/administrativas/oportunidades.xhtml" icon="fa-bars" update="messages"/>	         
+	        </p:submenu>
+        
+            <p:submenu label="Localidade" icon="ui-icon-star">
+	    	     <p:menuitem value="Estados" outcome="/pages/administrativas/estado.xhtml"  icon="fa-bars" update="messages"/>
+	        	 <p:menuitem value="Cidades" outcome="/pages/administrativas/cidade.xhtml" icon="fa-bars" update="messages"/>
+	        </p:submenu>
+	 
+	        <p:submenu label="Ajuda" icon="ui-icon-help">
+	            <p:menuitem value="Versão" url="#" />
+	            <p:menuitem value="Sobre" url="#" />           
+	        </p:submenu>
+	 	       
+	        <f:facet name="options">
+	                <p:outputLabel styleClass="cabecalhoInfo" value="#{loginBean.usuarioLogado.nome}"></p:outputLabel>
+	           <p:commandButton value="Sair" action="#{loginBean.sair}"
+					icon="ui-icon-extlink" />
+	        </f:facet>
+    </p:menubar>
+		
+
+
+		<!-- _________________________________________________________________________________________________________________________________ -->
+		<!-- Informações de cabeçalho da tabela -->
+
+
+		<p:dataTable id="dataTable" rowsPerPageTemplate="7,15,30,50,100"
+			emptyMessage="Nenhum Registro encontrado" rows="7" paginator="true"
+			var="states" value="#{estadoBean.listaEstado}"
+			style=" text-align:center;" paginatorPosition="top">
+
+
+
+
+			<f:facet name="header">
+
+				<p:panelGrid>
+
+					<!-- Animação de loading -->
+					<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
+						closable="false" resizable="false" showHeader="false">
+						<p:graphicImage value="/images/loading6.gif" />
+					</p:dialog>
+
+					<!-- Personalizar table -->
+					<p:commandButton title="Filtrar Colunas" id="toggler" type="button"
+						value="" icon="ui-icon-calculator"
+						style=" border-radius: 7px; background-color:CadetBlue; border-color: #C2C1D4;
+   						font-size: 16px; word-spacing:8px; float:left; height:33px; width:34px  " />
+					<p:columnToggler datasource="dataTable" trigger="toggler" />
+
+
+
+					<p:ajaxStatus onstart="PF('statusDialog').show()"
+						onsuccess="PF('statusDialog').hide()" />
+
+					<!-- Atualizar table -->
+					<p:commandButton value="Atualizar" icon="ui-icon-refresh"
+						action="#{estadoBean.carregar}" style=" border-radius: 7px; background-color:CadetBlue; border-color: #C2C1D4;
+   						font-size: 16px; word-spacing:8px; float:left; height:33px;  "
+						update=":statesform:dataTable :statesform:msgGrowl" />
+
+
+
+					<!-- Adicionar  -->
+					<p:commandButton icon="ui-icon-plus " value="Adicionar "
+						style=" border-radius: 7px; background-color:CadetBlue; border-color: #C2C1D4;
+   						font-size: 16px; word-spacing:8px; float:left; height:33px;  "
+						oncomplete="PF('dialogo').show();" action="#{estadoBean.novo}"
+						update=":formCadastro:dialogpanel" />
+						
+													<!-- Header -->
+					<h:outputLabel styleClass="nameheader" value="Estados"></h:outputLabel>
+
+				</p:panelGrid>
+			</f:facet>
+
+
+			<f:facet name="footer">
+				<!--Vazio...-->
+			</f:facet>
+
+			<!-- _________________________________________________________________________________________________________________________________ -->
+			<!-- Informações das Colunas -->
+
+
+			<p:column headerText="ID" sortBy="#{states.codigo}"
+				filterBy="#{states.codigo}" width="11%">
+				<p:outputLabel value="#{states.codigo}" />
+			</p:column>
+
+			<p:column headerText="Estado" sortBy="#{states.nome}"
+				filterBy="#{states.nome}">
+				<p:outputLabel value="#{states.nome}"  />
+			</p:column>
+
+			<p:column headerText="Sigla" sortBy="#{states.sigla}"
+				filterBy="#{states.sigla}">
+				<p:outputLabel value="#{states.sigla}" />
+			</p:column>
+
+			<p:column headerText="Opções">
+
+
+
+				<!-- Editar -->
+				<p:commandButton title="Editar" icon="ui-icon-pencil"
+					actionListener="#{estadoBean.getinstancia}" update="formCadastro"
+					oncomplete="PF('dialogo').show();">
+					<f:attribute name="meuSelect" value="#{states}" />
+				</p:commandButton>
+
+				<!-- Excluir -->
+				<p:commandButton title="Excluir" icon="ui-icon-trash"
+					actionListener="#{estadoBean.excluir}"
+					update=":statesform:msgGrowl">
+					<p:confirm header="Confirmação" message="Deseja excluir o estado ?"
+						icon="ui-icon-alert" />
+					<f:attribute name="meuSelect" value="#{states}" />
+				</p:commandButton>
+
+
+
+				<!-- Dialogo Global -->
+				<p:confirmDialog global="true">
+					<p:commandButton value="sim" type="button"
+						styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+					<p:commandButton value="não" type="button"
+						styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+				</p:confirmDialog>
+
+			</p:column>
+
+		</p:dataTable>
+	</h:form>
+
+
+	<!-- _________________________________________________________________________________________________________________________________ -->
+	<!--   Dialog do Adicionar             -->
+
+
+
+	<!-- draggable = false ou true "mover a janela suspensa"| 
+     resizable=false ou true"mudar o tamanho a janela suspensa" |
+     modal=false ou true "clicar foda da janela suspensa"|
+     closable="true?" 'controla o botão fechar do dialogo'-->
+	<p:dialog header="Cadastro de Estado" widgetVar="dialogo" modal="true"
+		responsive="true">
+
+		<p:messages id="msgdialog" autoUpdate="true" closable="true" />
+
+		<h:form id="formCadastro">
+
+			<h:panelGrid id="dialogpanel" columns="2">
+				<p:outputLabel value="Estado: " />
+				<p:inputText maxlength="50" size="20"
+					value="#{estadoBean.estado.nome}"  required="true" requiredMessage="Informe a Estado corretamente" validatorMessage="O nome do Estado deve ter mais de um dígito" >
+					
+					<f:validateLength minimum="2" ></f:validateLength>
+					</p:inputText>
+
+				<p:outputLabel value="Sigla: " />
+				<p:inputText maxlength="50" size="20" required="true" requiredMessage="Informe a sigla corretamente"
+					value="#{estadoBean.estado.sigla}"  validatorMessage="A sigla deve ter 2 dígitos">
+					<f:validateLength minimum="2" maximum="2" ></f:validateLength>
+					
+					</p:inputText>
+
+			</h:panelGrid>
+			<h:panelGrid columns="2">
+				<p:commandButton value="Salvar"
+					actionListener="#{estadoBean.salvar}" update="msgdialog" />
+
+				<p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
+
+			</h:panelGrid>
+
+		</h:form>
+
+	</p:dialog>
+</h:body>
+</html>
