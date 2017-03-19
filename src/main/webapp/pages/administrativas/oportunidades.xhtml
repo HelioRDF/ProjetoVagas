@@ -97,7 +97,7 @@
 		<!-- _________________________________________________________________________________________________________________________________ -->
 		<!-- Layout West (Left) -->
 
-		<p:layoutUnit position="west" size="330" 
+		<p:layoutUnit position="west" size="330" header="Filtrar"
 			resizable="true" closable="false" collapsible="true" effect="drop"   > 
 			<h:form id="formFiltro">
 
@@ -105,7 +105,7 @@
 				<!-- Campo cargo -->
 				<p:inputText placeholder="Nome do Cargo"
 					value="#{oportunidadeBean.filtrarCargo}"
-					style="  margin: 25px 10px 5px 5px; vertical-align: left;	width:90%;">
+					style="  margin: 15px 10px 5px 5px; vertical-align: left;	width:90%;">
 
 				</p:inputText>
 
@@ -124,7 +124,7 @@
 
 
 				<p:separator
-					style=" margin:15px auto 15px auto; height:10px;background-color:#dde1f0">
+					style=" margin:15px auto 5px auto; height:6px;background-color:#dde1f0">
 				</p:separator>
 
 
@@ -236,7 +236,7 @@
 					</p:submenu>
 
 					<p:submenu label="Modalidade" expanded="false"
-						style="margin-bottom:100px;">
+						style="margin-bottom:60px;">
 						<p:menuitem>
 
 
@@ -304,6 +304,8 @@
 
 
 
+
+
 							<!-- Header -->
 							<h:outputLabel styleClass="nameheader" value="Oportunidades"></h:outputLabel>
 
@@ -347,19 +349,22 @@
 
 
 					<p:column headerText="Salário" width="12%"
-						sortBy="#{dataVar.salario}">
+						sortBy="#{dataVar.salarioAux}" >
 
-						<p:outputLabel value="R$ #{dataVar.salario}"
+						<p:outputLabel value="R$ #{dataVar.salarioAux}"
 							rendered="#{dataVar.mostrarSalario}">
 							<f:convertNumber type="currency" pattern="#0.00" locale="pt_BR"
 								minFractionDigits="2">
 							</f:convertNumber>
 						</p:outputLabel>
 
-						<p:outputLabel value="Confidêncial"
+						<p:outputLabel value=" Confidêncial " 
 							rendered="#{!dataVar.mostrarSalario}"></p:outputLabel>
 
 					</p:column>
+					
+					
+					
 
 
 
@@ -404,7 +409,7 @@
 							<h:outputText value="Empresa: #{dataVar.empresa.nomeEmpresa}"
 								rendered="#{dataVar.mostrarEmpresa}" />
 
-							<p:outputLabel value="Confidêncial"
+							<p:outputLabel value="Empresa: Confidêncial"
 								rendered="#{!dataVar.mostrarEmpresa}"></p:outputLabel>
 
 							<h:outputText
@@ -718,7 +723,7 @@
 						<p:commandButton value="Fechar"
 							actionListener="#{oportunidadeBean.fechar}"
 							oncomplete="PF('dialogo').hide();" immediate="true" ajax="false"
-							style="margin-right:20px;">
+							style="margin-right:20px;" update=":form:">
 						</p:commandButton>
 
 

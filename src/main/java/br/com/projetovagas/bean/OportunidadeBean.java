@@ -1,8 +1,7 @@
 package br.com.projetovagas.bean;
 
-
-
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -42,7 +41,6 @@ public class OportunidadeBean implements Serializable {
 	private String auxEstado = " Selecione um Estado";
 	private Long filtrarEstado;
 
-	
 	private CidadeDAO cidadeDAO;
 	private String auxCidade = "Selecione uma Cidade";
 	private List<Cidade> listaCidade;
@@ -54,15 +52,10 @@ public class OportunidadeBean implements Serializable {
 	private Boolean botaoEditar = false;
 	private Boolean botaoSalvar = false;
 
-	
 	private int filtrarSalario = 0;
-	private String filtrarNivel="";
-	private String filtrarModalidade="";
-	private int		FiltrarPcD =3;
-	
-	
-	
-	
+	private String filtrarNivel = "";
+	private String filtrarModalidade = "";
+	private int FiltrarPcD = 3;
 
 	// Salvar usuário
 	// -------------------------------------------------------------------------------------
@@ -71,9 +64,18 @@ public class OportunidadeBean implements Serializable {
 		try {
 
 			System.out.println("Método salvar");
+			
+			if(!oportunidade.getMostrarSalario()){
+				oportunidade.setSalarioAux(new BigDecimal(1.00));
+			}else{
+				oportunidade.setSalarioAux(oportunidade.getSalario().setScale(2));
+			}
+			
+			
 
 			oportunidade.setDataCadastro(new Date());
 			oportunidade.setEstado(estado);
+
 			dao.salvar(oportunidade);
 			Messages.addGlobalInfo("Salvo com sucesso.");
 
@@ -110,33 +112,28 @@ public class OportunidadeBean implements Serializable {
 		oportunidade = new Oportunidade();
 		dao = new OportunidadeDAO();
 		auxCidade = "Selecione uma Cidade";
-        auxEstado = " Selecione um Estado";
+		auxEstado = " Selecione um Estado";
 	}
 
-	
 	// CarregarFiltrando
 	// -------------------------------------------------------------------------------------------
 
 	public void carregarFiltrando() {
-		
-		
-		
-		
 
 		try {
-			dao = new OportunidadeDAO();			
-			
-			listaOportunidade = dao.buscarVagas(filtrarCargo, filtrarEstado,comboCidade, filtrarSalario, filtrarNivel, filtrarModalidade, FiltrarPcD );
+			dao = new OportunidadeDAO();
+
+			listaOportunidade = dao.buscarVagas(filtrarCargo, filtrarEstado, comboCidade, filtrarSalario, filtrarNivel,
+					filtrarModalidade, FiltrarPcD);
 			Messages.addGlobalInfo("Lista atualizada com sucesso ");
 
-			} catch (Exception e) {
+		} catch (Exception e) {
 			Messages.addGlobalError("Falha ao tentar  atualizadar a lista  ");
 		} finally {
 
 		}
 
 	}
-
 
 	// Excluir usuário
 	// -------------------------------------------------------------------------------------------
@@ -158,12 +155,20 @@ public class OportunidadeBean implements Serializable {
 
 	}
 
-	// Editar usuário
+	// Editar Oportunidade
 	// -------------------------------------------------------------------------------------------
 	public void editar() {
 
 		try {
+			
+			if(!oportunidade.getMostrarSalario()){
+				oportunidade.setSalarioAux(new BigDecimal(1.00));
+				
+			}else{
+				oportunidade.setSalarioAux(oportunidade.getSalario().setScale(2));
+			}
 
+			
 			dao = new OportunidadeDAO();
 			oportunidade.setEstado(estado);
 			dao.merge(oportunidade);
@@ -188,11 +193,11 @@ public class OportunidadeBean implements Serializable {
 			botaoSalvar = false;
 			botaoEditar = true;
 			listarInfos();
-			
+
 			oportunidade = (Oportunidade) evento.getComponent().getAttributes().get("meuSelect");
 			auxEstado = oportunidade.getEstado().getNome();
 			auxCidade = oportunidade.getCidade().getNome();
-			
+
 			Messages.addGlobalInfo("Vaga de ID:  " + oportunidade.getCodigo());
 
 		} catch (Exception e) {
@@ -214,9 +219,8 @@ public class OportunidadeBean implements Serializable {
 
 			estadoDAO = new EstadoDAO();
 			listaEstado = estadoDAO.listar("nome");
-			//listaCidade = cidadeDAO.listar("nome");
+			// listaCidade = cidadeDAO.listar("nome");
 
-			
 		} catch (Exception e) {
 			// TODO: handle exception
 		} finally {
@@ -224,8 +228,6 @@ public class OportunidadeBean implements Serializable {
 		}
 
 	}
-
-	
 
 	// Listar Estado
 	// ------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -238,18 +240,17 @@ public class OportunidadeBean implements Serializable {
 
 			estadoDAO = new EstadoDAO();
 			listaEstado = estadoDAO.listar("nome");
-			
+
 			CidadeDAO cidadeDAO = new CidadeDAO();
-			filtrarEstado =  log.getAuxEstadoObj().getCodigo();
+			filtrarEstado = log.getAuxEstadoObj().getCodigo();
 			listaCidade = cidadeDAO.buscarPorEstado(filtrarEstado);
-		
-			comboCidade = log.getAuxCidadeObj().getCodigo();			
-			dao = new OportunidadeDAO();			
-			
-			listaOportunidade = dao.buscarVagas(filtrarCargo, filtrarEstado,comboCidade, filtrarSalario, filtrarNivel, filtrarModalidade, FiltrarPcD );
+
+			comboCidade = log.getAuxCidadeObj().getCodigo();
+			dao = new OportunidadeDAO();
+
+			listaOportunidade = dao.buscarVagas(filtrarCargo, filtrarEstado, comboCidade, filtrarSalario, filtrarNivel,
+					filtrarModalidade, FiltrarPcD);
 			Messages.addGlobalInfo("Lista atualizada com sucesso ");
-			
-			
 
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -286,7 +287,6 @@ public class OportunidadeBean implements Serializable {
 
 		try {
 
-
 			cidadeDAO = new CidadeDAO();
 			listaCidade = cidadeDAO.buscarPorEstado(estado.getCodigo());
 			auxCidade = "Selecione uma Cidade";
@@ -301,9 +301,6 @@ public class OportunidadeBean implements Serializable {
 	// quando chamada dentro do getinstance, por conta do param (actionevent)
 	// ------------------------------------------------------------------------------------------------------------------------------------------------------
 
-	
-	
-	
 	public Boolean getBotaoEditar() {
 		return botaoEditar;
 	}
@@ -440,8 +437,4 @@ public class OportunidadeBean implements Serializable {
 		FiltrarPcD = filtrarPcD;
 	}
 
-
-
- 
-	
 }
