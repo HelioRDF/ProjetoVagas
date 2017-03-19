@@ -11,89 +11,79 @@ import org.omnifaces.util.Faces;
 import org.omnifaces.util.Messages;
 
 import br.com.projetovagas.dao.usuarios.UsuarioDAO;
+import br.com.projetovagas.domain.localizacao.Cidade;
+import br.com.projetovagas.domain.localizacao.Estado;
 import br.com.projetovagas.domain.usuarios.Usuario;
 
 @SuppressWarnings("serial")
 @ManagedBean
 @SessionScoped
 public class LoginBean implements Serializable {
-	
+
 	private Usuario usuario;
-	private Usuario usuarioLogado;
-	
-	
-	
-	
+	private static Usuario usuarioLogado;
+	private static Estado auxEstadoObj;
+	private static Cidade auxCidadeObj;
+
 	@PostConstruct
-	public void iniciar(){
+	public void iniciar() {
 		usuario = new Usuario();
 	}
-	
-	public void autenticar(){
-		
+
+	public void autenticar() {
+
 		try {
-			
+
 			UsuarioDAO usuarioDAO = new UsuarioDAO();
-			usuarioLogado = usuarioDAO.autenticar(usuario.getEmail(), usuario.getSenha());
-			
-			if(usuarioLogado==null){
+			usuarioLogado = usuarioDAO.autenticar(usuario.getEmail().trim(), usuario.getSenha());
+
+			if (usuarioLogado == null) {
 				Messages.addGlobalWarn("Usuário e/ou senha, incorretos");
 				return;
-				
-			} else{
-				
-				//Verifica se usuário é um ADM
-				if(!usuarioLogado.getAdmin()){
-					
-					Messages.addGlobalError("Usuário sem permissões de acesso Administrativo.");
-					return;
-					
-				}
-				
-				//Verifica se usuário está Ativo
-				if(!usuarioLogado.getStatus()){
-					
-					Messages.addGlobalError("Usuário Desativado.");
-					return;
-					
-				}
-				
-				
-				
+
+			}else {
+
+		
+			// Verifica se usuário está Ativo
+			if (!usuarioLogado.getStatus()) {
+
+				Messages.addGlobalError("Usuário Desativado.");
+				usuarioLogado = null;
+				return;
+
 			}
 			
-			
-			Faces.redirect("./pages/administrativas/usuario.xhtml");
+			}
+			auxEstadoObj = usuarioLogado.getCidade().getEstado();
+			auxCidadeObj = usuarioLogado.getCidade();
+
+			Faces.redirect("./pages/administrativas/oportunidades.xhtml");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-	
-			
+
 		}
-		
-		
+
 	}
-	
-	public void sair(){
-		
+
+	public void sair() {
+
 		try {
-			
-			usuarioLogado  =null;
+
+			usuarioLogado = null;
 			Faces.redirect("./pages/publicas/login.xhtml");
 			Messages.addGlobalInfo("Logout");
-			
+
 			return;
-		
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
-	
-	
-	//------------------------------------------------------------
-	
+
+	// ------------------------------------------------------------
 
 	public Usuario getUsuario() {
 		return usuario;
@@ -107,14 +97,12 @@ public class LoginBean implements Serializable {
 		return usuarioLogado;
 	}
 
-	public void setUsuarioLogado(Usuario usuarioLogado) {
-		this.usuarioLogado = usuarioLogado;
+	public Estado getAuxEstadoObj() {
+		return auxEstadoObj;
 	}
-	
-	
-	
-	
-	
-	
-	
+
+	public Cidade getAuxCidadeObj() {
+		return auxCidadeObj;
+	}
+
 }

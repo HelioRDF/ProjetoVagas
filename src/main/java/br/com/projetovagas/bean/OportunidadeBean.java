@@ -1,5 +1,7 @@
 package br.com.projetovagas.bean;
 
+
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -122,8 +124,7 @@ public class OportunidadeBean implements Serializable {
 		
 
 		try {
-			dao = new OportunidadeDAO();
-			
+			dao = new OportunidadeDAO();			
 			
 			listaOportunidade = dao.buscarVagas(filtrarCargo, filtrarEstado,comboCidade, filtrarSalario, filtrarNivel, filtrarModalidade, FiltrarPcD );
 			Messages.addGlobalInfo("Lista atualizada com sucesso ");
@@ -233,11 +234,22 @@ public class OportunidadeBean implements Serializable {
 	public void BuscarEstados() {
 
 		try {
-
-			System.out.println("Listando estados...");
+			LoginBean log = new LoginBean();
 
 			estadoDAO = new EstadoDAO();
 			listaEstado = estadoDAO.listar("nome");
+			
+			CidadeDAO cidadeDAO = new CidadeDAO();
+			filtrarEstado =  log.getAuxEstadoObj().getCodigo();
+			listaCidade = cidadeDAO.buscarPorEstado(filtrarEstado);
+		
+			comboCidade = log.getAuxCidadeObj().getCodigo();			
+			dao = new OportunidadeDAO();			
+			
+			listaOportunidade = dao.buscarVagas(filtrarCargo, filtrarEstado,comboCidade, filtrarSalario, filtrarNivel, filtrarModalidade, FiltrarPcD );
+			Messages.addGlobalInfo("Lista atualizada com sucesso ");
+			
+			
 
 		} catch (Exception e) {
 			// TODO: handle exception

@@ -1,13 +1,6 @@
 @CHARSET "UTF-8";
 
-.ui-layout-north {
-	z-index: 20 !important;
-	overflow: visible !important;;
-}
 
-.ui-layout-north .ui-layout-unit-content {
-	overflow: visible !important;
-}
 
 h1 {
 	font-size: 20px;
@@ -39,32 +32,8 @@ h2 {
 	height: auto;
 }
 
-h3 {
-	
-}
 
-h4 {
-	vertical-align: left;
-	font-size: 16px;
-	color: #ff8000;
-	vertical-align: left;
-	margin: 2% 7% 0% 0%;
-	padding: 10px;
-	border-style: solid;
-	border-color: #C2C1D4;
-	border-width: 1px;
-	border-radius: 8px;
-	font-family: Times New Roman;
-}
 
-body {
-	/* 	background-image: url("../images/d1.jpg"); */
-	border-style: solid;
-	border-color: black;
-	border-width: 0px;
-	height: auto;
-	width: auto;
-}
 
 #login-dialog {
 	width: 260px;
@@ -82,41 +51,40 @@ body {
 	width: 120%
 }
 
-.menu {
-	margin: auto auto 25px auto;
+
+
+#menu {
+	
+	text-align:right;
+	font-size: 16px;
+	color: #bf9876;
+	background-image: url("../images/banner02.png");
+	padding: 18px;
+	border-style: solid;
+	border-color: #C2C1D4;
+	border-width: 1px;
 	border-radius: 8px;
+	font-family: Times New Roman, serif;
 }
 
-.menuBasico {
-	margin: auto auto auto auto;
-	border-radius: 8px;
+.cabecalhoInfo {
+	color: orange;
+	font-family: Courier New, monospace;
+	margin: 0px 15px auto auto;
+	vertical-align: right;
 }
+
+
+
 
 .nameheader {
 	font-size: 20px;
 	color: orange;
 	font-family: Courier New, monospace;
-	margin: auto 25% auto auto;
-}
-
-.cabecalho {
-	font-size: 18px;
-	color: orange;
-	font-family: Courier New, monospace;
-	margin: 0 auto auto 15px;
-}
-
-.cabecalhoInfo {
-	font-size: 20px;
-	color: orange;
-	font-family: Courier New, monospace;
-	margin: 0px 15px auto 0px;
-	vertical-align: middle;
+	margin: auto 24% auto auto;
+	vertical-align: center;
 }
 
 
 
 
-.visualizar {
-	margin-top: 15px;
-}
