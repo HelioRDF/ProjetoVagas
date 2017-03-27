@@ -41,18 +41,17 @@ public class LoginBean implements Serializable {
 				Messages.addGlobalWarn("Usuário e/ou senha, incorretos");
 				return;
 
-			}else {
+			} else {
 
-		
-			// Verifica se usuário está Ativo
-			if (!usuarioLogado.getStatus()) {
+				// Verifica se usuário está Ativo
+				if (!usuarioLogado.getStatus()) {
 
-				Messages.addGlobalError("Usuário Desativado.");
-				usuarioLogado = null;
-				return;
+					Messages.addGlobalError("Usuário Desativado.");
+					usuarioLogado = null;
+					return;
 
-			}
-			
+				}
+
 			}
 			auxEstadoObj = usuarioLogado.getCidade().getEstado();
 			auxCidadeObj = usuarioLogado.getCidade();

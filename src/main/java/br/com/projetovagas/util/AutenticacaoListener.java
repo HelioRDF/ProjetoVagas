@@ -61,11 +61,7 @@ public class AutenticacaoListener implements PhaseListener {
 
 	@Override
 	public void beforePhase(PhaseEvent event) {
-		System.out.println("\n-----------------------");
 		tempoInicial = System.currentTimeMillis(); //Captura o tempo inicial da execução da Classe
-		System.out.println("BeforePhase:" + event.getPhaseId());
-		long tempoBefore = System.currentTimeMillis(); //Captura o tempo final da execução da Classe
-		System.out.printf("\n Tempo de execução: %.3f ms%n", (tempoBefore - tempoInicial) / 1000d); //Imprime o tempo de execução da classe em Ms.
 		
 
 	}
@@ -73,7 +69,7 @@ public class AutenticacaoListener implements PhaseListener {
 	@Override
 	public PhaseId getPhaseId() {
 	
-		return PhaseId.RESTORE_VIEW;
+		return PhaseId.ANY_PHASE;
 	}
 
 }

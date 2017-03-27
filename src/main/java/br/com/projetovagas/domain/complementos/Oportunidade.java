@@ -16,19 +16,15 @@ import br.com.projetovagas.domain.empresas.Empresa;
 import br.com.projetovagas.domain.localizacao.Cidade;
 import br.com.projetovagas.domain.localizacao.Estado;
 
-
-
 /**
  * [ Detalhes... ]
  * 
  * -Entity - Diz que a classe é uma entidade do hibernate
  * 
- * -Column(
- * | length = Tamanho do campo 
- * | name = define o nome no banco 
- * | nullable = Diz se o campo pode ou não ser nulo "True ou False");
- * | precision = Define quantidade de digitos
- * | scale= Define quantos digitos ficam após a virgula 
+ * -Column( | length = Tamanho do campo | name = define o nome no banco |
+ * nullable = Diz se o campo pode ou não ser nulo "True ou False"); | precision
+ * = Define quantidade de digitos | scale= Define quantos digitos ficam após a
+ * virgula
  * 
  * -JoinColumn - Permite personalizar colunas que são chaves estrangeiras
  * 
@@ -37,17 +33,14 @@ import br.com.projetovagas.domain.localizacao.Estado;
 @SuppressWarnings("serial")
 @Entity
 public class Oportunidade extends GenericDomain {
-	
-	
-	
+
 	@Column()
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataCadastro;
-	
+
 	@Column(nullable = false)
 	private String cargo;
-	
-	
+
 	@JoinColumn
 	@OneToOne
 	private Estado estado;
@@ -55,21 +48,21 @@ public class Oportunidade extends GenericDomain {
 	@JoinColumn
 	@OneToOne
 	private Cidade cidade;
-	
+
 	@Column(nullable = false)
 	private String horario;
-	
+
 	@Column
-	private String nivel;	//Junior | Senior | Pleno | Trainee
+	private String nivel; // Junior | Senior | Pleno | Trainee
 
 	@Column(nullable = false)
 	@Lob
 	private String descricao;
-	
+
 	@Column
 	@Lob
 	private String preRequisitos;
-	
+
 	@Column(nullable = false)
 	@Lob
 	private String beneficios;
@@ -79,34 +72,30 @@ public class Oportunidade extends GenericDomain {
 
 	@Column(nullable = false)
 	private BigDecimal salario;
-	
-	@Column ( scale=2)
+
+	@Column(scale = 2)
 	private BigDecimal salarioAux;
-	
-	
+
 	@Column
 	private Boolean mostrarSalario;
-	
+
 	@Column
 	private Boolean mostrarEmpresa;
-	
-	@Column(name="PcD")
+
+	@Column(name = "PcD")
 	private Boolean pcd;
 
 	@ManyToOne
 	@JoinColumn(nullable = false)
 	private Empresa empresa;
-	
+
 	@Column
-	private String modalidade; //CLT | CLT PCD | PJ | Estágio ???
-	
+	private String modalidade; // CLT | CLT PCD | PJ | Estágio ???
+
 	@Column
-	private String area; //MKT | Engenharia | ???
-	
-	
-	//--------------------------------------------------
-	
-	
+	private String area; // MKT | Engenharia | ???
+
+	// --------------------------------------------------
 
 	public String getDescricao() {
 		return descricao;
@@ -144,8 +133,6 @@ public class Oportunidade extends GenericDomain {
 		this.preRequisitos = preRequisitos;
 	}
 
-
-
 	public String getCargo() {
 		return cargo;
 	}
@@ -182,9 +169,6 @@ public class Oportunidade extends GenericDomain {
 		this.empresa = empresa;
 	}
 
-	
-	
-	
 	public String getModalidade() {
 		return modalidade;
 	}
@@ -208,8 +192,6 @@ public class Oportunidade extends GenericDomain {
 	public void setDataCadastro(Date dataCadastro) {
 		this.dataCadastro = dataCadastro;
 	}
-	
-	
 
 	public Boolean getMostrarSalario() {
 		return mostrarSalario;
@@ -218,9 +200,6 @@ public class Oportunidade extends GenericDomain {
 	public void setMostrarSalario(Boolean mostrarSalario) {
 		this.mostrarSalario = mostrarSalario;
 	}
-	
-	
-	 
 
 	public Boolean getMostrarEmpresa() {
 		return mostrarEmpresa;
@@ -245,7 +224,6 @@ public class Oportunidade extends GenericDomain {
 	public void setBeneficios(String beneficios) {
 		this.beneficios = beneficios;
 	}
-	
 
 	public Boolean getPcd() {
 		return pcd;
@@ -254,10 +232,6 @@ public class Oportunidade extends GenericDomain {
 	public void setPcd(Boolean pcd) {
 		this.pcd = pcd;
 	}
-	
-
-	 
-
 
 	public BigDecimal getSalarioAux() {
 		return salarioAux;
@@ -266,21 +240,5 @@ public class Oportunidade extends GenericDomain {
 	public void setSalarioAux(BigDecimal salarioAux) {
 		this.salarioAux = salarioAux;
 	}
-
-	@Override
-	public String toString() {
-		return "Oportunidade [dataCadastro=" + dataCadastro + ", cargo=" + cargo + ", nivel=" + nivel + ", descricao="
-				+ descricao + ", preRequisitos=" + preRequisitos + ", quantidade=" + quantidade + ", salario=" + salario
-				+ ", empresa=" + empresa + ", tipo=" + modalidade + ", setor=" + area + "]";
-	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
 
 }

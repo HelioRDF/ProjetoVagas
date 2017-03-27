@@ -167,116 +167,93 @@ import br.com.projetovagas.util.HibernateUtil;
  */
 
 
+public class OportunidadeDAO extends GenericDAO<Oportunidade> {
 
-public class OportunidadeDAO extends GenericDAO<Oportunidade>{
-	
-	
-	public List <Oportunidade> buscarVagas(String cargo, Long estado, Long cidade, int salario, String nivel, String modalidade, int pcd){
-		
+	public List<Oportunidade> buscarVagas(String cargo, Long estado, Long cidade, int salario, String nivel,
+			String modalidade, int pcd) {
 
-		
-		BigDecimal salarioMaior =new BigDecimal(0.00);	;
-		BigDecimal salarioMenor=new BigDecimal(99999.00);	;
-		
-		if(salario==0){
-			salarioMaior= new BigDecimal(0.00);
-			salarioMenor=new BigDecimal(99999.00);		
+		BigDecimal salarioMaior = new BigDecimal(0.00);
+		;
+		BigDecimal salarioMenor = new BigDecimal(99999.00);
+		;
+
+		if (salario == 0) {
+			salarioMaior = new BigDecimal(0.00);
+			salarioMenor = new BigDecimal(99999.00);
 		}
-		
-		if(salario==1){
-			salarioMaior= new BigDecimal(0.00);;
-			salarioMenor=new BigDecimal(1500.00);			
+
+		if (salario == 1) {
+			salarioMaior = new BigDecimal(0.00);
+			;
+			salarioMenor = new BigDecimal(1500.00);
 		}
-		
-		if(salario==2){
-			salarioMaior=new  BigDecimal(1500.00);
-			salarioMenor=new BigDecimal(2000.00);			
+
+		if (salario == 2) {
+			salarioMaior = new BigDecimal(1500.00);
+			salarioMenor = new BigDecimal(2000.00);
 		}
-		
-		if(salario==3){
-			salarioMaior= new BigDecimal(2000.00);	
-			salarioMenor=new BigDecimal(2500.00);			
+
+		if (salario == 3) {
+			salarioMaior = new BigDecimal(2000.00);
+			salarioMenor = new BigDecimal(2500.00);
 		}
-		
-		if(salario==4){
-			salarioMaior= new BigDecimal(2500.00);	
-			salarioMenor=new BigDecimal(3500.00);			
+
+		if (salario == 4) {
+			salarioMaior = new BigDecimal(2500.00);
+			salarioMenor = new BigDecimal(3500.00);
 		}
-		
-		
-		if(salario==5){
-			salarioMaior= new BigDecimal(3500.00);	
-			salarioMenor=new BigDecimal(5000.00);				
+
+		if (salario == 5) {
+			salarioMaior = new BigDecimal(3500.00);
+			salarioMenor = new BigDecimal(5000.00);
 		}
-		
-		if(salario==6){
-			salarioMaior= new BigDecimal(5000.00);	
-			salarioMenor=new BigDecimal(99999.00);				
+
+		if (salario == 6) {
+			salarioMaior = new BigDecimal(5000.00);
+			salarioMenor = new BigDecimal(99999.00);
 		}
-		
-		
-		
-		
+
 		Session sessao = HibernateUtil.getFabricadeSessoes().openSession();
-		
+
 		Criteria consulta = sessao.createCriteria(Oportunidade.class);
-		consulta.add(Restrictions.ilike("cargo", "%"+cargo+"%"));
+		consulta.add(Restrictions.ilike("cargo", "%" + cargo + "%"));
 		consulta.add(Restrictions.eq("estado.codigo", estado));
 		consulta.add(Restrictions.eq("cidade.codigo", cidade));
-		
-		if(pcd==1 ){
-			
+
+		if (pcd == 1) {
+
 			consulta.add(Restrictions.eq("pcd", true));
 		}
-		
-		if(pcd==0 ){
-			
+
+		if (pcd == 0) {
+
 			consulta.add(Restrictions.eq("pcd", false));
 		}
-		
-		
-		
+
 		consulta.add(Restrictions.ge("salario", salarioMaior));
 		consulta.add(Restrictions.lt("salario", salarioMenor));
-		consulta.add(Restrictions.ilike("nivel", "%"+nivel+"%"));
-		consulta.add(Restrictions.ilike("modalidade", "%"+modalidade+"%"));
-		
-		
-		
-		@SuppressWarnings("unchecked")
-		List <Oportunidade> resultado = consulta.list();
-		
-		System.out.println("Saída Maior:"+salarioMaior);
-		System.out.println("Saída Menor:"+salarioMenor);
-		
-		for (Oportunidade oportunidade : resultado) {
-			
-			System.out.println("Saída Cargo:"+oportunidade.getCargo());
-			
-		}
-		
-		return resultado;
-		
-		
-	}
-	
-	
-	public List <Oportunidade> buscarVagasCargo(String cargo){
-		
-		
-		Session sessao = HibernateUtil.getFabricadeSessoes().openSession();
-		
-		Criteria consulta = sessao.createCriteria(Oportunidade.class);
-		consulta.add(Restrictions.ilike("cargo", "%"+cargo+"%"));
-		
-		@SuppressWarnings("unchecked")
-		List <Oportunidade> resultado = consulta.list();
-		
-		return resultado;
-		
-		
-	}
-	
+		consulta.add(Restrictions.ilike("nivel", "%" + nivel + "%"));
+		consulta.add(Restrictions.ilike("modalidade", "%" + modalidade + "%"));
 
-			
+		@SuppressWarnings("unchecked")
+		List<Oportunidade> resultado = consulta.list();
+
+		return resultado;
+
+	}
+
+	public List<Oportunidade> buscarVagasCargo(String cargo) {
+
+		Session sessao = HibernateUtil.getFabricadeSessoes().openSession();
+
+		Criteria consulta = sessao.createCriteria(Oportunidade.class);
+		consulta.add(Restrictions.ilike("cargo", "%" + cargo + "%"));
+
+		@SuppressWarnings("unchecked")
+		List<Oportunidade> resultado = consulta.list();
+
+		return resultado;
+
+	}
+
 }

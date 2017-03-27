@@ -64,14 +64,12 @@ public class OportunidadeBean implements Serializable {
 		try {
 
 			System.out.println("Método salvar");
-			
-			if(!oportunidade.getMostrarSalario()){
+
+			if (!oportunidade.getMostrarSalario()) {
 				oportunidade.setSalarioAux(new BigDecimal(1.00));
-			}else{
+			} else {
 				oportunidade.setSalarioAux(oportunidade.getSalario().setScale(2));
 			}
-			
-			
 
 			oportunidade.setDataCadastro(new Date());
 			oportunidade.setEstado(estado);
@@ -82,7 +80,6 @@ public class OportunidadeBean implements Serializable {
 		} catch (Exception e) {
 			Messages.addGlobalError("Não foi possível salvar o usuário, tente novamente mais tarde ... ");
 		} finally {
-			System.out.println("finally: " + oportunidade.toString());
 
 			fechar();
 
@@ -93,8 +90,6 @@ public class OportunidadeBean implements Serializable {
 	// -------------------------------------------------------------------------------------------
 
 	public void novo() {
-
-		System.out.println("Método novo");
 
 		botaoEditar = false;
 		botaoSalvar = true;
@@ -107,7 +102,6 @@ public class OportunidadeBean implements Serializable {
 	// Fechar
 	// -------------------------------------------------------------------------------------------
 	public void fechar() {
-		System.out.println("Método fechar");
 		RequestContext.getCurrentInstance().reset("dialogform");
 		oportunidade = new Oportunidade();
 		dao = new OportunidadeDAO();
@@ -160,15 +154,14 @@ public class OportunidadeBean implements Serializable {
 	public void editar() {
 
 		try {
-			
-			if(!oportunidade.getMostrarSalario()){
+
+			if (!oportunidade.getMostrarSalario()) {
 				oportunidade.setSalarioAux(new BigDecimal(1.00));
-				
-			}else{
+
+			} else {
 				oportunidade.setSalarioAux(oportunidade.getSalario().setScale(2));
 			}
 
-			
 			dao = new OportunidadeDAO();
 			oportunidade.setEstado(estado);
 			dao.merge(oportunidade);
@@ -219,7 +212,6 @@ public class OportunidadeBean implements Serializable {
 
 			estadoDAO = new EstadoDAO();
 			listaEstado = estadoDAO.listar("nome");
-			// listaCidade = cidadeDAO.listar("nome");
 
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -266,8 +258,6 @@ public class OportunidadeBean implements Serializable {
 	public void buscarCidade() {
 
 		try {
-
-			System.out.println("Listando Cidade...");
 
 			CidadeDAO cidadeDAO = new CidadeDAO();
 			listaCidade = cidadeDAO.buscarPorEstado(filtrarEstado);

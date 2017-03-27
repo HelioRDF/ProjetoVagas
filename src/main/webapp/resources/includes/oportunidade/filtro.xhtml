@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+
+	<h:form id="formFiltro">
+
+
+		<!-- Campo cargo -->
+		<p:inputText placeholder="Nome do Cargo"
+			value="#{oportunidadeBean.filtrarCargo}"
+			style="  margin: 15px 10px 5px 5px; vertical-align: left;	width:90%;">
+
+		</p:inputText>
+
+
+		<!-- Atualizar table -->
+		<p:commandButton value="Pesquisar Oportunidades" icon="ui-icon-search"
+			iconPos="left" action="#{oportunidadeBean.carregarFiltrando}"
+			update=":form: :formFiltro:"
+			style=" border-radius: 7px; background-color:CadetBlue; border-color: #C2C1D4;
+					 font-size: 16px; word-spacing:8px; text-align:left; height:38px; margin: 5px 10px 0px 5px; width:95%; " />
+
+
+
+
+
+
+		<p:separator
+			style=" margin:15px auto 5px auto; height:6px;background-color:#dde1f0">
+		</p:separator>
+
+
+		<p:panelMenu>
+
+
+
+
+			<p:submenu label="Localidade" expanded="true">
+				<p:menuitem>
+
+
+					<p:selectOneMenu style="margin:0px 0px 10px 0px" filter="true"
+						id="EstadoFiltro" value="#{oportunidadeBean.filtrarEstado}"
+						required="false" requiredMessage="Selecione um Estado!"
+						converter="omnifaces.SelectItemsConverter">
+
+
+						<f:selectItem itemLabel="#{oportunidadeBean.auxEstado}"
+							noSelectionOption="true" itemDisabled="true"></f:selectItem>
+
+						<f:selectItems value="#{oportunidadeBean.listaEstado}"
+							var="estado" itemValue="#{estado.codigo}"
+							itemLabel="#{estado.nome} - #{estado.sigla}">
+
+						</f:selectItems>
+
+						<p:ajax listener="#{oportunidadeBean.buscarCidade}"
+							update=":formFiltro:cidadeFiltro:"></p:ajax>
+					</p:selectOneMenu>
+
+
+
+					<p:selectOneMenu filter="true" id="cidadeFiltro"
+						value="#{oportunidadeBean.comboCidade}" required="false"
+						requiredMessage="Selecione uma Cidade!"
+						converter="omnifaces.SelectItemsConverter">
+
+						<f:selectItem itemLabel="#{oportunidadeBean.auxCidade}"
+							noSelectionOption="true" itemDisabled="true"></f:selectItem>
+
+						<f:selectItems value="#{oportunidadeBean.listaCidade}"
+							var="cidade" itemValue="#{cidade.codigo}"
+							itemLabel="#{cidade.nome}">
+
+						</f:selectItems>
+
+					</p:selectOneMenu>
+
+
+				</p:menuitem>
+
+			</p:submenu>
+
+			<p:submenu label=" PcD" expanded="false">
+				<p:menuitem>
+
+
+
+					<p:selectOneButton value="#{oportunidadeBean.filtrarPcD}">
+
+						<f:selectItem itemLabel="Sim" itemValue="1" />
+						<f:selectItem itemLabel="Não" itemValue="0" />
+						<f:selectItem itemLabel="Indefinido" itemValue="3" />
+					</p:selectOneButton>
+
+
+				</p:menuitem>
+			</p:submenu>
+
+			<p:submenu label="Salário" expanded="false">
+				<p:menuitem>
+					<p:selectOneMenu value="#{oportunidadeBean.filtrarSalario}">
+
+						<f:selectItem itemLabel="Não especificar" itemValue="0"></f:selectItem>
+						<f:selectItem itemLabel="Até R$ 1.500,00" itemValue="1"></f:selectItem>
+						<f:selectItem itemLabel="Entre R$ 1.500,00 e R$ 2.000,00"
+							itemValue="2"></f:selectItem>
+						<f:selectItem itemLabel="Entre R$ 2.000,00 e R$ 2.500,00"
+							itemValue="3"></f:selectItem>
+						<f:selectItem itemLabel="Entre R$ 2.500,00 e R$ 3.500,00"
+							itemValue="4"></f:selectItem>
+						<f:selectItem itemLabel="Entre R$ 3.500,00 e R$ 5.000,00"
+							itemValue="5"></f:selectItem>
+						<f:selectItem itemLabel="A partir de R$ 5.000,00" itemValue="6"></f:selectItem>
+					</p:selectOneMenu>
+
+				</p:menuitem>
+			</p:submenu>
+
+			<p:submenu label="Nível" expanded="false">
+				<p:menuitem>
+
+					<p:selectOneMenu filter="true"
+						value="#{oportunidadeBean.filtrarNivel}">
+						<f:selectItem itemValue="" itemLabel="Não especificar" />
+
+						<f:selectItem itemValue="Trainee" itemLabel="Trainee" />
+						<f:selectItem itemValue="Junior" itemLabel="Junior" />
+						<f:selectItem itemValue="Pleno" itemLabel="Pleno" />
+						<f:selectItem itemValue="Senior" itemLabel="Senior" />
+						<f:selectItem itemValue="Master" itemLabel="Master" />
+						<f:selectItem itemValue="Especialista" itemLabel="Especialista" />
+						<f:selectItem itemValue="Todos" itemLabel="Todos" />
+
+					</p:selectOneMenu>
+
+				</p:menuitem>
+			</p:submenu>
+
+			<p:submenu label="Modalidade" expanded="false"
+				style="margin-bottom:60px;">
+				<p:menuitem>
+
+
+					<p:selectOneMenu filter="true"
+						value="#{oportunidadeBean.filtrarModalidade}">
+						<f:selectItem itemValue="" itemLabel="Não especificar" />
+						<f:selectItem itemValue="Estágio" itemLabel="Estágio" />
+						<f:selectItem itemValue="CLT" itemLabel="CLT" />
+						<f:selectItem itemValue="PJ" itemLabel="PJ" />
+						<f:selectItem itemValue="Empreita" itemLabel="Empreita" />
+
+
+						<f:selectItem itemValue="Outros" itemLabel="Outros" />
+
+
+					</p:selectOneMenu>
+
+				</p:menuitem>
+			</p:submenu>
+
+
+
+		</p:panelMenu>
+
+
+	</h:form>
+
+</ui:composition>
