@@ -6,32 +6,231 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
 	template="/resources/templates/template.xhtml">
-
+	
+	
+	
+	
 
 	<ui:define name="insertNorth">
-
 		<ui:include src="/resources/includes/menu.xhtml"></ui:include>
-
 	</ui:define>
 
 
 
 	<ui:define name="insertLayout">
-		<!-- _________________________________________________________________________________________________________________________________ -->
-		<!-- Layout West (Left) -->
-
-		<p:layoutUnit position="west" size="330" header="Filtrar"
+	
+	<h:form >
+		<p:layoutUnit position="west" minSize="500"
 			resizable="true" closable="false" collapsible="true" effect="drop">
+			<p:growl id="global" autoUpdate="true" closable="true" />
 
-		<ui:include src="/resources/includes/oportunidade/filtro.xhtml"></ui:include>
+					<h:panelGrid columns="2" id="dialogpanel" >
 
+						<p:outputLabel value="Status: " />
+						<p:selectBooleanButton onLabel="Ativado" offLabel="Desativado"
+							value="#{loginBean.usuarioLogado.status}" required="true"
+							requiredMessage="Verificar campo Status">
+						</p:selectBooleanButton>
+
+
+						<p:outputLabel value="Admin: " />
+						<p:selectBooleanButton onLabel="Ativado" offLabel="Desativado"
+							value="#{loginBean.usuarioLogado.admin}" required="false"
+							requiredMessage="Verificar campo Status">
+						</p:selectBooleanButton>
+
+
+						<p:outputLabel value="E-mail:" />
+						<p:inputText id="email" maxlength="40" size="22"
+							value="#{loginBean.usuarioLogado.email}" required="true"
+							requiredMessage="Verificar campo E-Mail"
+							validatorMessage="Erro de validação: o e-mail não é válido ">
+							<f:validateRegex disabled="false" for="email"
+								pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+						</p:inputText>
+
+						<p:separator style="border: 1px solid #e6e6ff; height: 1px;"></p:separator>
+						<p:separator style="border: 1px solid #e6e6ff; height: 1px;"></p:separator>
+
+						<p:outputLabel value="Sexo: " />
+						<p:selectOneRadio id="sexo" value="#{loginBean.usuarioLogado.sexo}"
+							required="true" requiredMessage="Verificar campo Sexo">
+							<f:selectItem itemValue="masculino" itemLabel="Masculino" />
+							<f:selectItem itemValue="feminino" itemLabel="Feminino" />
+						</p:selectOneRadio>
+
+
+						<p:outputLabel value="Nome  Completo: ">
+						</p:outputLabel>
+						<p:inputText id="nome" maxlength="30" size="25" label="nome"
+							value="#{loginBean.usuarioLogado.nome}" required="true"
+							requiredMessage="Verificar campo Nome"
+							validatorMessage="Erro de validação: Dígite seu nome completo">
+							<f:validateLength minimum="5" />
+
+
+							<f:validateRegex disabled="false" for="nome"
+								pattern="[ A-ZãÃáÁàÀâÂäÄéÉèÈêÊëËÚúíÍóÓõÕôÔöÖüÜñÑçÇa-z ]* + *[ A-ZãÃáÁàÀâÂäÄéÉèÈêÊëËÚúíÍóÓõÕôÔöÖüÜñÑçÇa-z ]*" />
+
+						</p:inputText>
+
+
+
+						<p:outputLabel value="CPF: " />
+						<p:inputMask mask="999.999.999-99" id="cpf" maxlength="50"
+							size="20" value="#{loginBean.usuarioLogado.cpf}" required="true"
+							requiredMessage="Verificar campo CPF"
+							validatorMessage="Erro de validação: o comprimento é menor do que o mínimo permitido. '11 dígitos' ">
+							<f:validateLength minimum="11" disabled="true" />
+						</p:inputMask>
+
+						<p:outputLabel value="RG: " />
+						<p:inputText id="rg" maxlength="11" size="16"
+							value="#{loginBean.usuarioLogado.rg}" required="true"
+							requiredMessage="Verificar campo RG"
+							validatorMessage="Erro de validação: o comprimento é menor do que o mínimo permitido. '5 dígitos' ">
+							<f:validateLength minimum="5" disabled="true" />
+						</p:inputText>
+
+
+						<p:outputLabel value="Data de Nasc: " />
+
+						<h:panelGrid columns="2">
+							<p:calendar locale="pt_BR" showButtonPanel="true" id="calendario"
+								yearRange="c-60:c+1" navigator="true" pages="1"
+								value="#{loginBean.usuarioLogado.dataNascimento}" required="true"
+								size="10" requiredMessage="Verificar campo Data de Nascimento">
+
+							</p:calendar>
+
+							<p:graphicImage style="float:center;"
+								value="/images/calendar (3).png" />
+						</h:panelGrid>
+
+
+					</h:panelGrid>
 		</p:layoutUnit>
-		<!-- Fim Layout east (Right) -->
+		</h:form>
+	</ui:define>
 
+
+
+
+
+
+
+
+
+
+	<ui:define name="insertEast">
+	<h:form id="dialogform">
+		
+	<h:panelGrid columns="2" id="dialogpanel2">
+
+
+						<p:outputLabel value="Estado: " />
+						<p:selectOneMenu filter="true" value="#{loginBean.estado}"
+							converter="omnifaces.SelectItemsConverter"
+							required="#{!loginBean.botaoEditar}"
+							requiredMessage="Informe o Estado corretamente">
+
+
+							<f:selectItem noSelectionOption="true" itemDisabled="true"
+								itemLabel="#{loginBean.auxEstado}">
+							</f:selectItem>
+
+
+							<f:selectItems value="#{loginBean.listaEstado}" var="es"
+								itemValue="#{es}" itemLabel="#{es.nome} - #{es.sigla}" />
+							<p:ajax listener="#{loginBean.filtrarCidade}"
+								update=":dialogform:cidade"></p:ajax>
+						</p:selectOneMenu>
+
+
+						<p:outputLabel value="Cidade: " />
+						<p:selectOneMenu id="cidade" filter="true"
+							value="#{loginBean.cidade}"
+							converter="omnifaces.SelectItemsConverter"
+							required="#{!loginBean.botaoEditar}"
+							requiredMessage="Informe a Cidade corretamente">
+
+							<f:selectItem noSelectionOption="true" itemDisabled="true"
+								itemLabel="#{loginBean.auxCidade}" />
+
+
+							<f:selectItems value="#{loginBean.listaCidade}" var="ci"
+								itemValue="#{ci}" itemLabel="#{ci.nome}" />
+						</p:selectOneMenu>
+
+
+
+						<p:outputLabel value="Rua:" />
+						<p:inputText maxlength="30" size="23" label="rua"
+							value="#{loginBean.usuarioLogado.rua}" required="true">
+						</p:inputText>
+
+						<p:outputLabel value="Número: "></p:outputLabel>
+						<p:inputText maxlength="5" size="10"
+							value="#{loginBean.usuarioLogado.numero}" required="true"
+							requiredMessage="Preencha o campo Número">
+						</p:inputText>
+
+						<p:outputLabel value="Bairro:"></p:outputLabel>
+						<p:inputText maxlength="20" size="20"
+							value="#{loginBean.usuarioLogado.bairro}" required="true"
+							requiredMessage="Preencha o campo bairro">
+						</p:inputText>
+
+						<p:outputLabel value="Complemento: " />
+						<p:inputText maxlength="20" id="complemento" size="20"
+							label="complemento" value="#{loginBean.usuarioLogado.complemento}"
+							required="false" requiredMessage="Preencha o campo complemento">
+						</p:inputText>
+
+						<p:outputLabel value="CEP: " />
+						<p:inputMask size="18" mask="99999-999" id="cep"
+							value="#{loginBean.usuarioLogado.cep}" required="true"
+							requiredMessage="Preencha o campo CEP">
+						</p:inputMask>
+
+						<p:outputLabel value="Telefone: " />
+						<p:inputMask size="15" mask="(99) 9999-9999" id="tel"
+							value="#{loginBean.usuarioLogado.telefone}" required="false"
+							requiredMessage="Preencha o campo telefone">
+							<f:validateLength minimum="8" maximum="18"></f:validateLength>
+						</p:inputMask>
+
+						<p:outputLabel value="Celular: " />
+						<p:inputMask size="15" mask="(99) 9 9999-9999" id="cel"
+							value="#{loginBean.usuarioLogado.celular}" required="false"
+							requiredMessage="Preencha o campo celular">
+							<f:validateLength minimum="10" maximum="17"></f:validateLength>
+						</p:inputMask>
+
+					</h:panelGrid>		
+		</h:form>
 	</ui:define>
 	
-	<ui:define name="insertCenter">
-	<ui:include src="/resources/includes/oportunidade/center.xhtml"></ui:include>
+	<ui:define name="insertSouth">
+	
+	<h:form>
+	
+			<h:panelGrid columns="3">
+
+						<p:commandButton value="Editar"
+							actionListener="#{loginBean.editar}" validateClient="true"
+							update=":dialogform: "
+							
+							oncomplete="PF('dialogo').hide();">
+						</p:commandButton>
+
+
+						
+
+					</h:panelGrid>
+	</h:form>
+	
 	</ui:define>
+	
 
 </ui:composition>
