@@ -18,7 +18,7 @@ import br.com.projetovagas.domain.usuarios.Usuario;
 @SuppressWarnings("serial")
 @ManagedBean
 @SessionScoped
-public class LoginBean implements Serializable {
+public class LoginBean extends UsuarioBean implements Serializable {
 
 	private Usuario usuario;
 	private static Usuario usuarioLogado;

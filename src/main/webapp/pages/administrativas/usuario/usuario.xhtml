@@ -1,0 +1,166 @@
+
+
+
+			<p:column headerText="Opções" width="18%">
+
+
+			
+
+				<!-- Resetar Senha -->
+				<p:commandButton title="Resetar Senha" icon="ui-icon-key "
+					actionListener="#{usuarioBean.getinstancia}"
+					update=":dialogformSenha"
+					oncomplete="PF('dialogSenhaPanel').show();">
+					<f:attribute name="meuSelect" value="#{dataVar}" />
+				</p:commandButton>
+
+
+
+				<!-- Gerar Curriculo -->
+				<p:commandButton title="Curriculo" icon="ui-icon-person"
+					actionListener="#{usuarioBean.getinstanciaCurriculo}"
+					action="/pages/administrativas/curriculo.xhtml?faces-redirect=true">
+
+					<f:attribute name="meuSelect" value="#{dataVar}" />
+				</p:commandButton>
+
+
+				<!-- Excluir -->
+				<p:commandButton title="Excluir" icon="ui-icon-trash"
+					actionListener="#{usuarioBean.excluir}" update=":form:msgGrowl">
+					<p:confirm header="Confirmação"
+						message="Deseja excluir o usuário ?" icon="ui-icon-alert" />
+					<f:attribute name="meuSelect" value="#{dataVar}" />
+				</p:commandButton>
+
+				<!-- Dialogo Global -->
+				<p:confirmDialog global="true">
+					<p:commandButton value="sim" type="button"
+						styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+					<p:commandButton value="não" type="button"
+						styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+				</p:confirmDialog>
+
+			</p:column>
+
+
+			<!-- _________________________________________________________________________________________________________________________________ -->
+			<!-- Informações após expandir linha -->
+
+			<p:rowExpansion styleClass=" width=37%">
+
+				<p:panelGrid columns="1" columnClasses="label,value"
+					style="text-align:left;">
+					<h:outputText value="Admin: #{dataVar.admin}" />
+					<h:outputText value="Sexo: #{dataVar.sexo}" />
+					
+					<h:outputText value="CPF: #{dataVar.cpf}" />
+					<h:outputText value="RG: #{dataVar.rg}" />
+					<h:outputText value="Data de Nascimento: #{dataVar.dataNascimento}">
+						<f:convertDateTime locale="pt_BR" />
+					</h:outputText>
+					<h:outputText value="Cadastrado dia: #{dataVar.dataCadastro}">
+						<f:convertDateTime locale="pt_BR" />
+					</h:outputText>
+
+					<h:outputText value="Telefone: #{dataVar.telefone}" />
+					<h:outputText value="Celular: #{dataVar.celular}" />
+
+
+
+					<h:outputText value="Estado: #{dataVar.cidade.estado.nome}" />
+					<h:outputText value="Cidade: #{dataVar.cidade.nome}" />
+					<h:outputText value="Rua: #{dataVar.rua}" />
+					<h:outputText value="Número: #{dataVar.numero}" />
+					<h:outputText value="Bairro: #{dataVar.bairro}" />
+					<h:outputText value="Cep: #{dataVar.cep}" />
+					<h:outputText value="Complemento: #{dataVar.complemento}" />
+					<h:outputText value="Senha: #{dataVar.senha}" />
+
+
+				</p:panelGrid>
+
+				<!-- <p:separator style="border: 2px solid #999966; border-radius: 100px/9px; background-color:  #6666ff; height:10px;"> </p:separator>  -->
+				<p:separator
+					style=" height:7px;border-radius: 100px/9px; background-color:#ffffff"></p:separator>
+				<p:separator style=" height:10px;background-color:#e6e6ff"></p:separator>
+			</p:rowExpansion>
+
+		</p:dataTable>
+	</h:form>
+
+
+
+
+
+
+	<!-- _________________________________________________________________________________________________________________________________ -->
+	<!--   Dialog do Curriculo             -->
+
+
+
+	<!-- _________________________________________________________________________________________________________________________________ -->
+	<!-- Dialogo do Reset de senha -->
+
+	<p:dialog header="Resetar senha" widgetVar="dialogSenhaPanel"
+		modal="true" responsive="true">
+
+		<h:form id="dialogformSenha">
+
+			<p:growl id="msgdialogSenha" autoUpdate="true" closable="true" />
+
+			<h:panelGrid columns="2" id="dialogSenhaPanelGrid">
+
+
+				<p:outputLabel value="Nome: " />
+				<p:inputText readonly="true" value="#{usuarioBean.usuario.nome}"
+					size="25" />
+
+				<p:outputLabel value="CPF: " required="true" />
+				<p:inputText readonly="true" value="#{usuarioBean.usuario.cpf}"
+					size="25" />
+
+				<p:outputLabel value="E-mail:" required="true" />
+				<p:inputText readonly="true" value="#{usuarioBean.usuario.email}"
+					size="25" />
+
+				<p:separator style="border: 1px solid #e6e6ff; height: 1px;"></p:separator>
+				<p:separator style="border: 1px solid #e6e6ff; height: 1px;"></p:separator>
+
+				<p:outputLabel value="Digite uma Senha:" />
+				<p:password id="senha" maxlength="16" size="25" feedback="true"
+					inline="true" match="confirmar"
+					value="#{usuarioBean.usuario.senhaSemCriptografia}" required="true"
+					requiredMessage="Verificar campo Senha"
+					validatorMessage="Erro de validação: As senhas não conferem, ou o comprimento é menor do que o mínimo permitido. '4 dígitos' ">
+					<f:validateLength minimum="4" />
+				</p:password>
+
+				<p:outputLabel value="Confirmar senha:" required="true" />
+				<p:password id="confirmar" maxlength="16" size="25"
+					value="#{usuarioBean.usuario.senhaSemCriptografia}" required="true"
+					requiredMessage="Verificar campo Confirmar Senha"
+					validatorMessage="Erro de validação: o comprimento é menor do que o mínimo permitido. '4 dígitos' ">
+					<f:validateLength minimum="4" />
+				</p:password>
+
+			</h:panelGrid>
+
+			<h:panelGrid columns="2">
+
+				<p:commandButton value="Salvar"
+					actionListener="#{usuarioBean.editarSenha}"
+					update=":dialogformSenha:msgdialogSenha:" />
+				<p:commandButton value="Fechar"
+					actionListener="#{usuarioBean.fechar}"
+					oncomplete="PF('dialogSenhaPanel').hide();" />
+
+			</h:panelGrid>
+
+		</h:form>
+
+	</p:dialog>
+
+
+</h:body>
+</html>

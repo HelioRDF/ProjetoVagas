@@ -23,20 +23,36 @@
 				<p:menuitem value="Home" ajax="false" icon="ui-icon-home"
 					outcome="/index.xhtml" style="margin:5px auto" />
 				<p:separator style="margin:5px auto 10px auto;"></p:separator>
-				<p:menuitem value="Editar Perfil" ajax="false" icon="ui-icon-pencil" />
+				
+				
+				
+				<p:menuitem value="Editar Perfil" ajax="false" icon="ui-icon-pencil"
+				outcome="/pages/administrativas/usuario/editarPerfil.xhtml" />
+				
+				
 				<p:menuitem value="Editar Senha" icon="ui-icon-key" />
+				
 				<p:menuitem value="Editar Curriculo" ajax="false"
 					icon="ui-icon-bookmark" />
+					
 				<p:separator style="margin:10px auto 15px auto;"></p:separator>
+				
 				<p:menuitem value="Minhas Oportunidades" icon="ui-icon-star" />
+				
 				<p:menuitem value="Cadastrar Bicos" icon="ui-icon-wrench" />
-				<p:menuitem value="Buscar Vagas"
-					outcome="/pages/administrativas/oportunidades.xhtml"
-					icon="ui-icon-search" />
+				
+				<p:menuitem value="Buscar Vagas" icon="ui-icon-search"
+				outcome="/pages/administrativas/oportunidades.xhtml" />
+					
 				<p:menuitem value="Buscar Bicos" icon="ui-icon-search" />
+				
 				<p:separator style="margin:10px auto auto auto;"></p:separator>
+				
 				<p:menuitem value="Sair" actionListener="#{loginBean.sair}"
 					icon="ui-icon-extlink" style="margin:5px auto;" />
+					
+					
+
 
 
 			</p:menu>
