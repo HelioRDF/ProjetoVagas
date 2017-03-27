@@ -16,18 +16,15 @@
 
 
 
-
 		<h:form id="dialogform">
-			<p:layout id="layoutFull" onResize="false"
-				style="min-width:770px; min-height:470px; max-width:790px; max-height:490px; ">
+			<p:layout id="layoutFull" onResize="false">
 
 
 
 				<!-- _________________________________________________________________________________________________________________________________ -->
 				<!-- West - Informações do Usuário -->
 
-				<p:layoutUnit id="West" position="west" size="400" minSize="210"
-					maxSize="500">
+				<p:layoutUnit id="West" position="west" >
 
 					<p:growl id="global" autoUpdate="true" closable="true" />
 
@@ -35,21 +32,21 @@
 
 						<p:outputLabel value="Status: " />
 						<p:selectBooleanButton onLabel="Ativado" offLabel="Desativado"
-							value="#{loginBean.usuario.status}" required="true"
+							value="#{loginBean.usuarioLogado.status}" required="true"
 							requiredMessage="Verificar campo Status">
 						</p:selectBooleanButton>
 
 
 						<p:outputLabel value="Admin: " />
 						<p:selectBooleanButton onLabel="Ativado" offLabel="Desativado"
-							value="#{loginBean.usuario.admin}" required="false"
+							value="#{loginBean.usuarioLogado.admin}" required="false"
 							requiredMessage="Verificar campo Status">
 						</p:selectBooleanButton>
 
 
 						<p:outputLabel value="E-mail:" />
 						<p:inputText id="email" maxlength="40" size="22"
-							value="#{loginBean.usuario.email}" required="true"
+							value="#{loginBean.usuarioLogado.email}" required="true"
 							requiredMessage="Verificar campo E-Mail"
 							validatorMessage="Erro de validação: o e-mail não é válido ">
 							<f:validateRegex disabled="false" for="email"
@@ -60,7 +57,7 @@
 						<p:separator style="border: 1px solid #e6e6ff; height: 1px;"></p:separator>
 
 						<p:outputLabel value="Sexo: " />
-						<p:selectOneRadio id="sexo" value="#{loginBean.usuario.sexo}"
+						<p:selectOneRadio id="sexo" value="#{loginBean.usuarioLogado.sexo}"
 							required="true" requiredMessage="Verificar campo Sexo">
 							<f:selectItem itemValue="masculino" itemLabel="Masculino" />
 							<f:selectItem itemValue="feminino" itemLabel="Feminino" />
@@ -70,7 +67,7 @@
 						<p:outputLabel value="Nome  Completo: ">
 						</p:outputLabel>
 						<p:inputText id="nome" maxlength="30" size="25" label="nome"
-							value="#{loginBean.usuario.nome}" required="true"
+							value="#{loginBean.usuarioLogado.nome}" required="true"
 							requiredMessage="Verificar campo Nome"
 							validatorMessage="Erro de validação: Dígite seu nome completo">
 							<f:validateLength minimum="5" />
@@ -85,7 +82,7 @@
 
 						<p:outputLabel value="CPF: " />
 						<p:inputMask mask="999.999.999-99" id="cpf" maxlength="50"
-							size="20" value="#{loginBean.usuario.cpf}" required="true"
+							size="20" value="#{loginBean.usuarioLogado.cpf}" required="true"
 							requiredMessage="Verificar campo CPF"
 							validatorMessage="Erro de validação: o comprimento é menor do que o mínimo permitido. '11 dígitos' ">
 							<f:validateLength minimum="11" disabled="true" />
@@ -93,7 +90,7 @@
 
 						<p:outputLabel value="RG: " />
 						<p:inputText id="rg" maxlength="11" size="16"
-							value="#{loginBean.usuario.rg}" required="true"
+							value="#{loginBean.usuarioLogado.rg}" required="true"
 							requiredMessage="Verificar campo RG"
 							validatorMessage="Erro de validação: o comprimento é menor do que o mínimo permitido. '5 dígitos' ">
 							<f:validateLength minimum="5" disabled="true" />
@@ -105,7 +102,7 @@
 						<h:panelGrid columns="2">
 							<p:calendar locale="pt_BR" showButtonPanel="true" id="calendario"
 								yearRange="c-60:c+1" navigator="true" pages="1"
-								value="#{loginBean.usuario.dataNascimento}" required="true"
+								value="#{loginBean.usuarioLogado.dataNascimento}" required="true"
 								size="10" requiredMessage="Verificar campo Data de Nascimento">
 
 							</p:calendar>
@@ -122,14 +119,14 @@
 
 				<!-- Center - Endereço do usuário -->
 				<p:layoutUnit id="Center" position="center" closable="true"
-					collapsible="true" size="400" minSize="210" maxSize="500">
+					collapsible="true" >
 
 
 					<h:panelGrid columns="2" id="dialogpanel2">
 
 
 						<p:outputLabel value="Estado: " />
-						<p:selectOneMenu filter="true" value="#{usuarioBean.estado}"
+						<p:selectOneMenu filter="true" value="#{loginBean.estado}"
 							converter="omnifaces.SelectItemsConverter"
 							required="#{!loginBean.botaoEditar}"
 							requiredMessage="Informe o Estado corretamente">
@@ -166,43 +163,43 @@
 
 						<p:outputLabel value="Rua:" />
 						<p:inputText maxlength="30" size="23" label="rua"
-							value="#{loginBean.usuario.rua}" required="true">
+							value="#{loginBean.usuarioLogado.rua}" required="true">
 						</p:inputText>
 
 						<p:outputLabel value="Número: "></p:outputLabel>
 						<p:inputText maxlength="5" size="10"
-							value="#{loginBean.usuario.numero}" required="true"
+							value="#{loginBean.usuarioLogado.numero}" required="true"
 							requiredMessage="Preencha o campo Número">
 						</p:inputText>
 
 						<p:outputLabel value="Bairro:"></p:outputLabel>
 						<p:inputText maxlength="20" size="20"
-							value="#{loginBean.usuario.bairro}" required="true"
+							value="#{loginBean.usuarioLogado.bairro}" required="true"
 							requiredMessage="Preencha o campo bairro">
 						</p:inputText>
 
 						<p:outputLabel value="Complemento: " />
 						<p:inputText maxlength="20" id="complemento" size="20"
-							label="complemento" value="#{loginBean.usuario.complemento}"
+							label="complemento" value="#{loginBean.usuarioLogado.complemento}"
 							required="false" requiredMessage="Preencha o campo complemento">
 						</p:inputText>
 
 						<p:outputLabel value="CEP: " />
 						<p:inputMask size="18" mask="99999-999" id="cep"
-							value="#{loginBean.usuario.cep}" required="true"
+							value="#{loginBean.usuarioLogado.cep}" required="true"
 							requiredMessage="Preencha o campo CEP">
 						</p:inputMask>
 
 						<p:outputLabel value="Telefone: " />
 						<p:inputMask size="15" mask="(99) 9999-9999" id="tel"
-							value="#{loginBean.usuario.telefone}" required="false"
+							value="#{loginBean.usuarioLogado.telefone}" required="false"
 							requiredMessage="Preencha o campo telefone">
 							<f:validateLength minimum="8" maximum="18"></f:validateLength>
 						</p:inputMask>
 
 						<p:outputLabel value="Celular: " />
 						<p:inputMask size="15" mask="(99) 9 9999-9999" id="cel"
-							value="#{loginBean.usuario.celular}" required="false"
+							value="#{loginBean.usuarioLogado.celular}" required="false"
 							requiredMessage="Preencha o campo celular">
 							<f:validateLength minimum="10" maximum="17"></f:validateLength>
 						</p:inputMask>
@@ -222,17 +219,13 @@
 
 						<p:commandButton value="Editar"
 							actionListener="#{loginBean.editar}" validateClient="true"
-							update=":dialogform: :form: "
+							update=":dialogform: "
 							
 							oncomplete="PF('dialogo').hide();">
 						</p:commandButton>
 
 
-						<p:commandButton value="Fechar"
-							actionListener="#{loginBean.fechar}"
-							oncomplete="PF('dialogo').hide();" immediate="true" ajax="false"
-							style="margin-right:20px;">
-						</p:commandButton>
+						
 
 					</h:panelGrid>
 
