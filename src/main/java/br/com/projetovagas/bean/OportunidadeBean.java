@@ -34,6 +34,7 @@ public class OportunidadeBean implements Serializable {
 	private OportunidadeDAO dao;
 	private List<Oportunidade> listaOportunidade;
 	private String filtrarCargo = "";
+	private int totasVagas;
 
 	private Estado estado;
 	private EstadoDAO estadoDAO;
@@ -119,8 +120,11 @@ public class OportunidadeBean implements Serializable {
 
 			listaOportunidade = dao.buscarVagas(filtrarCargo, meuEstado, minhaCidade, filtrarSalario, filtrarNivel,
 					filtrarModalidade, FiltrarPcD);
+			totasVagas = listaOportunidade.size();
 			Messages.addGlobalInfo("Lista atualizada com sucesso ");
-
+			
+		
+			
 		} catch (Exception e) {
 			Messages.addGlobalError("Falha ao tentar  atualizadar a lista  ");
 		} finally {
@@ -244,6 +248,7 @@ public class OportunidadeBean implements Serializable {
 
 			listaOportunidade = dao.buscarVagas(filtrarCargo, meuEstado, minhaCidade, filtrarSalario, filtrarNivel,
 					filtrarModalidade, FiltrarPcD);
+			totasVagas = listaOportunidade.size();
 			Messages.addGlobalInfo("Lista atualizada com sucesso ");
 
 		} catch (Exception e) {
@@ -430,5 +435,15 @@ public class OportunidadeBean implements Serializable {
 	public void setFiltrarPcD(int filtrarPcD) {
 		FiltrarPcD = filtrarPcD;
 	}
+
+	public int getTotasVagas() {
+		return totasVagas;
+	}
+
+	public void setTotasVagas(int totasVagas) {
+		this.totasVagas = totasVagas;
+	}
+	
+	
 
 }
