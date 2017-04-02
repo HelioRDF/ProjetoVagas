@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+
+
+	<h:form id="formEndereco" style=" margin:0 5%;">
+	
+	
+	 <p:outputPanel deferred="true">
+        <h3> - Endereço.</h3>
+<!--         <p>Lorem ipsum dolor sit amet...</p> -->
+    </p:outputPanel>
+	
+		<p:panelGrid columns="2" id="dialogpanel2" layout="tabular"  style="width:100%; ">
+
+
+			<p:outputLabel value="Estado: " />
+			<p:selectOneMenu filter="true" value="#{loginBean.estado}"
+				converter="omnifaces.SelectItemsConverter"
+				required="#{!loginBean.botaoEditar}"
+				requiredMessage="Informe o Estado corretamente">
+
+
+				<f:selectItem noSelectionOption="true" itemDisabled="true"
+					itemLabel="#{loginBean.auxEstado}">
+				</f:selectItem>
+
+
+				<f:selectItems value="#{loginBean.listaEstado}" var="es"
+					itemValue="#{es}" itemLabel="#{es.nome} - #{es.sigla}" />
+				<p:ajax listener="#{loginBean.filtrarCidade}"
+					update=":formEndereco:cidade"></p:ajax>
+			</p:selectOneMenu>
+
+
+			<p:outputLabel value="Cidade: " />
+			<p:selectOneMenu id="cidade" filter="true"
+				value="#{loginBean.cidade}"
+				converter="omnifaces.SelectItemsConverter"
+				required="#{!loginBean.botaoEditar}"
+				requiredMessage="Informe a Cidade corretamente">
+
+				<f:selectItem noSelectionOption="true" itemDisabled="true"
+					itemLabel="#{loginBean.auxCidade}" />
+
+
+				<f:selectItems value="#{loginBean.listaCidade}" var="ci"
+					itemValue="#{ci}" itemLabel="#{ci.nome}" />
+			</p:selectOneMenu>
+
+
+
+			<p:outputLabel value="Rua:" />
+			<p:inputText maxlength="30" size="23" label="rua"
+				value="#{loginBean.usuarioLogado.rua}" required="true">
+			</p:inputText>
+
+			<p:outputLabel value="Número: "></p:outputLabel>
+			<p:inputText maxlength="5" size="10"
+				value="#{loginBean.usuarioLogado.numero}" required="true"
+				requiredMessage="Preencha o campo Número">
+			</p:inputText>
+
+			<p:outputLabel value="Bairro:"></p:outputLabel>
+			<p:inputText maxlength="20" size="20"
+				value="#{loginBean.usuarioLogado.bairro}" required="true"
+				requiredMessage="Preencha o campo bairro">
+			</p:inputText>
+
+			<p:outputLabel value="Complemento: " />
+			<p:inputText maxlength="20" id="complemento" size="20"
+				label="complemento" value="#{loginBean.usuarioLogado.complemento}"
+				required="false" requiredMessage="Preencha o campo complemento">
+			</p:inputText>
+
+			<p:outputLabel value="CEP: " />
+			<p:inputMask size="18" mask="99999-999" id="cep"
+				value="#{loginBean.usuarioLogado.cep}" required="true"
+				requiredMessage="Preencha o campo CEP">
+			</p:inputMask>
+
+			<p:outputLabel value="Telefone: " />
+			<p:inputMask size="15" mask="(99) 9999-9999" id="tel"
+				value="#{loginBean.usuarioLogado.telefone}" required="false"
+				requiredMessage="Preencha o campo telefone">
+				<f:validateLength minimum="8" maximum="18"></f:validateLength>
+			</p:inputMask>
+
+			<p:outputLabel value="Celular: " />
+			<p:inputMask size="15" mask="(99) 9 9999-9999" id="cel"
+				value="#{loginBean.usuarioLogado.celular}" required="false"
+				requiredMessage="Preencha o campo celular">
+				<f:validateLength minimum="10" maximum="17"></f:validateLength>
+			</p:inputMask>
+
+		</p:panelGrid>
+	</h:form>
+
+</ui:composition>

@@ -7,11 +7,14 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.servlet.http.HttpSession;
 
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.omnifaces.util.Faces;
 import org.omnifaces.util.Messages;
+import org.primefaces.context.RequestContext;
 
 import br.com.projetovagas.dao.localizacao.CidadeDAO;
 import br.com.projetovagas.dao.localizacao.EstadoDAO;
@@ -33,8 +36,7 @@ public class LoginBean  implements Serializable {
 
 	private Usuario usuario;
 	private static Usuario usuarioLogado;
-	private static Estado auxEstadoObj;
-	private static Cidade auxCidadeObj;
+
 	
 	
 	
@@ -105,8 +107,8 @@ public class LoginBean  implements Serializable {
 				}
 
 			}
-			auxEstadoObj = usuarioLogado.getCidade().getEstado();
-			auxCidadeObj = usuarioLogado.getCidade();
+
+			
 
 			Faces.redirect("./pages/administrativas/oportunidades.xhtml");
 		} catch (IOException e) {
@@ -125,6 +127,13 @@ public class LoginBean  implements Serializable {
 		try {
 
 			usuarioLogado = null;
+			
+			//Destroi as sessões após loggof do usuário.
+			FacesContext facesContext = FacesContext.getCurrentInstance();
+			HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(false);
+			session.invalidate();
+			
+			//Redireciona para a página de login
 			Faces.redirect("./pages/publicas/login.xhtml");
 			Messages.addGlobalInfo("Logout");
 
@@ -140,6 +149,16 @@ public class LoginBean  implements Serializable {
 
 	
 	
+	// Fechar
+	// -------------------------------------------------------------------------------------------
+	public void fechar() {
+
+		RequestContext.getCurrentInstance().reset("dialogform");
+
+
+		System.out.println("Método fechar");
+
+	}
 	
 
 	// Carregar Curriculo
@@ -548,13 +567,6 @@ public class LoginBean  implements Serializable {
 		return usuarioLogado;
 	}
 
-	public Estado getAuxEstadoObj() {
-		return auxEstadoObj;
-	}
-
-	public Cidade getAuxCidadeObj() {
-		return auxCidadeObj;
-	}
 
 	public Estado getEstado() {
 		return estado;
@@ -736,13 +748,8 @@ public class LoginBean  implements Serializable {
 		LoginBean.usuarioLogado = usuarioLogado;
 	}
 
-	public static void setAuxEstadoObj(Estado auxEstadoObj) {
-		LoginBean.auxEstadoObj = auxEstadoObj;
-	}
 
-	public static void setAuxCidadeObj(Cidade auxCidadeObj) {
-		LoginBean.auxCidadeObj = auxCidadeObj;
-	}
+	
 	
 	
 

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+
+			<!-- _________________________________________________________________________________________________________________________________ -->
+	<!-- Dialogo do Reset de senha -->
+
+	<p:dialog header="Resetar senha" widgetVar="dialogSenhaPanel"
+		modal="true" responsive="true"  appendTo="@(body)" >
+
+		<h:form id="dialogformSenha">
+
+			<p:growl id="msgdialogSenha" autoUpdate="true" closable="true" />
+
+			<h:panelGrid columns="2" id="dialogSenhaPanelGrid">
+
+
+				<p:outputLabel value="Nome: " />
+				<p:inputText readonly="true" value="#{loginBean.usuarioLogado.nome}"
+					size="25" />
+
+				<p:outputLabel value="CPF: " required="true" />
+				<p:inputText readonly="true" value="#{loginBean.usuarioLogado.cpf}"
+					size="25" />
+
+				<p:outputLabel value="E-mail:" required="true" />
+				<p:inputText readonly="true" value="#{loginBean.usuarioLogado.email}"
+					size="25" />
+
+				<p:separator style="border: 1px solid #e6e6ff; height: 1px;"></p:separator>
+				<p:separator style="border: 1px solid #e6e6ff; height: 1px;"></p:separator>
+
+				<p:outputLabel value="Digite uma Senha:" />
+				<p:password id="senha" maxlength="16" size="25" feedback="true"
+					inline="true" match="confirmar"
+					value="#{loginBean.usuarioLogado.senhaSemCriptografia}" required="true"
+					requiredMessage="Verificar campo Senha"
+					validatorMessage="Erro de validação: As senhas não conferem, ou o comprimento é menor do que o mínimo permitido. '4 dígitos' ">
+					<f:validateLength minimum="4" />
+				</p:password>
+
+				<p:outputLabel value="Confirmar senha:" required="true" />
+				<p:password id="confirmar" maxlength="16" size="25"
+					value="#{loginBean.usuarioLogado.senhaSemCriptografia}" required="true"
+					requiredMessage="Verificar campo Confirmar Senha"
+					validatorMessage="Erro de validação: o comprimento é menor do que o mínimo permitido. '4 dígitos' ">
+					<f:validateLength minimum="4" />
+				</p:password>
+
+			</h:panelGrid>
+
+			<h:panelGrid columns="2">
+
+				<p:commandButton value="Salvar"
+					actionListener="#{loginBean.editarSenha}"
+					update=":dialogformSenha:msgdialogSenha:" />
+
+
+			</h:panelGrid>
+
+		
+
+	
+	</h:form>
+	</p:dialog>
+		
+
+	
+
+
+</ui:composition>

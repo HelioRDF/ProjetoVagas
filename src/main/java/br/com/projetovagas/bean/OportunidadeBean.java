@@ -9,6 +9,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.event.ActionEvent;
+import javax.persistence.PostUpdate;
 
 import org.omnifaces.util.Messages;
 import org.primefaces.context.RequestContext;
@@ -39,12 +40,12 @@ public class OportunidadeBean implements Serializable {
 	private EstadoDAO estadoDAO;
 	private List<Estado> listaEstado;
 	private String auxEstado = " Selecione um Estado";
-	private Long filtrarEstado;
+	private Long meuEstado;
 
 	private CidadeDAO cidadeDAO;
 	private String auxCidade = "Selecione uma Cidade";
 	private List<Cidade> listaCidade;
-	private Long comboCidade;
+	private Long minhaCidade;
 
 	private EmpresaDAO empresaDAO;
 	private List<Empresa> listaEmpresas;
@@ -117,7 +118,7 @@ public class OportunidadeBean implements Serializable {
 		try {
 			dao = new OportunidadeDAO();
 
-			listaOportunidade = dao.buscarVagas(filtrarCargo, filtrarEstado, comboCidade, filtrarSalario, filtrarNivel,
+			listaOportunidade = dao.buscarVagas(filtrarCargo, meuEstado, minhaCidade, filtrarSalario, filtrarNivel,
 					filtrarModalidade, FiltrarPcD);
 			Messages.addGlobalInfo("Lista atualizada com sucesso ");
 
@@ -229,18 +230,20 @@ public class OportunidadeBean implements Serializable {
 
 		try {
 			LoginBean log = new LoginBean();
-
 			estadoDAO = new EstadoDAO();
 			listaEstado = estadoDAO.listar("nome");
 
 			CidadeDAO cidadeDAO = new CidadeDAO();
-			filtrarEstado = log.getAuxEstadoObj().getCodigo();
-			listaCidade = cidadeDAO.buscarPorEstado(filtrarEstado);
+			meuEstado = log.getUsuarioLogado().getCidade().getEstado().getCodigo();
+			listaCidade = cidadeDAO.buscarPorEstado(meuEstado);
 
-			comboCidade = log.getAuxCidadeObj().getCodigo();
+			minhaCidade = log.getUsuarioLogado().getCidade().getCodigo();
 			dao = new OportunidadeDAO();
+			
+			auxCidade = log.getUsuarioLogado().getCidade().getNome();
+			auxEstado = log.getUsuarioLogado().getCidade().getEstado().getNome();
 
-			listaOportunidade = dao.buscarVagas(filtrarCargo, filtrarEstado, comboCidade, filtrarSalario, filtrarNivel,
+			listaOportunidade = dao.buscarVagas(filtrarCargo, meuEstado, minhaCidade, filtrarSalario, filtrarNivel,
 					filtrarModalidade, FiltrarPcD);
 			Messages.addGlobalInfo("Lista atualizada com sucesso ");
 
@@ -260,7 +263,7 @@ public class OportunidadeBean implements Serializable {
 		try {
 
 			CidadeDAO cidadeDAO = new CidadeDAO();
-			listaCidade = cidadeDAO.buscarPorEstado(filtrarEstado);
+			listaCidade = cidadeDAO.buscarPorEstado(meuEstado);
 
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -379,20 +382,22 @@ public class OportunidadeBean implements Serializable {
 		this.filtrarCargo = filtrarCargo;
 	}
 
-	public Long getComboCidade() {
-		return comboCidade;
+
+
+	public Long getMeuEstado() {
+		return meuEstado;
 	}
 
-	public void setComboCidade(Long comboCidade) {
-		this.comboCidade = comboCidade;
+	public void setMeuEstado(Long meuEstado) {
+		this.meuEstado = meuEstado;
 	}
 
-	public Long getFiltrarEstado() {
-		return filtrarEstado;
+	public Long getMinhaCidade() {
+		return minhaCidade;
 	}
 
-	public void setFiltrarEstado(Long filtrarEstado) {
-		this.filtrarEstado = filtrarEstado;
+	public void setMinhaCidade(Long minhaCidade) {
+		this.minhaCidade = minhaCidade;
 	}
 
 	public int getFiltrarSalario() {

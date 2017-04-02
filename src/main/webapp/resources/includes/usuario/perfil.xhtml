@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+
+
+	<h:form id="formPerfil" style=" margin:0 5%;">
+		<p:growl id="global" autoUpdate="true" closable="true" />
+
+		<p:outputPanel deferred="true">
+			<h3>- Informações Pessoais.</h3>
+			<!--         <p>Lorem ipsum dolor sit amet...</p> -->
+		</p:outputPanel>
+
+		<p:panelGrid columns="2" id="dialogpanel" layout="tabular"
+			style="width:100%; ">
+
+
+			<p:outputLabel value="E-mail:" />
+			<p:inputText id="email" maxlength="40" size="22"
+				value="#{loginBean.usuarioLogado.email}" required="true"
+				requiredMessage="Verificar campo E-Mail"
+				validatorMessage="Erro de validação: o e-mail não é válido ">
+				<f:validateRegex disabled="false" for="email"
+					pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+			</p:inputText>
+
+
+			<p:outputLabel value="Sexo: " />
+			<p:selectOneRadio id="sexo" value="#{loginBean.usuarioLogado.sexo}"
+				required="true" requiredMessage="Verificar campo Sexo">
+				<f:selectItem itemValue="masculino" itemLabel="Masculino" />
+				<f:selectItem itemValue="feminino" itemLabel="Feminino" />
+			</p:selectOneRadio>
+
+
+			<p:outputLabel value="Nome  Completo: ">
+			</p:outputLabel>
+			<p:inputText id="nome" maxlength="30" size="25" label="nome"
+				value="#{loginBean.usuarioLogado.nome}" required="true"
+				requiredMessage="Verificar campo Nome"
+				validatorMessage="Erro de validação: Dígite seu nome completo">
+				<f:validateLength minimum="5" />
+
+
+				<f:validateRegex disabled="false" for="nome"
+					pattern="[ A-ZãÃáÁàÀâÂäÄéÉèÈêÊëËÚúíÍóÓõÕôÔöÖüÜñÑçÇa-z ]* + *[ A-ZãÃáÁàÀâÂäÄéÉèÈêÊëËÚúíÍóÓõÕôÔöÖüÜñÑçÇa-z ]*" />
+
+			</p:inputText>
+
+
+
+			<p:outputLabel value="CPF: " />
+			<p:inputMask mask="999.999.999-99" id="cpf" maxlength="50" size="20"
+				value="#{loginBean.usuarioLogado.cpf}" required="true"
+				requiredMessage="Verificar campo CPF"
+				validatorMessage="Erro de validação: o comprimento é menor do que o mínimo permitido. '11 dígitos' ">
+				<f:validateLength minimum="11" disabled="true" />
+			</p:inputMask>
+
+			<p:outputLabel value="RG: " />
+			<p:inputText id="rg" maxlength="11" size="16"
+				value="#{loginBean.usuarioLogado.rg}" required="true"
+				requiredMessage="Verificar campo RG"
+				validatorMessage="Erro de validação: o comprimento é menor do que o mínimo permitido. '5 dígitos' ">
+				<f:validateLength minimum="5" disabled="true" />
+			</p:inputText>
+
+
+			<p:outputLabel value="Data de Nasc: " />
+
+			<h:panelGrid columns="2">
+				<p:calendar locale="pt_BR" showButtonPanel="true" id="calendario"
+					yearRange="c-60:c+1" navigator="true" pages="1"
+					value="#{loginBean.usuarioLogado.dataNascimento}" required="true"
+					size="10" requiredMessage="Verificar campo Data de Nascimento">
+
+				</p:calendar>
+
+				<p:graphicImage style="float:center;"
+					value="/images/calendar (3).png" />
+			</h:panelGrid>
+				</p:panelGrid>
+				
+
+
+
+	
+		
+					<!-- Resetar Senha -->
+			<p:commandButton title="Resetar Senha" icon="ui-icon-key "
+				update=":dialogformSenha:" value="Editar Senha"
+				oncomplete="PF('dialogSenhaPanel').show();" style=" margin:10px 0;">
+				<f:attribute name="meuSelect" value="#{dataVar}" />
+			</p:commandButton>
+			
+
+		
+		
+		
+		
+
+	
+		
+		
+	</h:form>	
+		
+
+	
+
+
+</ui:composition>
