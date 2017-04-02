@@ -549,7 +549,79 @@ public class LoginBean  implements Serializable {
 	
 	
 	
-	
+	// ------------------------------------------------------------------------------------------------------------------------------------------------------
+
+		public void getinstanciaCurriculo(ActionEvent evento) {
+
+			try {
+
+				usuario = (Usuario) evento.getComponent().getAttributes().get("meuSelect");
+				Messages.addGlobalInfo("Seleção: " + usuario.getNome());
+
+				carregarCurriculo();
+
+			} catch (Exception e) {
+				Messages.addGlobalError("Erro ao Editar: " + usuario.getNome());
+				System.out.println("catch do Método Curriculo: " + usuario.getNome());
+
+			}
+
+		}
+
+		// Instancia de Formação
+		// ------------------------------------------------------------------------------------------------------------------------------------------------------
+
+		public void getinstanciaFormação(ActionEvent evento) {
+
+			try {
+				botaoFormacao = true;
+
+				formacaoAcademica = (FormacaoAcademica) evento.getComponent().getAttributes().get("meuSelect");
+				Messages.addGlobalInfo("Seleção: " + formacaoAcademica.getNomeCurso());
+
+			} catch (Exception e) {
+				Messages.addGlobalError("Erro ao Editar: " + formacaoAcademica.getNomeCurso());
+
+			}
+
+		}
+
+		// Instancia de Experiencia
+		// ------------------------------------------------------------------------------------------------------------------------------------------------------
+
+		public void getinstanciaExperiencia(ActionEvent evento) {
+
+			try {
+				botaoExperiencia = true;
+
+				experienciaProfissional = (ExperienciaProfissional) evento.getComponent().getAttributes().get("meuSelect");
+				Messages.addGlobalInfo("Seleção: " + experienciaProfissional.getCargo());
+
+			} catch (Exception e) {
+				Messages.addGlobalError("Erro ao Editar: " + experienciaProfissional.getCargo());
+
+			}
+
+		}
+
+		// Instancia de Qualificações
+		// ------------------------------------------------------------------------------------------------------------------------------------------------------
+
+		public void getinstanciaQualificacao(ActionEvent evento) {
+
+			try {
+				botaoAtividades = true;
+
+				atividadesProfissionais = (AtividadesProfissionais) evento.getComponent().getAttributes().get("meuSelect");
+				Messages.addGlobalInfo("Seleção: " + atividadesProfissionais.getNomeCurso());
+
+			} catch (Exception e) {
+				Messages.addGlobalError("Erro ao Editar: " + atividadesProfissionais.getNomeCurso());
+
+			}
+
+		}
+
 	
 	
 
