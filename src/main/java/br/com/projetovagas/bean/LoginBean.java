@@ -44,25 +44,23 @@ public class LoginBean  implements Serializable {
 	private FormacaoAcademica formacaoAcademica;
 	private ExperienciaProfissional experienciaProfissional;
 	private AtividadesProfissionais atividadesProfissionais;
-	Cidade cidade = new Cidade();
-	Cidade cidadeAux = new Cidade();
+	private Cidade cidade;
+	private List<Cidade> listaCidade;
+	private List<Estado> listaEstado;
+	private EstadoDAO estadoDao;
+	
+	private String auxCidade = "Selecione uma Cidade";
+	private String auxEstado = " Selecione um Estado";
+
 
 	private UsuarioDAO dao;
-	private CidadeDAO cidadeDao;
-	private EstadoDAO estadoDao;
 	private FormacaoAcademicaDAO daoFormacao;
 	private ExperienciaProfissionalDAO daoExperiencia;
 	private AtividadesProfissionaisDAO daoAtividades;
 
-	private List<Usuario> listaUsuario;
-	private List<Cidade> listaCidade;
-	private List<Estado> listaEstado;
 	private List<FormacaoAcademica> listaFormacao;
 	private List<ExperienciaProfissional> listaExperiencia;
 	private List<AtividadesProfissionais> listaAtividades;
-
-	private String auxCidade = "Selecione uma Cidade";
-	private String auxEstado = " Selecione um Estado";
 
 	private Boolean telaEditar = false;
 	private Boolean botaoEditar = false;
@@ -76,7 +74,9 @@ public class LoginBean  implements Serializable {
 
 	
 	
-	
+	// Login
+	// -------------------------------------------------------------------------------------------
+
 	
 
 	@PostConstruct
@@ -109,8 +109,12 @@ public class LoginBean  implements Serializable {
 			}
 
 			
-
+			
 			Faces.redirect("./pages/administrativas/oportunidades.xhtml");
+			listaEstado = estadoDao.listar("nome");
+			auxEstado = usuarioLogado.getCidade().getEstado().getNome().toString();
+			auxCidade = usuarioLogado.getCidade().getNome().toString();
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -121,7 +125,10 @@ public class LoginBean  implements Serializable {
 	
 	
 	
+	// Logoff
+	// -------------------------------------------------------------------------------------------
 
+	
 	public void sair() {
 
 		try {
@@ -308,10 +315,6 @@ public class LoginBean  implements Serializable {
 		}
 	}
 
-	
-	
-
-
 
 	// Excluir Formacao
 	// -------------------------------------------------------------------------------------------
@@ -389,7 +392,7 @@ public class LoginBean  implements Serializable {
 		 if(!permitir){
 
 			 Messages.addGlobalError("O Endereço de e-mail já existe ... ");
-			 listaUsuario = dao.listar();
+
 		
 		 return;
 		
@@ -399,12 +402,6 @@ public class LoginBean  implements Serializable {
 
 			dao = new UsuarioDAO();
 
-			if (cidade == null) {
-				cidade = cidadeAux;
-			}
-			System.out.println("\nEditar");
-			System.out.println("Cidade >>>" + cidade);
-			System.out.println("CidadeAux >>>" + cidade);
 
 			usuario.setCidade(cidade);
 			dao.editar(usuario);
@@ -417,14 +414,17 @@ public class LoginBean  implements Serializable {
 
 
 			Messages.addGlobalError("Erro ao Editar Usuário(a) '" + usuario.getNome() + "'");
-			System.out.println("Editar Erro:" + e.getMessage());
-			System.out.println("Editar Erro:" + e.getCause());
 
 		} finally {
 
 		}
 
 	}
+	
+	
+	
+
+
 
 	// Editar Objetivos
 	// -------------------------------------------------------------------------------------------
@@ -432,7 +432,7 @@ public class LoginBean  implements Serializable {
 
 		try {
 
-			listarInfos();
+			
 
 			dao = new UsuarioDAO();
 
@@ -472,82 +472,7 @@ public class LoginBean  implements Serializable {
 
 	}
 	
-	// ------------------------------------------------------------------------------------------------------------------------------------------------------
 
-	public void listarInfos() {
-
-		try {
-
-			estadoDao = new EstadoDAO();
-
-			listaEstado = estadoDao.listar("nome");
-
-		} catch (Exception e) {
-			// TODO: handle exception
-		} finally {
-
-		}
-
-	}
-
-	// Filtrar Cidade
-	// ------------------------------------------------------------------------------------------------------------------------------------------------------
-
-	public void filtrarCidade() {
-
-		try {
-
-			cidadeDao = new CidadeDAO();
-			listaCidade = cidadeDao.buscarPorEstado(estado.getCodigo());
-			auxCidade = "Selecione uma Cidade";
-
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-
-	}
-
-	// Filtrar Cidade 2, precisei replicar o método, devido a um erro na linha
-	// quando chamada dentro do getinstance, por conta do param (actionevent)
-	// ------------------------------------------------------------------------------------------------------------------------------------------------------
-
-	public void filtrarCidadeTwo() {
-
-		try {
-
-			cidadeDao = new CidadeDAO();
-			listaCidade = cidadeDao.buscarPorEstado(estado.getCodigo());
-
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-
-	}
-
-	
-
-	// Listar Estado
-	// ------------------------------------------------------------------------------------------------------------------------------------------------------
-
-	//@PostConstruct
-	public void BuscarEstados() {
-
-		try {
-
-			System.out.println("Listando estados...");
-
-			estadoDao = new EstadoDAO();
-			listaEstado = estadoDao.listar("nome");
-
-		} catch (Exception e) {
-			// TODO: handle exception
-		} finally {
-
-		}
-
-	}
-	
-	
 	
 	// ------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -623,7 +548,28 @@ public class LoginBean  implements Serializable {
 		}
 
 	
-	
+			
+		
+		// Listar de Cidade
+		// ------------------------------------------------------------------------------------------------------------------------------------------------------
+
+		public void buscarCidade() {
+
+			try {
+
+				CidadeDAO cidadeDAO = new CidadeDAO();
+				
+				listaCidade = cidadeDAO.buscarPorEstado(estado.getCodigo());
+
+			} catch (Exception e) {
+				// TODO: handle exception
+			} finally {
+
+			}
+
+		}
+		
+		
 
 	// ------------------------------------------------------------
 
@@ -680,37 +626,6 @@ public class LoginBean  implements Serializable {
 		this.cidade = cidade;
 	}
 
-	public Cidade getCidadeAux() {
-		return cidadeAux;
-	}
-
-	public void setCidadeAux(Cidade cidadeAux) {
-		this.cidadeAux = cidadeAux;
-	}
-
-	public List<Usuario> getListaUsuario() {
-		return listaUsuario;
-	}
-
-	public void setListaUsuario(List<Usuario> listaUsuario) {
-		this.listaUsuario = listaUsuario;
-	}
-
-	public List<Cidade> getListaCidade() {
-		return listaCidade;
-	}
-
-	public void setListaCidade(List<Cidade> listaCidade) {
-		this.listaCidade = listaCidade;
-	}
-
-	public List<Estado> getListaEstado() {
-		return listaEstado;
-	}
-
-	public void setListaEstado(List<Estado> listaEstado) {
-		this.listaEstado = listaEstado;
-	}
 
 	public List<FormacaoAcademica> getListaFormacao() {
 		return listaFormacao;
@@ -736,21 +651,6 @@ public class LoginBean  implements Serializable {
 		this.listaAtividades = listaAtividades;
 	}
 
-	public String getAuxCidade() {
-		return auxCidade;
-	}
-
-	public void setAuxCidade(String auxCidade) {
-		this.auxCidade = auxCidade;
-	}
-
-	public String getAuxEstado() {
-		return auxEstado;
-	}
-
-	public void setAuxEstado(String auxEstado) {
-		this.auxEstado = auxEstado;
-	}
 
 	public Boolean getTelaEditar() {
 		return telaEditar;
@@ -820,7 +720,41 @@ public class LoginBean  implements Serializable {
 		LoginBean.usuarioLogado = usuarioLogado;
 	}
 
+	public List<Cidade> getListaCidade() {
+		return listaCidade;
+	}
 
+	public void setListaCidade(List<Cidade> listaCidade) {
+		this.listaCidade = listaCidade;
+	}
+
+	public String getAuxCidade() {
+		return auxCidade;
+	}
+
+	public void setAuxCidade(String auxCidade) {
+		this.auxCidade = auxCidade;
+	}
+
+	public String getAuxEstado() {
+		return auxEstado;
+	}
+
+	public void setAuxEstado(String auxEstado) {
+		this.auxEstado = auxEstado;
+	}
+
+	public List<Estado> getListaEstado() {
+		return listaEstado;
+	}
+
+	public void setListaEstado(List<Estado> listaEstado) {
+		this.listaEstado = listaEstado;
+	}
+	
+	
+	
+	
 	
 	
 	

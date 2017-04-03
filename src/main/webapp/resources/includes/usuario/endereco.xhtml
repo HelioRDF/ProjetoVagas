@@ -17,41 +17,43 @@
     </p:outputPanel>
 	
 		<p:panelGrid columns="2" id="dialogpanel2" layout="tabular"  style="width:100%; ">
+		
+		
+			
+						<p:outputLabel value="Estado: " />
+						<p:selectOneMenu filter="true" value="#{loginBean.estado}"
+							converter="omnifaces.SelectItemsConverter"
+							requiredMessage="Informe o Estado corretamente">
 
 
-			<p:outputLabel value="Estado: " />
-			<p:selectOneMenu filter="true" value="#{loginBean.estado}"
-				converter="omnifaces.SelectItemsConverter"
-				required="#{!loginBean.botaoEditar}"
-				requiredMessage="Informe o Estado corretamente">
+							<f:selectItem noSelectionOption="true" itemDisabled="true"
+								itemLabel="#{loginBean.auxEstado}">
+							</f:selectItem>
 
 
-				<f:selectItem noSelectionOption="true" itemDisabled="true"
-					itemLabel="#{loginBean.auxEstado}">
-				</f:selectItem>
+							<f:selectItems value="#{loginBean.listaEstado}" var="es"
+								itemValue="#{es}" itemLabel="#{es.nome} - #{es.sigla}" />
+							<p:ajax listener="#{usuarioBean.filtrarCidade}"
+								update=":formEndereco:cidade"></p:ajax>
+						</p:selectOneMenu>
 
 
-				<f:selectItems value="#{loginBean.listaEstado}" var="es"
-					itemValue="#{es}" itemLabel="#{es.nome} - #{es.sigla}" />
-				<p:ajax listener="#{loginBean.filtrarCidade}"
-					update=":formEndereco:cidade"></p:ajax>
-			</p:selectOneMenu>
+						<p:outputLabel value="Cidade: " />
+						<p:selectOneMenu id="cidade" filter="true"
+							value="#{loginBean.cidade}"
+							converter="omnifaces.SelectItemsConverter"
+							
+							requiredMessage="Informe a Cidade corretamente">
+
+							<f:selectItem noSelectionOption="true" itemDisabled="true"
+								itemLabel="#{loginBean.auxCidade}" />
 
 
-			<p:outputLabel value="Cidade: " />
-			<p:selectOneMenu id="cidade" filter="true"
-				value="#{loginBean.cidade}"
-				converter="omnifaces.SelectItemsConverter"
-				required="#{!loginBean.botaoEditar}"
-				requiredMessage="Informe a Cidade corretamente">
-
-				<f:selectItem noSelectionOption="true" itemDisabled="true"
-					itemLabel="#{loginBean.auxCidade}" />
+							<f:selectItems value="#{loginBean.listaCidade}" var="ci"
+								itemValue="#{ci}" itemLabel="#{ci.nome}" />
+						</p:selectOneMenu>
 
 
-				<f:selectItems value="#{loginBean.listaCidade}" var="ci"
-					itemValue="#{ci}" itemLabel="#{ci.nome}" />
-			</p:selectOneMenu>
 
 
 
