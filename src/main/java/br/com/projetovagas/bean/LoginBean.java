@@ -43,25 +43,23 @@ public class LoginBean  implements Serializable {
 	private FormacaoAcademica formacaoAcademica;
 	private ExperienciaProfissional experienciaProfissional;
 	private AtividadesProfissionais atividadesProfissionais;
-	Cidade cidade = new Cidade();
-	Cidade cidadeAux = new Cidade();
+	private Cidade cidade;
+	private List<Cidade> listaCidade;
+	private List<Estado> listaEstado;
+	private EstadoDAO estadoDao;
+	
+	private String auxCidade = "Selecione uma Cidade";
+	private String auxEstado = " Selecione um Estado";
+
 
 	private UsuarioDAO dao;
-	private CidadeDAO cidadeDao;
-	private EstadoDAO estadoDao;
 	private FormacaoAcademicaDAO daoFormacao;
 	private ExperienciaProfissionalDAO daoExperiencia;
 	private AtividadesProfissionaisDAO daoAtividades;
 
-	private List<Usuario> listaUsuario;
-	private List<Cidade> listaCidade;
-	private List<Estado> listaEstado;
 	private List<FormacaoAcademica> listaFormacao;
 	private List<ExperienciaProfissional> listaExperiencia;
 	private List<AtividadesProfissionais> listaAtividades;
-
-	private String auxCidade = "Selecione uma Cidade";
-	private String auxEstado = " Selecione um Estado";
 
 	private Boolean telaEditar = false;
 	private Boolean botaoEditar = false;
@@ -75,9 +73,16 @@ public class LoginBean  implements Serializable {
 
 	
 	
+<<<<<<< HEAD
 	
 	// Login
 	// -------------------------------------------------------------------------------------------
+=======
+	// Login
+	// -------------------------------------------------------------------------------------------
+
+	
+>>>>>>> origin/master
 
 	@PostConstruct
 	public void iniciar() {
@@ -108,11 +113,21 @@ public class LoginBean  implements Serializable {
 
 			}
 
+<<<<<<< HEAD
 			//Usuário Ok...
 			Faces.redirect("./pages/administrativas/oportunidades.xhtml");
 			buscarEstados();
 			
 			
+=======
+			
+			
+			Faces.redirect("./pages/administrativas/oportunidades.xhtml");
+			listaEstado = estadoDao.listar("nome");
+			auxEstado = usuarioLogado.getCidade().getEstado().getNome().toString();
+			auxCidade = usuarioLogado.getCidade().getNome().toString();
+
+>>>>>>> origin/master
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -120,11 +135,20 @@ public class LoginBean  implements Serializable {
 		}
 
 	}
+<<<<<<< HEAD
 		
 	// Logoff
 	// -------------------------------------------------------------------------------------------
 
+=======
+	
+	
+	
+	// Logoff
+	// -------------------------------------------------------------------------------------------
+>>>>>>> origin/master
 
+	
 	public void sair() {
 
 		try {
@@ -162,6 +186,223 @@ public class LoginBean  implements Serializable {
 	}
 	
 
+<<<<<<< HEAD
+=======
+	// Carregar Curriculo
+	// -------------------------------------------------------------------------------------------
+	public void carregarCurriculo() {
+
+		// Atividades Profissionais
+		// ----------------------------------------------------------
+
+		try {
+
+			atividadesProfissionais = new AtividadesProfissionais();
+			daoAtividades = new AtividadesProfissionaisDAO();
+			listaAtividades = daoAtividades.buscarPorUsuario(usuario.getCodigo());
+
+			if (listaAtividades.size() < 10) {
+				botaoAtividades = true;
+
+			} else {
+				botaoAtividades = false;
+				Messages.addGlobalWarn("Numéro maximo de Qualificações atingido. (max = 10)");
+
+			}
+
+		} catch (Exception e) {
+			Messages.addGlobalError("Falha ao tentar  atualizadar a lista  ");
+		}
+
+		// Fim Atividades Profissionais
+		// ----------------------------------------------------------
+
+		// Experiência
+		// ----------------------------------------------------------
+		try {
+
+			experienciaProfissional = new ExperienciaProfissional();
+			daoExperiencia = new ExperienciaProfissionalDAO();
+			listaExperiencia = daoExperiencia.buscarPorUsuario(usuario.getCodigo());
+
+			if (listaExperiencia.size() < 4) {
+				botaoExperiencia = true;
+
+			} else {
+				botaoExperiencia = false;
+				Messages.addGlobalWarn("Numéro maximo de Experiência atingido. (max = 4)");
+
+			}
+
+		} catch (Exception e) {
+			Messages.addGlobalError("Falha ao tentar  atualizadar a lista  ");
+		}
+		// Fim Experiência
+		// ----------------------------------------------------------
+
+		// Formação Academica
+		// ----------------------------------------------------------
+		try {
+			formacaoAcademica = new FormacaoAcademica();
+			daoFormacao = new FormacaoAcademicaDAO();
+			listaFormacao = daoFormacao.buscarPorUsuario(usuario.getCodigo());
+
+			if (listaFormacao.size() < 7) {
+				botaoFormacao = true;
+
+			} else {
+				botaoFormacao = false;
+				Messages.addGlobalWarn("Numéro maximo de Formações atingido. (max = 7)");
+
+			}
+
+		} catch (Exception e) {
+			Messages.addGlobalError("Falha ao tentar  atualizadar a lista  ");
+		}
+
+		// Fim Formação Academica
+		// ----------------------------------------------------------
+
+	}
+	
+	
+	
+	// Salvar formação
+	// -------------------------------------------------------------------------------------
+	public void salvarFormacao() {
+
+		try {
+			if (botaoFormacao = true) {
+
+				if (statusBoolean.equals(true)) {
+					formacaoAcademica.setStatus("Concluído");
+				} else {
+					formacaoAcademica.setStatus("Incompleto");
+				}
+
+				formacaoAcademica.setUsuario(usuario);
+				daoFormacao.merge(formacaoAcademica);
+
+				Messages.addGlobalInfo("Formação  salva com sucesso: " + formacaoAcademica.getNomeCurso());
+				carregarCurriculo();
+			}
+
+		} catch (Exception e) {
+			Messages.addGlobalError("Não foi possível salvar a formação, Preencha os campos corretamente. ");
+
+		} finally {
+
+		}
+	}
+
+	// Salvar Experiência
+	// -------------------------------------------------------------------------------------
+	public void salvarExperiencia() {
+
+		try {
+			if (botaoExperiencia = true) {
+				experienciaProfissional.setUsuario(usuario);
+				daoExperiencia.merge(experienciaProfissional);
+				Messages.addGlobalInfo("Experiencia  salva com sucesso: " + experienciaProfissional.getCargo());
+				carregarCurriculo();
+			}
+
+		} catch (Exception e) {
+			Messages.addGlobalError("Não foi possível salvar a formação, Preencha os campos corretamente. ");
+
+		} finally {
+
+		}
+	}
+
+	// Salvar Atividades
+	// -------------------------------------------------------------------------------------
+	public void salvarAtividades() {
+
+		try {
+			if (botaoAtividades = true) {
+				atividadesProfissionais.setUsuario(usuario);
+				daoAtividades.merge(atividadesProfissionais);
+				Messages.addGlobalInfo("Qualificação  salva com sucesso: " + atividadesProfissionais.getNomeCurso());
+				carregarCurriculo();
+			}
+
+		} catch (Exception e) {
+			Messages.addGlobalError("Não foi possível salvar a Qualificação, Preencha os campos corretamente. ");
+
+		} finally {
+
+		}
+	}
+
+
+	// Excluir Formacao
+	// -------------------------------------------------------------------------------------------
+	public void excluirFormacao(ActionEvent evento) {
+
+		try {
+
+			formacaoAcademica = (FormacaoAcademica) evento.getComponent().getAttributes().get("meuSelect");
+
+			FormacaoAcademicaDAO dao = new FormacaoAcademicaDAO();
+			Messages.addGlobalInfo("Formação removida com sucesso: " + formacaoAcademica.getNomeCurso());
+			dao.excluir(formacaoAcademica);
+			carregarCurriculo();
+
+		} catch (Exception e) {
+			Messages.addGlobalError("Erro ao Remover: " + formacaoAcademica.getNomeCurso());
+
+		} finally {
+
+		}
+
+	}
+
+	// Excluir Experiência
+	// -------------------------------------------------------------------------------------------
+	public void excluirExperiencia(ActionEvent evento) {
+
+		try {
+
+			experienciaProfissional = (ExperienciaProfissional) evento.getComponent().getAttributes().get("meuSelect");
+
+			ExperienciaProfissionalDAO dao = new ExperienciaProfissionalDAO();
+			Messages.addGlobalInfo("Experiência removida com sucesso: " + experienciaProfissional.getCargo());
+			dao.excluir(experienciaProfissional);
+			carregarCurriculo();
+
+		} catch (Exception e) {
+			Messages.addGlobalError("Erro ao Remover: " + experienciaProfissional.getCargo());
+
+		} finally {
+
+		}
+
+	}
+
+	// Excluir Qualificação
+	// -------------------------------------------------------------------------------------------
+	public void excluirQualificacao(ActionEvent evento) {
+
+		try {
+
+			atividadesProfissionais = (AtividadesProfissionais) evento.getComponent().getAttributes().get("meuSelect");
+
+			AtividadesProfissionaisDAO dao = new AtividadesProfissionaisDAO();
+			Messages.addGlobalInfo("Qualificação removida com sucesso: " + atividadesProfissionais.getNomeCurso());
+			dao.excluir(atividadesProfissionais);
+			carregarCurriculo();
+
+		} catch (Exception e) {
+			Messages.addGlobalError("Erro ao Remover: " + atividadesProfissionais.getNomeCurso());
+
+		} finally {
+
+		}
+
+	}
+
+>>>>>>> origin/master
 	// Editar usuário
 	// -------------------------------------------------------------------------------------------
 	public void editar() {
@@ -172,7 +413,7 @@ public class LoginBean  implements Serializable {
 		 if(!permitir){
 
 			 Messages.addGlobalError("O Endereço de e-mail já existe ... ");
-			 listaUsuario = dao.listar();
+
 		
 		 return;
 		
@@ -182,12 +423,6 @@ public class LoginBean  implements Serializable {
 
 			dao = new UsuarioDAO();
 
-			if (cidade == null) {
-				cidade = cidadeAux;
-			}
-			System.out.println("\nEditar");
-			System.out.println("Cidade >>>" + cidade);
-			System.out.println("CidadeAux >>>" + cidade);
 
 			usuario.setCidade(cidade);
 			dao.editar(usuario);
@@ -200,8 +435,38 @@ public class LoginBean  implements Serializable {
 
 
 			Messages.addGlobalError("Erro ao Editar Usuário(a) '" + usuario.getNome() + "'");
+
+		} finally {
+
+		}
+
+	}
+	
+	
+	
+
+
+
+<<<<<<< HEAD
+	
+=======
+	// Editar Objetivos
+	// -------------------------------------------------------------------------------------------
+	public void editarObjetivos() {
+
+		try {
+
+			
+
+			dao = new UsuarioDAO();
+
+			dao.merge(usuario);
+
+			Messages.addGlobalInfo("Usuário(a) ' " + usuario.getNome() + "' Editado com sucesso!!!");
+
+		} catch (Exception e) {
+			Messages.addGlobalError("Erro ao Editar Usuário(a) '" + usuario.getNome() + "'");
 			System.out.println("Editar Erro:" + e.getMessage());
-			System.out.println("Editar Erro:" + e.getCause());
 
 		} finally {
 
@@ -209,7 +474,7 @@ public class LoginBean  implements Serializable {
 
 	}
 
-	
+>>>>>>> origin/master
 	// Salvar Senha
 	// -------------------------------------------------------------------------------------------
 	public void editarSenha() {
@@ -233,6 +498,7 @@ public class LoginBean  implements Serializable {
 	}
 	
 
+<<<<<<< HEAD
 
 	// Listar Estado
 	// ------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -256,6 +522,8 @@ public class LoginBean  implements Serializable {
 	}
 	
 	
+=======
+>>>>>>> origin/master
 	
 	// Listar Cidade
 	// ------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -274,8 +542,34 @@ public class LoginBean  implements Serializable {
 
 		}
 
+<<<<<<< HEAD
 	}
 	
+=======
+	
+			
+		
+		// Listar de Cidade
+		// ------------------------------------------------------------------------------------------------------------------------------------------------------
+
+		public void buscarCidade() {
+
+			try {
+
+				CidadeDAO cidadeDAO = new CidadeDAO();
+				
+				listaCidade = cidadeDAO.buscarPorEstado(estado.getCodigo());
+
+			} catch (Exception e) {
+				// TODO: handle exception
+			} finally {
+
+			}
+
+		}
+		
+		
+>>>>>>> origin/master
 
 	// ------------------------------------------------------------
 
@@ -332,37 +626,6 @@ public class LoginBean  implements Serializable {
 		this.cidade = cidade;
 	}
 
-	public Cidade getCidadeAux() {
-		return cidadeAux;
-	}
-
-	public void setCidadeAux(Cidade cidadeAux) {
-		this.cidadeAux = cidadeAux;
-	}
-
-	public List<Usuario> getListaUsuario() {
-		return listaUsuario;
-	}
-
-	public void setListaUsuario(List<Usuario> listaUsuario) {
-		this.listaUsuario = listaUsuario;
-	}
-
-	public List<Cidade> getListaCidade() {
-		return listaCidade;
-	}
-
-	public void setListaCidade(List<Cidade> listaCidade) {
-		this.listaCidade = listaCidade;
-	}
-
-	public List<Estado> getListaEstado() {
-		return listaEstado;
-	}
-
-	public void setListaEstado(List<Estado> listaEstado) {
-		this.listaEstado = listaEstado;
-	}
 
 	public List<FormacaoAcademica> getListaFormacao() {
 		return listaFormacao;
@@ -388,21 +651,6 @@ public class LoginBean  implements Serializable {
 		this.listaAtividades = listaAtividades;
 	}
 
-	public String getAuxCidade() {
-		return auxCidade;
-	}
-
-	public void setAuxCidade(String auxCidade) {
-		this.auxCidade = auxCidade;
-	}
-
-	public String getAuxEstado() {
-		return auxEstado;
-	}
-
-	public void setAuxEstado(String auxEstado) {
-		this.auxEstado = auxEstado;
-	}
 
 	public Boolean getTelaEditar() {
 		return telaEditar;
@@ -472,7 +720,41 @@ public class LoginBean  implements Serializable {
 		LoginBean.usuarioLogado = usuarioLogado;
 	}
 
+	public List<Cidade> getListaCidade() {
+		return listaCidade;
+	}
 
+	public void setListaCidade(List<Cidade> listaCidade) {
+		this.listaCidade = listaCidade;
+	}
+
+	public String getAuxCidade() {
+		return auxCidade;
+	}
+
+	public void setAuxCidade(String auxCidade) {
+		this.auxCidade = auxCidade;
+	}
+
+	public String getAuxEstado() {
+		return auxEstado;
+	}
+
+	public void setAuxEstado(String auxEstado) {
+		this.auxEstado = auxEstado;
+	}
+
+	public List<Estado> getListaEstado() {
+		return listaEstado;
+	}
+
+	public void setListaEstado(List<Estado> listaEstado) {
+		this.listaEstado = listaEstado;
+	}
+	
+	
+	
+	
 	
 	
 	

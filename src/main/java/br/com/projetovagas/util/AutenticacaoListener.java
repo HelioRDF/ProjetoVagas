@@ -48,10 +48,16 @@ public class AutenticacaoListener implements PhaseListener {
 
 
 
+<<<<<<< HEAD
 		System.out.println("\nAfterPhase:" + event.getPhaseId());
 		//System.out.println("LoginBean:" + loginBean);
 		System.out.println("Página Atual:" + paginaAtual);
 		//System.out.println("Admin:"+usuario.getAdmin());
+=======
+		System.out.print("\nAfterPhase:" + event.getPhaseId());
+		System.out.println("\tPágina Atual:" + paginaAtual);
+	
+>>>>>>> origin/master
 		
 		long tempoAfter = System.currentTimeMillis(); //Captura o tempo final da execução da Classe
 		System.out.printf("\n Tempo de execução: %.3f ms%n", (tempoAfter - tempoInicial) / 1000d); //Imprime o tempo de execução da classe em Ms.
