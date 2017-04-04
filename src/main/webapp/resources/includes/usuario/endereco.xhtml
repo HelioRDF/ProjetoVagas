@@ -9,74 +9,52 @@
 
 
 	<h:form id="formEndereco" style=" margin:0 5%;">
-	
-	
-	 <p:outputPanel deferred="true">
-        <h3> - Endereço.</h3>
-<!--         <p>Lorem ipsum dolor sit amet...</p> -->
-    </p:outputPanel>
-	
-		<p:panelGrid columns="2" id="dialogpanel2" layout="tabular"  style="width:100%; ">
-		
-		
-			
-						<p:outputLabel value="Estado: " />
-						<p:selectOneMenu filter="true" value="#{loginBean.estado}"
-							converter="omnifaces.SelectItemsConverter"
-							requiredMessage="Informe o Estado corretamente">
 
 
-<<<<<<< HEAD
+		<p:outputPanel deferred="true">
+			<h3>- Endereço.</h3>
+			<!--         <p>Lorem ipsum dolor sit amet...</p> -->
+		</p:outputPanel>
+
+		<p:panelGrid columns="2" id="dialogpanel2" layout="tabular"
+			style="width:100%; ">
+
+
+
+
+
 			<p:outputLabel value="Estado: " />
-			<p:selectOneMenu filter="true" value="#{loginBean.estado}" autoWidth="false" effect="explode" style="width:230px"
+			<p:selectOneMenu filter="true" value="#{loginBean.estado}"
+				autoWidth="false" effect="explode" style="width:230px"
 				converter="omnifaces.SelectItemsConverter"
 				required="#{!loginBean.botaoEditar}"
 				requiredMessage="Informe o Estado corretamente">
-=======
-							<f:selectItem noSelectionOption="true" itemDisabled="true"
-								itemLabel="#{loginBean.auxEstado}">
-							</f:selectItem>
->>>>>>> origin/master
 
+				<f:selectItem noSelectionOption="true" itemDisabled="true"
+					itemLabel="#{loginBean.auxEstado}">
+				</f:selectItem>
 
-							<f:selectItems value="#{loginBean.listaEstado}" var="es"
-								itemValue="#{es}" itemLabel="#{es.nome} - #{es.sigla}" />
-							<p:ajax listener="#{usuarioBean.filtrarCidade}"
-								update=":formEndereco:cidade"></p:ajax>
-						</p:selectOneMenu>
-
-
-<<<<<<< HEAD
 				<f:selectItems value="#{loginBean.listaEstado}" var="es"
 					itemValue="#{es}" itemLabel="#{es.nome} - #{es.sigla}" />
 				<p:ajax listener="#{loginBean.buscarCidade}"
 					update=":formEndereco:cidade"></p:ajax>
 			</p:selectOneMenu>
-=======
-						<p:outputLabel value="Cidade: " />
-						<p:selectOneMenu id="cidade" filter="true"
-							value="#{loginBean.cidade}"
-							converter="omnifaces.SelectItemsConverter"
-							
-							requiredMessage="Informe a Cidade corretamente">
->>>>>>> origin/master
 
-							<f:selectItem noSelectionOption="true" itemDisabled="true"
-								itemLabel="#{loginBean.auxCidade}" />
 
-<<<<<<< HEAD
+
 			<p:outputLabel value="Cidade: " />
-			<p:selectOneMenu id="cidade" filter="true" autoWidth="false" effect="drop" style="width:230px"
-				value="#{loginBean.cidade}"
+			<p:selectOneMenu id="cidade" filter="true" autoWidth="false"
+				effect="drop" style="width:230px" value="#{loginBean.cidade}"
 				converter="omnifaces.SelectItemsConverter"
 				required="#{!loginBean.botaoEditar}"
 				requiredMessage="Informe a Cidade corretamente">
-=======
->>>>>>> origin/master
+				
+				<f:selectItem noSelectionOption="true" itemDisabled="true"
+								itemLabel="#{loginBean.auxCidade}" />
 
-							<f:selectItems value="#{loginBean.listaCidade}" var="ci"
-								itemValue="#{ci}" itemLabel="#{ci.nome}" />
-						</p:selectOneMenu>
+				<f:selectItems value="#{loginBean.listaCidade}" var="ci"
+					itemValue="#{ci}" itemLabel="#{ci.nome}" />
+			</p:selectOneMenu>
 
 
 
