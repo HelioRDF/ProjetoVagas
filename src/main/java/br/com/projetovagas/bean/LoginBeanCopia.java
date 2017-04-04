@@ -8,6 +8,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.servlet.http.HttpSession;
 
 import org.apache.shiro.crypto.hash.SimpleHash;
@@ -31,7 +32,7 @@ import br.com.projetovagas.domain.usuarios.Usuario;
 @SuppressWarnings("serial")
 @ManagedBean
 @SessionScoped
-public class LoginBean  implements Serializable {
+public class LoginBeanCopia  implements Serializable {
 
 	private Usuario usuario;
 	private static Usuario usuarioLogado;
@@ -76,8 +77,7 @@ public class LoginBean  implements Serializable {
 	
 	
 	
-	// Login
-	// -------------------------------------------------------------------------------------------
+	
 
 	@PostConstruct
 	public void iniciar() {
@@ -108,11 +108,8 @@ public class LoginBean  implements Serializable {
 
 			}
 
-			//Usuário Ok...
+			
 			Faces.redirect("./pages/administrativas/oportunidades.xhtml");
-			buscarEstados();
-			
-			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -121,9 +118,6 @@ public class LoginBean  implements Serializable {
 
 	}
 		
-	// Logoff
-	// -------------------------------------------------------------------------------------------
-
 
 	public void sair() {
 
@@ -161,6 +155,224 @@ public class LoginBean  implements Serializable {
 
 	}
 	
+
+	// Carregar Curriculo
+	// -------------------------------------------------------------------------------------------
+	public void carregarCurriculo() {
+
+		// Atividades Profissionais
+		// ----------------------------------------------------------
+
+		try {
+
+			atividadesProfissionais = new AtividadesProfissionais();
+			daoAtividades = new AtividadesProfissionaisDAO();
+			listaAtividades = daoAtividades.buscarPorUsuario(usuario.getCodigo());
+
+			if (listaAtividades.size() < 10) {
+				botaoAtividades = true;
+
+			} else {
+				botaoAtividades = false;
+				Messages.addGlobalWarn("Numéro maximo de Qualificações atingido. (max = 10)");
+
+			}
+
+		} catch (Exception e) {
+			Messages.addGlobalError("Falha ao tentar  atualizadar a lista  ");
+		}
+
+		// Fim Atividades Profissionais
+		// ----------------------------------------------------------
+
+		// Experiência
+		// ----------------------------------------------------------
+		try {
+
+			experienciaProfissional = new ExperienciaProfissional();
+			daoExperiencia = new ExperienciaProfissionalDAO();
+			listaExperiencia = daoExperiencia.buscarPorUsuario(usuario.getCodigo());
+
+			if (listaExperiencia.size() < 4) {
+				botaoExperiencia = true;
+
+			} else {
+				botaoExperiencia = false;
+				Messages.addGlobalWarn("Numéro maximo de Experiência atingido. (max = 4)");
+
+			}
+
+		} catch (Exception e) {
+			Messages.addGlobalError("Falha ao tentar  atualizadar a lista  ");
+		}
+		// Fim Experiência
+		// ----------------------------------------------------------
+
+		// Formação Academica
+		// ----------------------------------------------------------
+		try {
+			formacaoAcademica = new FormacaoAcademica();
+			daoFormacao = new FormacaoAcademicaDAO();
+			listaFormacao = daoFormacao.buscarPorUsuario(usuario.getCodigo());
+
+			if (listaFormacao.size() < 7) {
+				botaoFormacao = true;
+
+			} else {
+				botaoFormacao = false;
+				Messages.addGlobalWarn("Numéro maximo de Formações atingido. (max = 7)");
+
+			}
+
+		} catch (Exception e) {
+			Messages.addGlobalError("Falha ao tentar  atualizadar a lista  ");
+		}
+
+		// Fim Formação Academica
+		// ----------------------------------------------------------
+
+	}
+	
+	
+	
+	// Salvar formação
+	// -------------------------------------------------------------------------------------
+	public void salvarFormacao() {
+
+		try {
+			if (botaoFormacao = true) {
+
+				if (statusBoolean.equals(true)) {
+					formacaoAcademica.setStatus("Concluído");
+				} else {
+					formacaoAcademica.setStatus("Incompleto");
+				}
+
+				formacaoAcademica.setUsuario(usuario);
+				daoFormacao.merge(formacaoAcademica);
+
+				Messages.addGlobalInfo("Formação  salva com sucesso: " + formacaoAcademica.getNomeCurso());
+				carregarCurriculo();
+			}
+
+		} catch (Exception e) {
+			Messages.addGlobalError("Não foi possível salvar a formação, Preencha os campos corretamente. ");
+
+		} finally {
+
+		}
+	}
+
+	// Salvar Experiência
+	// -------------------------------------------------------------------------------------
+	public void salvarExperiencia() {
+
+		try {
+			if (botaoExperiencia = true) {
+				experienciaProfissional.setUsuario(usuario);
+				daoExperiencia.merge(experienciaProfissional);
+				Messages.addGlobalInfo("Experiencia  salva com sucesso: " + experienciaProfissional.getCargo());
+				carregarCurriculo();
+			}
+
+		} catch (Exception e) {
+			Messages.addGlobalError("Não foi possível salvar a formação, Preencha os campos corretamente. ");
+
+		} finally {
+
+		}
+	}
+
+	// Salvar Atividades
+	// -------------------------------------------------------------------------------------
+	public void salvarAtividades() {
+
+		try {
+			if (botaoAtividades = true) {
+				atividadesProfissionais.setUsuario(usuario);
+				daoAtividades.merge(atividadesProfissionais);
+				Messages.addGlobalInfo("Qualificação  salva com sucesso: " + atividadesProfissionais.getNomeCurso());
+				carregarCurriculo();
+			}
+
+		} catch (Exception e) {
+			Messages.addGlobalError("Não foi possível salvar a Qualificação, Preencha os campos corretamente. ");
+
+		} finally {
+
+		}
+	}
+
+	
+	
+
+
+
+	// Excluir Formacao
+	// -------------------------------------------------------------------------------------------
+	public void excluirFormacao(ActionEvent evento) {
+
+		try {
+
+			formacaoAcademica = (FormacaoAcademica) evento.getComponent().getAttributes().get("meuSelect");
+
+			FormacaoAcademicaDAO dao = new FormacaoAcademicaDAO();
+			Messages.addGlobalInfo("Formação removida com sucesso: " + formacaoAcademica.getNomeCurso());
+			dao.excluir(formacaoAcademica);
+			carregarCurriculo();
+
+		} catch (Exception e) {
+			Messages.addGlobalError("Erro ao Remover: " + formacaoAcademica.getNomeCurso());
+
+		} finally {
+
+		}
+
+	}
+
+	// Excluir Experiência
+	// -------------------------------------------------------------------------------------------
+	public void excluirExperiencia(ActionEvent evento) {
+
+		try {
+
+			experienciaProfissional = (ExperienciaProfissional) evento.getComponent().getAttributes().get("meuSelect");
+
+			ExperienciaProfissionalDAO dao = new ExperienciaProfissionalDAO();
+			Messages.addGlobalInfo("Experiência removida com sucesso: " + experienciaProfissional.getCargo());
+			dao.excluir(experienciaProfissional);
+			carregarCurriculo();
+
+		} catch (Exception e) {
+			Messages.addGlobalError("Erro ao Remover: " + experienciaProfissional.getCargo());
+
+		} finally {
+
+		}
+
+	}
+
+	// Excluir Qualificação
+	// -------------------------------------------------------------------------------------------
+	public void excluirQualificacao(ActionEvent evento) {
+
+		try {
+
+			atividadesProfissionais = (AtividadesProfissionais) evento.getComponent().getAttributes().get("meuSelect");
+
+			AtividadesProfissionaisDAO dao = new AtividadesProfissionaisDAO();
+			Messages.addGlobalInfo("Qualificação removida com sucesso: " + atividadesProfissionais.getNomeCurso());
+			dao.excluir(atividadesProfissionais);
+			carregarCurriculo();
+
+		} catch (Exception e) {
+			Messages.addGlobalError("Erro ao Remover: " + atividadesProfissionais.getNomeCurso());
+
+		} finally {
+
+		}
+
+	}
 
 	// Editar usuário
 	// -------------------------------------------------------------------------------------------
@@ -233,16 +445,50 @@ public class LoginBean  implements Serializable {
 	}
 	
 
+	// Filtrar Cidade
+	// ------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	public void filtrarCidade() {
+
+		try {
+
+			cidadeDao = new CidadeDAO();
+			listaCidade = cidadeDao.buscarPorEstado(estado.getCodigo());
+			auxCidade = "Selecione uma Cidade";
+
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+
+	}
+
+	// Filtrar Cidade 2, precisei replicar o método, devido a um erro na linha
+	// quando chamada dentro do getinstance, por conta do param (actionevent)
+	// ------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	public void filtrarCidadeTwo() {
+
+		try {
+
+			cidadeDao = new CidadeDAO();
+			listaCidade = cidadeDao.buscarPorEstado(estado.getCodigo());
+
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+
+	}
+
+	
 
 	// Listar Estado
 	// ------------------------------------------------------------------------------------------------------------------------------------------------------
 
-	public void buscarEstados() {
+	public void BuscarEstados() {
 
-		try {		
+		try {
+
 			
-			auxEstado = usuarioLogado.getCidade().getEstado().getNome().toString().toUpperCase();
-			auxCidade = usuarioLogado.getCidade().getNome().toString().toUpperCase();
 
 			estadoDao = new EstadoDAO();
 			listaEstado = estadoDao.listar("nome");
@@ -257,24 +503,80 @@ public class LoginBean  implements Serializable {
 	
 	
 	
-	// Listar Cidade
 	// ------------------------------------------------------------------------------------------------------------------------------------------------------
 
-	public void buscarCidade() {
+		public void getinstanciaCurriculo(ActionEvent evento) {
 
-		try {		
+			try {
 
+				usuario = (Usuario) evento.getComponent().getAttributes().get("meuSelect");
+				Messages.addGlobalInfo("Seleção: " + usuario.getNome());
 
-			cidadeDao =  new CidadeDAO();
-			listaCidade = cidadeDao.buscarPorEstado(estado.getCodigo()) ;
+				carregarCurriculo();
 
-		} catch (Exception e) {
-			// TODO: handle exception
-		} finally {
+			} catch (Exception e) {
+				Messages.addGlobalError("Erro ao Editar: " + usuario.getNome());
+				System.out.println("catch do Método Curriculo: " + usuario.getNome());
+
+			}
 
 		}
 
-	}
+		// Instancia de Formação
+		// ------------------------------------------------------------------------------------------------------------------------------------------------------
+
+		public void getinstanciaFormação(ActionEvent evento) {
+
+			try {
+				botaoFormacao = true;
+
+				formacaoAcademica = (FormacaoAcademica) evento.getComponent().getAttributes().get("meuSelect");
+				Messages.addGlobalInfo("Seleção: " + formacaoAcademica.getNomeCurso());
+
+			} catch (Exception e) {
+				Messages.addGlobalError("Erro ao Editar: " + formacaoAcademica.getNomeCurso());
+
+			}
+
+		}
+
+		// Instancia de Experiencia
+		// ------------------------------------------------------------------------------------------------------------------------------------------------------
+
+		public void getinstanciaExperiencia(ActionEvent evento) {
+
+			try {
+				botaoExperiencia = true;
+
+				experienciaProfissional = (ExperienciaProfissional) evento.getComponent().getAttributes().get("meuSelect");
+				Messages.addGlobalInfo("Seleção: " + experienciaProfissional.getCargo());
+
+			} catch (Exception e) {
+				Messages.addGlobalError("Erro ao Editar: " + experienciaProfissional.getCargo());
+
+			}
+
+		}
+
+		// Instancia de Qualificações
+		// ------------------------------------------------------------------------------------------------------------------------------------------------------
+
+		public void getinstanciaQualificacao(ActionEvent evento) {
+
+			try {
+				botaoAtividades = true;
+
+				atividadesProfissionais = (AtividadesProfissionais) evento.getComponent().getAttributes().get("meuSelect");
+				Messages.addGlobalInfo("Seleção: " + atividadesProfissionais.getNomeCurso());
+
+			} catch (Exception e) {
+				Messages.addGlobalError("Erro ao Editar: " + atividadesProfissionais.getNomeCurso());
+
+			}
+
+		}
+
+	
 	
 
 	// ------------------------------------------------------------
@@ -469,7 +771,7 @@ public class LoginBean  implements Serializable {
 	}
 
 	public static void setUsuarioLogado(Usuario usuarioLogado) {
-		LoginBean.usuarioLogado = usuarioLogado;
+		LoginBeanCopia.usuarioLogado = usuarioLogado;
 	}
 
 
