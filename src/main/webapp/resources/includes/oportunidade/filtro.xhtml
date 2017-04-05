@@ -23,7 +23,13 @@
 			iconPos="left" action="#{oportunidadeBean.carregarFiltrando}"
 			update=":form: :formFiltro:"
 			style=" border-radius: 7px; background-color:CadetBlue; border-color: #C2C1D4;
-					 font-size: 16px; word-spacing:8px; text-align:left; height:38px; margin: 5px 10px 0px 5px; width:95%; " />
+					 font-size: 16px; word-spacing:8px; text-align:left; height:38px; margin: 5px 10px 0px 5px; width:95%; " >
+					 
+					 
+					 
+					 
+					 
+					 </p:commandButton>
 
 
 
@@ -44,8 +50,8 @@
 				<p:menuitem>
 
 
-					<p:selectOneMenu style="margin:0px 0px 10px 0px" filter="true"
-						id="EstadoFiltro" value="#{oportunidadeBean.meuEstado}"
+					<p:selectOneMenu style="margin:0px 0px 10px 0px;  width:190px" filter="true" 
+						id="EstadoFiltro" value="#{oportunidadeBean.meuEstado}" autoWidth="false"
 						required="false" requiredMessage="Selecione um Estado!"
 						converter="omnifaces.SelectItemsConverter">
 
@@ -65,9 +71,9 @@
 
 
 
-					<p:selectOneMenu filter="true" id="cidadeFiltro"
+					<p:selectOneMenu filter="true" id="cidadeFiltro" style="width:190px;"
 						value="#{oportunidadeBean.minhaCidade}" required="false"
-						requiredMessage="Selecione uma Cidade!"
+						requiredMessage="Selecione uma Cidade!" autoWidth="false"
 						converter="omnifaces.SelectItemsConverter">
 
 						<f:selectItem itemLabel="#{oportunidadeBean.auxCidade}"

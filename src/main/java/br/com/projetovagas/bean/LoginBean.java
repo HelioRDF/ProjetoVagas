@@ -31,14 +31,11 @@ import br.com.projetovagas.domain.usuarios.Usuario;
 @SuppressWarnings("serial")
 @ManagedBean
 @SessionScoped
-public class LoginBean  implements Serializable {
+public class LoginBean implements Serializable {
 
 	private Usuario usuario;
 	private static Usuario usuarioLogado;
 
-	
-	
-	
 	private Estado estado;
 	private FormacaoAcademica formacaoAcademica;
 	private ExperienciaProfissional experienciaProfissional;
@@ -72,10 +69,6 @@ public class LoginBean  implements Serializable {
 	private Boolean botaoExperiencia = false;
 	private Boolean botaoInfo;
 
-
-	
-	
-	
 	// Login
 	// -------------------------------------------------------------------------------------------
 
@@ -108,11 +101,10 @@ public class LoginBean  implements Serializable {
 
 			}
 
-			//Usuário Ok...
+			// Usuário Ok...
 			Faces.redirect("./pages/administrativas/oportunidades.xhtml");
 			buscarEstados();
-			
-			
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -120,23 +112,22 @@ public class LoginBean  implements Serializable {
 		}
 
 	}
-		
+
 	// Logoff
 	// -------------------------------------------------------------------------------------------
-
 
 	public void sair() {
 
 		try {
 
 			usuarioLogado = null;
-			
-			//Destroi as sessões após loggof do usuário.
+
+			// Destroi as sessões após loggof do usuário.
 			FacesContext facesContext = FacesContext.getCurrentInstance();
 			HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(false);
 			session.invalidate();
-			
-			//Redireciona para a página de login
+
+			// Redireciona para a página de login
 			Faces.redirect("./pages/publicas/login.xhtml");
 			Messages.addGlobalInfo("Logout");
 
@@ -148,68 +139,53 @@ public class LoginBean  implements Serializable {
 		}
 
 	}
-	
-	
+
 	// Fechar
 	// -------------------------------------------------------------------------------------------
 	public void fechar() {
 
 		RequestContext.getCurrentInstance().reset("dialogform");
 
-
 		System.out.println("Método fechar");
 
 	}
-	
 
 	// Editar usuário
 	// -------------------------------------------------------------------------------------------
 	public void editar() {
-		Long id = usuario.getCodigo();
-		Boolean permitir =dao.validarEmail(usuario.getEmail(),id);
-	
-			
-		 if(!permitir){
 
-			 Messages.addGlobalError("O Endereço de e-mail já existe ... ");
-			 listaUsuario = dao.listar();
-		
-		 return;
-		
-		 }
+		String email = usuarioLogado.getEmail().toString();
+		Long id = usuarioLogado.getCodigo();
+
+		dao = new UsuarioDAO();
+		Boolean permitir = dao.validarEmail(email, id);
+
+		if (!permitir) {
+			Messages.addGlobalError("O Endereço de e-mail já existe ... ");
+			return;
+
+		}
 
 		try {
-
-			dao = new UsuarioDAO();
 
 			if (cidade == null) {
 				cidade = cidadeAux;
 			}
-			System.out.println("\nEditar");
-			System.out.println("Cidade >>>" + cidade);
-			System.out.println("CidadeAux >>>" + cidade);
 
-			usuario.setCidade(cidade);
+			usuarioLogado.setCidade(cidade);
+			usuario=usuarioLogado;
 			dao.editar(usuario);
+			usuario=null;
 
-			Messages.addGlobalInfo("Usuário(a) ' " + usuario.getNome() + "' Editado com sucesso!!!");
+			Messages.addGlobalInfo("Usuário(a) ' " + usuarioLogado.getNome() + "' Editado com sucesso!!!");
 
 		} catch (Exception e) {
-			
-			
 
-
-			Messages.addGlobalError("Erro ao Editar Usuário(a) '" + usuario.getNome() + "'");
-			System.out.println("Editar Erro:" + e.getMessage());
-			System.out.println("Editar Erro:" + e.getCause());
-
-		} finally {
+			Messages.addGlobalError("Erro ao Editar Usuário(a) '" + usuarioLogado.getNome() + "'");
 
 		}
-
 	}
 
-	
 	// Salvar Senha
 	// -------------------------------------------------------------------------------------------
 	public void editarSenha() {
@@ -231,16 +207,14 @@ public class LoginBean  implements Serializable {
 		}
 
 	}
-	
-
 
 	// Listar Estado
 	// ------------------------------------------------------------------------------------------------------------------------------------------------------
 
 	public void buscarEstados() {
 
-		try {		
-			
+		try {
+
 			auxEstado = usuarioLogado.getCidade().getEstado().getNome().toString().toUpperCase();
 			auxCidade = usuarioLogado.getCidade().getNome().toString().toUpperCase();
 
@@ -254,19 +228,16 @@ public class LoginBean  implements Serializable {
 		}
 
 	}
-	
-	
-	
+
 	// Listar Cidade
 	// ------------------------------------------------------------------------------------------------------------------------------------------------------
 
 	public void buscarCidade() {
 
-		try {		
+		try {
 
-
-			cidadeDao =  new CidadeDAO();
-			listaCidade = cidadeDao.buscarPorEstado(estado.getCodigo()) ;
+			cidadeDao = new CidadeDAO();
+			listaCidade = cidadeDao.buscarPorEstado(estado.getCodigo());
 
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -275,7 +246,6 @@ public class LoginBean  implements Serializable {
 		}
 
 	}
-	
 
 	// ------------------------------------------------------------
 
@@ -290,7 +260,6 @@ public class LoginBean  implements Serializable {
 	public Usuario getUsuarioLogado() {
 		return usuarioLogado;
 	}
-
 
 	public Estado getEstado() {
 		return estado;
@@ -471,10 +440,5 @@ public class LoginBean  implements Serializable {
 	public static void setUsuarioLogado(Usuario usuarioLogado) {
 		LoginBean.usuarioLogado = usuarioLogado;
 	}
-
-
-	
-	
-	
 
 }

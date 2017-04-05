@@ -25,7 +25,7 @@
 
 			<p:outputLabel value="Estado: " />
 			<p:selectOneMenu filter="true" value="#{loginBean.estado}"
-				autoWidth="false" effect="explode" style="width:230px"
+				autoWidth="false" effect="explode" style="width:180px"
 				converter="omnifaces.SelectItemsConverter"
 				required="#{!loginBean.botaoEditar}"
 				requiredMessage="Informe o Estado corretamente">
@@ -44,7 +44,7 @@
 
 			<p:outputLabel value="Cidade: " />
 			<p:selectOneMenu id="cidade" filter="true" autoWidth="false"
-				effect="drop" style="width:230px" value="#{loginBean.cidade}"
+				effect="drop" style="width:180px" value="#{loginBean.cidade}"
 				converter="omnifaces.SelectItemsConverter"
 				required="#{!loginBean.botaoEditar}"
 				requiredMessage="Informe a Cidade corretamente">

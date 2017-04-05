@@ -21,28 +21,10 @@
 
 				<p:panelGrid>
 
-					<!-- Animação de loading -->
-					<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
-						closable="false" resizable="false" showHeader="false">
-						<p:graphicImage value="/images/loading6.gif" />
-					</p:dialog>
-
-					<!-- Personalizar table -->
-					<p:commandButton title="Filtrar Colunas" id="toggler" type="button"
-						value="" icon="ui-icon-calculator"
-						style=" border-radius: 7px; background-color:CadetBlue; border-color: #C2C1D4;
-   						font-size: 16px; word-spacing:8px; float:left; height:33px; width:34px  " />
-					<p:columnToggler datasource="dataTable" trigger="toggler" />
-
-					<p:ajaxStatus onstart="PF('statusDialog').show()"
-						onsuccess="PF('statusDialog').hide()" />
-
-
-
 
 
 					<!-- Header -->
-					<h:outputLabel styleClass="nameheader" value="Oportunidades(#{oportunidadeBean.totasVagas})"></h:outputLabel>
+					<h:outputLabel styleClass="nameheader" value="Oportunidades (#{oportunidadeBean.totasVagas})"></h:outputLabel>
 
 				</p:panelGrid>
 			</f:facet>
@@ -155,12 +137,7 @@
 					<h:outputText
 						value=" Modalidade de Contratação: #{dataVar.modalidade}" />
 
-
-
 					<h:outputText value="Horário: #{dataVar.horario}" />
-
-
-
 
 
 					<h:inputTextarea cols="100" rows="4" readonly="true"
