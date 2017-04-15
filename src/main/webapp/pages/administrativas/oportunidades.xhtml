@@ -7,21 +7,19 @@
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
 	template="/resources/templates/template.xhtml">
 
-	<ui:define name="insertNorth">
-		<ui:include src="/resources/includes/menu.xhtml"></ui:include>
-		
-		
-		
-	</ui:define>
+
 
 	<ui:define name="insertLayout">
-		<p:layoutUnit position="west" size="330" header="Filtrar"
-			resizable="true" closable="false" collapsible="true" effect="drop">
+		<p:layoutUnit position="east" size="330" header="Filtrar"  collapsed="false"  
+			resizable="true" closable="false" collapsible="true" effect="drop" effectSpeed="slow" >
 			<ui:include src="/resources/includes/oportunidade/filtro.xhtml"></ui:include>
 		</p:layoutUnit>
 	</ui:define>
 
 	<ui:define name="insertCenter">
+			<ui:include  src="/resources/includes/menu.xhtml"></ui:include>
+			<span style="margin: 100px;"></span>
+	
 		<ui:include src="/resources/includes/oportunidade/center.xhtml"></ui:include>
 	</ui:define>
 

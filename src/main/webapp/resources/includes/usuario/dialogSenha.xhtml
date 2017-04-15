@@ -21,15 +21,15 @@
 
 
 				<p:outputLabel value="Nome: " />
-				<p:inputText readonly="true" value="#{loginBean.usuarioLogado.nome}"
+				<p:inputText readonly="true" value="#{usuarioBean.usuarioLogado.nome}"
 					size="25" />
 
 				<p:outputLabel value="CPF: " required="true" />
-				<p:inputText readonly="true" value="#{loginBean.usuarioLogado.cpf}"
+				<p:inputText readonly="true" value="#{usuarioBean.usuarioLogado.cpf}"
 					size="25" />
 
 				<p:outputLabel value="E-mail:" required="true" />
-				<p:inputText readonly="true" value="#{loginBean.usuarioLogado.email}"
+				<p:inputText readonly="true" value="#{usuarioBean.usuarioLogado.email}"
 					size="25" />
 
 				<p:separator style="border: 1px solid #e6e6ff; height: 1px;"></p:separator>
@@ -38,7 +38,7 @@
 				<p:outputLabel value="Digite uma Senha:" />
 				<p:password id="senha" maxlength="16" size="25" feedback="true"
 					inline="true" match="confirmar"
-					value="#{loginBean.usuarioLogado.senhaSemCriptografia}" required="true"
+					value="#{usuarioBean.usuarioLogado.senhaSemCriptografia}" required="true"
 					requiredMessage="Verificar campo Senha"
 					validatorMessage="Erro de validação: As senhas não conferem, ou o comprimento é menor do que o mínimo permitido. '4 dígitos' ">
 					<f:validateLength minimum="4" />
@@ -46,7 +46,7 @@
 
 				<p:outputLabel value="Confirmar senha:" required="true" />
 				<p:password id="confirmar" maxlength="16" size="25"
-					value="#{loginBean.usuarioLogado.senhaSemCriptografia}" required="true"
+					value="#{usuarioBean.usuarioLogado.senhaSemCriptografia}" required="true"
 					requiredMessage="Verificar campo Confirmar Senha"
 					validatorMessage="Erro de validação: o comprimento é menor do que o mínimo permitido. '4 dígitos' ">
 					<f:validateLength minimum="4" />
@@ -57,7 +57,7 @@
 			<h:panelGrid columns="2">
 
 				<p:commandButton value="Salvar"
-					actionListener="#{loginBean.editarSenha}"
+					actionListener="#{usuarioBean.editarSenha}"
 					update=":dialogformSenha:msgdialogSenha:" />
 
 

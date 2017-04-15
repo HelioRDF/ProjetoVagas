@@ -38,7 +38,7 @@ public class OportunidadeBean implements Serializable {
 
 	private Estado estado;
 	private EstadoDAO estadoDAO;
-	private List<Estado> listaEstado;
+	private List<Estado> listaEstado = LoginBean.getListaEstado();
 	private String auxEstado = " Selecione um Estado";
 	private Long meuEstado;
 
@@ -232,22 +232,18 @@ public class OportunidadeBean implements Serializable {
 	public void BuscarEstados() {
 
 		try {
-			LoginBean log = new LoginBean();
-			estadoDAO = new EstadoDAO();
-			listaEstado = estadoDAO.listar("nome");
 
 			CidadeDAO cidadeDAO = new CidadeDAO();
-			meuEstado = log.getUsuarioLogado().getCidade().getEstado().getCodigo();
+			meuEstado = LoginBean.getUsuarioLogado().getCidade().getEstado().getCodigo();
 			listaCidade = cidadeDAO.buscarPorEstado(meuEstado);
 
-			minhaCidade = log.getUsuarioLogado().getCidade().getCodigo();
+			minhaCidade = LoginBean.getUsuarioLogado().getCidade().getCodigo();
 			dao = new OportunidadeDAO();
 			
-			auxCidade = log.getUsuarioLogado().getCidade().getNome();
-			auxEstado = log.getUsuarioLogado().getCidade().getEstado().getNome();
+			auxCidade = LoginBean.getUsuarioLogado().getCidade().getNome();
+			auxEstado = LoginBean.getUsuarioLogado().getCidade().getEstado().getNome();
 
-			listaOportunidade = dao.buscarVagas(filtrarCargo, meuEstado, minhaCidade, filtrarSalario, filtrarNivel,
-					filtrarModalidade, FiltrarPcD);
+			listaOportunidade = dao.buscarVagas(filtrarCargo, meuEstado, minhaCidade, filtrarSalario, filtrarNivel, filtrarModalidade, FiltrarPcD);
 			totasVagas = listaOportunidade.size();
 			Messages.addGlobalInfo("Lista atualizada com sucesso ");
 

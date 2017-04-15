@@ -15,45 +15,56 @@
 
 <h:body style="background-color:#ffffff;">
 
-<h1>@ Encodetech</h1>
+	<h1>@ Encodetech</h1>
 
 
 
 	<div id="login-dialog">
-		 <p:messages id="msg" closable="true" style="width: 120%;"   />
+		<p:messages id="msg" closable="true" style="width: 120%;" />
 		<h:form id="frm">
-		
-			
-			<h:panelGrid   columns="1" styleClass="grid-login">
-				<h2> Login</h2>
-				
-				<h:panelGrid   columns="2">
-		<p:outputLabel style="margin-bottom:15px;"  /><p:outputLabel />
-			
-				<p:outputLabel style="padding-top:15px;" value="E-Mail:" for="usuario" />
-				<p:inputText id="usuario" size="20" value="#{loginBean.usuario.email}" />
-				<p:outputLabel value="Senha:" for="senha"  />
-				<p:password id="senha" size="20" 	value="#{loginBean.usuario.senha}" />
-					
+
+
+			<h:panelGrid columns="1" styleClass="grid-login">
+				<h2>Login</h2>
+				<p:selectOneButton value="#{loginBean.tipoLogin}" style="margin: 0px 0px 0px 22%; width:80%; font-size: 14px;" >
+					<f:selectItem itemLabel="Usuário" itemValue="1"   />
+					<f:selectItem itemLabel="Empresa" itemValue="0" />
+				</p:selectOneButton>
+
+
+				<p:separator />
+
+				<h:panelGrid columns="2">
+					<p:outputLabel style="margin-bottom:15px;" />
+					<p:outputLabel />
+
+					<p:outputLabel style="padding-top:15px;" value="E-Mail:"
+						for="usuario" />
+					<p:inputText id="usuario" size="20"
+					value="#{loginBean.usuario.email}" />
+					<p:outputLabel value="Senha:" for="senha" />
+					<p:password id="senha" size="20" value="#{loginBean.usuario.senha}" />
+
 				</h:panelGrid>
-				<p:separator/> 
-				<p:commandButton update=":msg:"  actionListener="#{loginBean.autenticar}"  value="Entrar" 
-				style="margin: 5px 0px 0px 30%; width:40%; "/>
-			
+				<p:separator />
+				<p:commandButton update=":msg:"
+					actionListener="#{loginBean.autenticar}" value="Entrar"
+					style="margin: 5px 0px 0px 30%; width:40%; " />
+
+					<p:commandButton update=":msg:"
+					actionListener="#{loginBean.teste}" value="Teste"
+					style="margin: 5px 0px 0px 30%; width:40%; " />
+					
 			</h:panelGrid>
-			
+
 			<h:link id="lembrarsenha" value="Esqueci minha senha."></h:link>
-			
+
 		</h:form>
 	</div>
-	
-	
-	<div id="rodape" >
-	
-	
-	
-	</div>
-	
+
+
+	<div id="rodape"></div>
+
 
 </h:body>
 </html>

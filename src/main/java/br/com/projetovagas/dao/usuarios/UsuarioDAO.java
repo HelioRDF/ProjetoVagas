@@ -49,6 +49,38 @@ public class UsuarioDAO extends GenericDAO<Usuario>{
 		
 	}
 	
+	public Usuario buscarUsuarioId(Long id ){
+		
+		//Abre uma sessão com Hibernate
+		Session sessao = HibernateUtil.getFabricadeSessoes().openSession();
+		
+		try {
+	
+			Criteria consulta = sessao.createCriteria(Usuario.class);			
+			
+		//	consulta.createAlias("Usuario", "user");
+			consulta.add(Restrictions.eq("codigo",id ));
+			Usuario resultado = (Usuario) consulta.uniqueResult();
+			
+			return resultado;
+			
+			
+			
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+			return null;
+		}
+		
+		finally {
+			sessao.close();
+		}
+		
+		
+	
+		
+	}
+	
 	
 	public Boolean validarEmail(String email){
 		Boolean permitir =false;

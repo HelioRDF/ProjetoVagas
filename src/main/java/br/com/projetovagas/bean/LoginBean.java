@@ -10,22 +10,16 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 
-import org.apache.shiro.crypto.hash.SimpleHash;
 import org.omnifaces.util.Faces;
 import org.omnifaces.util.Messages;
-import org.primefaces.context.RequestContext;
 
+import br.com.projetovagas.dao.empresas.EmpresaDAO;
 import br.com.projetovagas.dao.localizacao.CidadeDAO;
 import br.com.projetovagas.dao.localizacao.EstadoDAO;
-import br.com.projetovagas.dao.usuarios.AtividadesProfissionaisDAO;
-import br.com.projetovagas.dao.usuarios.ExperienciaProfissionalDAO;
-import br.com.projetovagas.dao.usuarios.FormacaoAcademicaDAO;
 import br.com.projetovagas.dao.usuarios.UsuarioDAO;
+import br.com.projetovagas.domain.empresas.Empresa;
 import br.com.projetovagas.domain.localizacao.Cidade;
 import br.com.projetovagas.domain.localizacao.Estado;
-import br.com.projetovagas.domain.usuarios.AtividadesProfissionais;
-import br.com.projetovagas.domain.usuarios.ExperienciaProfissional;
-import br.com.projetovagas.domain.usuarios.FormacaoAcademica;
 import br.com.projetovagas.domain.usuarios.Usuario;
 
 @SuppressWarnings("serial")
@@ -33,41 +27,24 @@ import br.com.projetovagas.domain.usuarios.Usuario;
 @SessionScoped
 public class LoginBean implements Serializable {
 
+	private int tipoLogin = 1;
+
 	private Usuario usuario;
 	private static Usuario usuarioLogado;
 
+	private Empresa empresa;
+	private  static Empresa empresaLogada;
+
 	private Estado estado;
-	private FormacaoAcademica formacaoAcademica;
-	private ExperienciaProfissional experienciaProfissional;
-	private AtividadesProfissionais atividadesProfissionais;
-	Cidade cidade = new Cidade();
-	Cidade cidadeAux = new Cidade();
-
-	private UsuarioDAO dao;
-	private CidadeDAO cidadeDao;
 	private EstadoDAO estadoDao;
-	private FormacaoAcademicaDAO daoFormacao;
-	private ExperienciaProfissionalDAO daoExperiencia;
-	private AtividadesProfissionaisDAO daoAtividades;
+	private  static List<Estado> listaEstado;
 
-	private List<Usuario> listaUsuario;
+	private Cidade cidade = new Cidade();
+	private CidadeDAO cidadeDao;
 	private List<Cidade> listaCidade;
-	private List<Estado> listaEstado;
-	private List<FormacaoAcademica> listaFormacao;
-	private List<ExperienciaProfissional> listaExperiencia;
-	private List<AtividadesProfissionais> listaAtividades;
 
 	private String auxCidade = "Selecione uma Cidade";
 	private String auxEstado = " Selecione um Estado";
-
-	private Boolean telaEditar = false;
-	private Boolean botaoEditar = false;
-	private Boolean botaoSalvar = false;
-	private Boolean botaoFormacao = false;
-	private Boolean statusBoolean = false;
-	private Boolean botaoAtividades = false;
-	private Boolean botaoExperiencia = false;
-	private Boolean botaoInfo;
 
 	// Login
 	// -------------------------------------------------------------------------------------------
@@ -75,39 +52,81 @@ public class LoginBean implements Serializable {
 	@PostConstruct
 	public void iniciar() {
 		usuario = new Usuario();
+		empresa = new Empresa();
+
 	}
 
 	public void autenticar() {
 
-		try {
+		if (tipoLogin == 1) {
 
-			UsuarioDAO usuarioDAO = new UsuarioDAO();
-			usuarioLogado = usuarioDAO.autenticar(usuario.getEmail().trim(), usuario.getSenha());
+			try {
 
-			if (usuarioLogado == null) {
-				Messages.addGlobalWarn("Usuário e/ou senha, incorretos");
-				return;
+				UsuarioDAO usuarioDAO = new UsuarioDAO();
+				usuarioLogado = usuarioDAO.autenticar(usuario.getEmail().trim(), usuario.getSenha());
 
-			} else {
-
-				// Verifica se usuário está Ativo
-				if (!usuarioLogado.getStatus()) {
-
-					Messages.addGlobalError("Usuário Desativado.");
-					usuarioLogado = null;
+				if (usuarioLogado == null) {
+					Messages.addGlobalWarn("Usuário e/ou senha, incorretos");
 					return;
+
+				} else {
+
+					// Verifica se usuário está Ativo
+					if (!usuarioLogado.getStatus()) {
+
+						Messages.addGlobalError("Usuário Desativado.");
+						usuarioLogado = null;
+						return;
+
+					}
 
 				}
 
+				// Usuário Ok...
+				Faces.redirect("./pages/administrativas/oportunidades.xhtml");
+				buscarEstados();
+
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+
 			}
 
-			// Usuário Ok...
-			Faces.redirect("./pages/administrativas/oportunidades.xhtml");
-			buscarEstados();
+		} // fim do If
 
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		else {
+
+			try {
+
+				EmpresaDAO empresaDAO = new EmpresaDAO();
+				empresaLogada = empresaDAO.autenticar(empresa.getEmail().trim(), usuario.getSenha());
+
+				if (usuarioLogado == null) {
+					Messages.addGlobalWarn("Empresa e/ou senha, incorretos");
+					return;
+
+				} else {
+
+					// Verifica se usuário está Ativo
+					if (!empresaLogada.getStatus()) {
+
+						Messages.addGlobalError("Empresa Desativada.");
+						empresaLogada = null;
+						return;
+
+					}
+
+				}
+
+				// Empresa Ok...
+				Faces.redirect("./pages/administrativas/oportunidades.xhtml");
+				buscarEstados();
+
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+
+			}
 
 		}
 
@@ -121,6 +140,7 @@ public class LoginBean implements Serializable {
 		try {
 
 			usuarioLogado = null;
+			empresaLogada = null;
 
 			// Destroi as sessões após loggof do usuário.
 			FacesContext facesContext = FacesContext.getCurrentInstance();
@@ -136,74 +156,6 @@ public class LoginBean implements Serializable {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-
-	}
-
-	// Fechar
-	// -------------------------------------------------------------------------------------------
-	public void fechar() {
-
-		RequestContext.getCurrentInstance().reset("dialogform");
-
-		System.out.println("Método fechar");
-
-	}
-
-	// Editar usuário
-	// -------------------------------------------------------------------------------------------
-	public void editar() {
-
-		String email = usuarioLogado.getEmail().toString();
-		Long id = usuarioLogado.getCodigo();
-
-		dao = new UsuarioDAO();
-		Boolean permitir = dao.validarEmail(email, id);
-
-		if (!permitir) {
-			Messages.addGlobalError("O Endereço de e-mail já existe ... ");
-			return;
-
-		}
-
-		try {
-
-			if (cidade == null) {
-				cidade = cidadeAux;
-			}
-
-			usuarioLogado.setCidade(cidade);
-			usuario=usuarioLogado;
-			dao.editar(usuario);
-			usuario=null;
-
-			Messages.addGlobalInfo("Usuário(a) ' " + usuarioLogado.getNome() + "' Editado com sucesso!!!");
-
-		} catch (Exception e) {
-
-			Messages.addGlobalError("Erro ao Editar Usuário(a) '" + usuarioLogado.getNome() + "'");
-
-		}
-	}
-
-	// Salvar Senha
-	// -------------------------------------------------------------------------------------------
-	public void editarSenha() {
-
-		try {
-
-			// Cria um hash e criptografa a senha
-			SimpleHash hash = new SimpleHash("md5", usuario.getSenhaSemCriptografia());
-			usuario.setSenha(hash.toHex());
-			dao = new UsuarioDAO();
-			dao.merge(usuario);
-			Messages.addGlobalInfo("Usuário Editado com sucesso: " + usuario.getNome());
-
-		} catch (Exception e) {
-			Messages.addGlobalError("Erro ao Editar: " + usuario.getNome());
-
-		} finally {
-
 		}
 
 	}
@@ -247,18 +199,65 @@ public class LoginBean implements Serializable {
 
 	}
 
-	// ------------------------------------------------------------
+	public void teste() {
+
+		System.out.println("Tipo de login: " + tipoLogin);
+
+	}
+
+	// ------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+	
+	
+
+	public Empresa getEmpresa() {
+		return empresa;
+	}
+
+	public static Usuario getUsuarioLogado() {
+		return usuarioLogado;
+	}
+
+	public static void setUsuarioLogado(Usuario usuarioLogado) {
+		LoginBean.usuarioLogado = usuarioLogado;
+	}
+
+	public static List<Estado> getListaEstado() {
+		return listaEstado;
+	}
+
+	public static void setListaEstado(List<Estado> listaEstado) {
+		LoginBean.listaEstado = listaEstado;
+	}
 
 	public Usuario getUsuario() {
 		return usuario;
 	}
 
+	public static void setEmpresaLogada(Empresa empresaLogada) {
+		LoginBean.empresaLogada = empresaLogada;
+	}
+
+	public void setEmpresa(Empresa empresa) {
+		this.empresa = empresa;
+	}
+
+	public Empresa getEmpresaLogada() {
+		return empresaLogada;
+	}
+
+
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
 	}
 
-	public Usuario getUsuarioLogado() {
-		return usuarioLogado;
+	public int getTipoLogin() {
+		return tipoLogin;
+	}
+
+	public void setTipoLogin(int tipoLogin) {
+		this.tipoLogin = tipoLogin;
 	}
 
 	public Estado getEstado() {
@@ -269,29 +268,6 @@ public class LoginBean implements Serializable {
 		this.estado = estado;
 	}
 
-	public FormacaoAcademica getFormacaoAcademica() {
-		return formacaoAcademica;
-	}
-
-	public void setFormacaoAcademica(FormacaoAcademica formacaoAcademica) {
-		this.formacaoAcademica = formacaoAcademica;
-	}
-
-	public ExperienciaProfissional getExperienciaProfissional() {
-		return experienciaProfissional;
-	}
-
-	public void setExperienciaProfissional(ExperienciaProfissional experienciaProfissional) {
-		this.experienciaProfissional = experienciaProfissional;
-	}
-
-	public AtividadesProfissionais getAtividadesProfissionais() {
-		return atividadesProfissionais;
-	}
-
-	public void setAtividadesProfissionais(AtividadesProfissionais atividadesProfissionais) {
-		this.atividadesProfissionais = atividadesProfissionais;
-	}
 
 	public Cidade getCidade() {
 		return cidade;
@@ -301,60 +277,12 @@ public class LoginBean implements Serializable {
 		this.cidade = cidade;
 	}
 
-	public Cidade getCidadeAux() {
-		return cidadeAux;
-	}
-
-	public void setCidadeAux(Cidade cidadeAux) {
-		this.cidadeAux = cidadeAux;
-	}
-
-	public List<Usuario> getListaUsuario() {
-		return listaUsuario;
-	}
-
-	public void setListaUsuario(List<Usuario> listaUsuario) {
-		this.listaUsuario = listaUsuario;
-	}
-
 	public List<Cidade> getListaCidade() {
 		return listaCidade;
 	}
 
 	public void setListaCidade(List<Cidade> listaCidade) {
 		this.listaCidade = listaCidade;
-	}
-
-	public List<Estado> getListaEstado() {
-		return listaEstado;
-	}
-
-	public void setListaEstado(List<Estado> listaEstado) {
-		this.listaEstado = listaEstado;
-	}
-
-	public List<FormacaoAcademica> getListaFormacao() {
-		return listaFormacao;
-	}
-
-	public void setListaFormacao(List<FormacaoAcademica> listaFormacao) {
-		this.listaFormacao = listaFormacao;
-	}
-
-	public List<ExperienciaProfissional> getListaExperiencia() {
-		return listaExperiencia;
-	}
-
-	public void setListaExperiencia(List<ExperienciaProfissional> listaExperiencia) {
-		this.listaExperiencia = listaExperiencia;
-	}
-
-	public List<AtividadesProfissionais> getListaAtividades() {
-		return listaAtividades;
-	}
-
-	public void setListaAtividades(List<AtividadesProfissionais> listaAtividades) {
-		this.listaAtividades = listaAtividades;
 	}
 
 	public String getAuxCidade() {
@@ -372,73 +300,9 @@ public class LoginBean implements Serializable {
 	public void setAuxEstado(String auxEstado) {
 		this.auxEstado = auxEstado;
 	}
+	
+	
 
-	public Boolean getTelaEditar() {
-		return telaEditar;
-	}
-
-	public void setTelaEditar(Boolean telaEditar) {
-		this.telaEditar = telaEditar;
-	}
-
-	public Boolean getBotaoEditar() {
-		return botaoEditar;
-	}
-
-	public void setBotaoEditar(Boolean botaoEditar) {
-		this.botaoEditar = botaoEditar;
-	}
-
-	public Boolean getBotaoSalvar() {
-		return botaoSalvar;
-	}
-
-	public void setBotaoSalvar(Boolean botaoSalvar) {
-		this.botaoSalvar = botaoSalvar;
-	}
-
-	public Boolean getBotaoFormacao() {
-		return botaoFormacao;
-	}
-
-	public void setBotaoFormacao(Boolean botaoFormacao) {
-		this.botaoFormacao = botaoFormacao;
-	}
-
-	public Boolean getStatusBoolean() {
-		return statusBoolean;
-	}
-
-	public void setStatusBoolean(Boolean statusBoolean) {
-		this.statusBoolean = statusBoolean;
-	}
-
-	public Boolean getBotaoAtividades() {
-		return botaoAtividades;
-	}
-
-	public void setBotaoAtividades(Boolean botaoAtividades) {
-		this.botaoAtividades = botaoAtividades;
-	}
-
-	public Boolean getBotaoExperiencia() {
-		return botaoExperiencia;
-	}
-
-	public void setBotaoExperiencia(Boolean botaoExperiencia) {
-		this.botaoExperiencia = botaoExperiencia;
-	}
-
-	public Boolean getBotaoInfo() {
-		return botaoInfo;
-	}
-
-	public void setBotaoInfo(Boolean botaoInfo) {
-		this.botaoInfo = botaoInfo;
-	}
-
-	public static void setUsuarioLogado(Usuario usuarioLogado) {
-		LoginBean.usuarioLogado = usuarioLogado;
-	}
+	// ------------------------------------------------------------
 
 }

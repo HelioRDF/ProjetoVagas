@@ -32,14 +32,11 @@ import br.com.projetovagas.domain.usuarios.Usuario;
 @SuppressWarnings("serial")
 @ManagedBean
 @SessionScoped
-public class LoginBeanCopia  implements Serializable {
+public class LoginBeanCopia implements Serializable {
 
 	private Usuario usuario;
 	private static Usuario usuarioLogado;
 
-	
-	
-	
 	private Estado estado;
 	private FormacaoAcademica formacaoAcademica;
 	private ExperienciaProfissional experienciaProfissional;
@@ -73,12 +70,6 @@ public class LoginBeanCopia  implements Serializable {
 	private Boolean botaoExperiencia = false;
 	private Boolean botaoInfo;
 
-
-	
-	
-	
-	
-
 	@PostConstruct
 	public void iniciar() {
 		usuario = new Usuario();
@@ -108,7 +99,6 @@ public class LoginBeanCopia  implements Serializable {
 
 			}
 
-			
 			Faces.redirect("./pages/administrativas/oportunidades.xhtml");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -117,20 +107,19 @@ public class LoginBeanCopia  implements Serializable {
 		}
 
 	}
-		
 
 	public void sair() {
 
 		try {
 
 			usuarioLogado = null;
-			
-			//Destroi as sessões após loggof do usuário.
+
+			// Destroi as sessões após loggof do usuário.
 			FacesContext facesContext = FacesContext.getCurrentInstance();
 			HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(false);
 			session.invalidate();
-			
-			//Redireciona para a página de login
+
+			// Redireciona para a página de login
 			Faces.redirect("./pages/publicas/login.xhtml");
 			Messages.addGlobalInfo("Logout");
 
@@ -142,19 +131,16 @@ public class LoginBeanCopia  implements Serializable {
 		}
 
 	}
-	
-	
+
 	// Fechar
 	// -------------------------------------------------------------------------------------------
 	public void fechar() {
 
 		RequestContext.getCurrentInstance().reset("dialogform");
 
-
 		System.out.println("Método fechar");
 
 	}
-	
 
 	// Carregar Curriculo
 	// -------------------------------------------------------------------------------------------
@@ -232,9 +218,7 @@ public class LoginBeanCopia  implements Serializable {
 		// ----------------------------------------------------------
 
 	}
-	
-	
-	
+
 	// Salvar formação
 	// -------------------------------------------------------------------------------------
 	public void salvarFormacao() {
@@ -302,11 +286,6 @@ public class LoginBeanCopia  implements Serializable {
 
 		}
 	}
-
-	
-	
-
-
 
 	// Excluir Formacao
 	// -------------------------------------------------------------------------------------------
@@ -378,17 +357,16 @@ public class LoginBeanCopia  implements Serializable {
 	// -------------------------------------------------------------------------------------------
 	public void editar() {
 		Long id = usuario.getCodigo();
-		Boolean permitir =dao.validarEmail(usuario.getEmail(),id);
-	
-			
-		 if(!permitir){
+		Boolean permitir = dao.validarEmail(usuario.getEmail(), id);
 
-			 Messages.addGlobalError("O Endereço de e-mail já existe ... ");
-			 listaUsuario = dao.listar();
-		
-		 return;
-		
-		 }
+		if (!permitir) {
+
+			Messages.addGlobalError("O Endereço de e-mail já existe ... ");
+			listaUsuario = dao.listar();
+
+			return;
+
+		}
 
 		try {
 
@@ -397,19 +375,12 @@ public class LoginBeanCopia  implements Serializable {
 			if (cidade == null) {
 				cidade = cidadeAux;
 			}
-			System.out.println("\nEditar");
-			System.out.println("Cidade >>>" + cidade);
-			System.out.println("CidadeAux >>>" + cidade);
-
 			usuario.setCidade(cidade);
 			dao.editar(usuario);
 
 			Messages.addGlobalInfo("Usuário(a) ' " + usuario.getNome() + "' Editado com sucesso!!!");
 
 		} catch (Exception e) {
-			
-			
-
 
 			Messages.addGlobalError("Erro ao Editar Usuário(a) '" + usuario.getNome() + "'");
 			System.out.println("Editar Erro:" + e.getMessage());
@@ -421,7 +392,6 @@ public class LoginBeanCopia  implements Serializable {
 
 	}
 
-	
 	// Salvar Senha
 	// -------------------------------------------------------------------------------------------
 	public void editarSenha() {
@@ -443,7 +413,6 @@ public class LoginBeanCopia  implements Serializable {
 		}
 
 	}
-	
 
 	// Filtrar Cidade
 	// ------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -479,16 +448,12 @@ public class LoginBeanCopia  implements Serializable {
 
 	}
 
-	
-
 	// Listar Estado
 	// ------------------------------------------------------------------------------------------------------------------------------------------------------
 
 	public void BuscarEstados() {
 
 		try {
-
-			
 
 			estadoDao = new EstadoDAO();
 			listaEstado = estadoDao.listar("nome");
@@ -500,84 +465,79 @@ public class LoginBeanCopia  implements Serializable {
 		}
 
 	}
-	
-	
-	
+
 	// ------------------------------------------------------------------------------------------------------------------------------------------------------
 
-		public void getinstanciaCurriculo(ActionEvent evento) {
+	public void getinstanciaCurriculo(ActionEvent evento) {
 
-			try {
+		try {
 
-				usuario = (Usuario) evento.getComponent().getAttributes().get("meuSelect");
-				Messages.addGlobalInfo("Seleção: " + usuario.getNome());
+			usuario = (Usuario) evento.getComponent().getAttributes().get("meuSelect");
+			Messages.addGlobalInfo("Seleção: " + usuario.getNome());
 
-				carregarCurriculo();
+			carregarCurriculo();
 
-			} catch (Exception e) {
-				Messages.addGlobalError("Erro ao Editar: " + usuario.getNome());
-				System.out.println("catch do Método Curriculo: " + usuario.getNome());
-
-			}
+		} catch (Exception e) {
+			Messages.addGlobalError("Erro ao Editar: " + usuario.getNome());
+			System.out.println("catch do Método Curriculo: " + usuario.getNome());
 
 		}
 
-		// Instancia de Formação
-		// ------------------------------------------------------------------------------------------------------------------------------------------------------
+	}
 
-		public void getinstanciaFormação(ActionEvent evento) {
+	// Instancia de Formação
+	// ------------------------------------------------------------------------------------------------------------------------------------------------------
 
-			try {
-				botaoFormacao = true;
+	public void getinstanciaFormação(ActionEvent evento) {
 
-				formacaoAcademica = (FormacaoAcademica) evento.getComponent().getAttributes().get("meuSelect");
-				Messages.addGlobalInfo("Seleção: " + formacaoAcademica.getNomeCurso());
+		try {
+			botaoFormacao = true;
 
-			} catch (Exception e) {
-				Messages.addGlobalError("Erro ao Editar: " + formacaoAcademica.getNomeCurso());
+			formacaoAcademica = (FormacaoAcademica) evento.getComponent().getAttributes().get("meuSelect");
+			Messages.addGlobalInfo("Seleção: " + formacaoAcademica.getNomeCurso());
 
-			}
-
-		}
-
-		// Instancia de Experiencia
-		// ------------------------------------------------------------------------------------------------------------------------------------------------------
-
-		public void getinstanciaExperiencia(ActionEvent evento) {
-
-			try {
-				botaoExperiencia = true;
-
-				experienciaProfissional = (ExperienciaProfissional) evento.getComponent().getAttributes().get("meuSelect");
-				Messages.addGlobalInfo("Seleção: " + experienciaProfissional.getCargo());
-
-			} catch (Exception e) {
-				Messages.addGlobalError("Erro ao Editar: " + experienciaProfissional.getCargo());
-
-			}
+		} catch (Exception e) {
+			Messages.addGlobalError("Erro ao Editar: " + formacaoAcademica.getNomeCurso());
 
 		}
 
-		// Instancia de Qualificações
-		// ------------------------------------------------------------------------------------------------------------------------------------------------------
+	}
 
-		public void getinstanciaQualificacao(ActionEvent evento) {
+	// Instancia de Experiencia
+	// ------------------------------------------------------------------------------------------------------------------------------------------------------
 
-			try {
-				botaoAtividades = true;
+	public void getinstanciaExperiencia(ActionEvent evento) {
 
-				atividadesProfissionais = (AtividadesProfissionais) evento.getComponent().getAttributes().get("meuSelect");
-				Messages.addGlobalInfo("Seleção: " + atividadesProfissionais.getNomeCurso());
+		try {
+			botaoExperiencia = true;
 
-			} catch (Exception e) {
-				Messages.addGlobalError("Erro ao Editar: " + atividadesProfissionais.getNomeCurso());
+			experienciaProfissional = (ExperienciaProfissional) evento.getComponent().getAttributes().get("meuSelect");
+			Messages.addGlobalInfo("Seleção: " + experienciaProfissional.getCargo());
 
-			}
+		} catch (Exception e) {
+			Messages.addGlobalError("Erro ao Editar: " + experienciaProfissional.getCargo());
 
 		}
 
-	
-	
+	}
+
+	// Instancia de Qualificações
+	// ------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	public void getinstanciaQualificacao(ActionEvent evento) {
+
+		try {
+			botaoAtividades = true;
+
+			atividadesProfissionais = (AtividadesProfissionais) evento.getComponent().getAttributes().get("meuSelect");
+			Messages.addGlobalInfo("Seleção: " + atividadesProfissionais.getNomeCurso());
+
+		} catch (Exception e) {
+			Messages.addGlobalError("Erro ao Editar: " + atividadesProfissionais.getNomeCurso());
+
+		}
+
+	}
 
 	// ------------------------------------------------------------
 
@@ -592,7 +552,6 @@ public class LoginBeanCopia  implements Serializable {
 	public Usuario getUsuarioLogado() {
 		return usuarioLogado;
 	}
-
 
 	public Estado getEstado() {
 		return estado;
@@ -773,10 +732,5 @@ public class LoginBeanCopia  implements Serializable {
 	public static void setUsuarioLogado(Usuario usuarioLogado) {
 		LoginBeanCopia.usuarioLogado = usuarioLogado;
 	}
-
-
-	
-	
-	
 
 }

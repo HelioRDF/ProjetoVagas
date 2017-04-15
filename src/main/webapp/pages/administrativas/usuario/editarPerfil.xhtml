@@ -11,59 +11,15 @@
 
 
 
-	<ui:define name="insertNorth">
-		<ui:include src="/resources/includes/menu.xhtml"></ui:include>
-		<ui:include src="/resources/includes/usuario/dialogSenha.xhtml"></ui:include>
-	</ui:define>
 
 
-
-	<!-- West -->
-	<!-- _________________________________________________________________________________________________________________________________ -->
-
-	<ui:define name="insertWest">
-
-		<ui:include src="/resources/includes/usuario/perfil.xhtml"></ui:include>
-
-
-	</ui:define>
-
-
-
-
-	<!-- Center -->
-	<!-- _________________________________________________________________________________________________________________________________ -->
 
 	<ui:define name="insertCenter">
-		<ui:include src="/resources/includes/usuario/endereco.xhtml"></ui:include>
-
+<ui:include src="/resources/includes/menu.xhtml"></ui:include>
+	<ui:include src="/resources/includes/usuario/perfil.xhtml"></ui:include>
 	</ui:define>
 
-	<!-- South -->
-	<!-- _________________________________________________________________________________________________________________________________ -->
 
-	<ui:define name="insertSouth">
-	
-	<h:form style=" margin:auto auto;">
-
-		<h:panelGrid columns="3">
-
-			
-
-				<p:commandButton value="Salvar Alterações" actionListener="#{loginBean.editar}"	validateClient="true"
-				update=":formEndereco: :formPerfil: " style="background-color:CadetBlue;" >
-
-
-				</p:commandButton>
-		</h:panelGrid>
-
-		</h:form>
-
-
-
-	</ui:define>
-	
-		
 
 
 
