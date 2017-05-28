@@ -9,10 +9,14 @@
 
 
 
+	<ui:define name="insertWest">
+			<ui:include src="/resources/includes/oportunidade/filtro.xhtml"></ui:include>
+	</ui:define>
+
 	<ui:define name="insertLayout">
 		<p:layoutUnit position="east" size="330" header="Filtrar"  collapsed="false"  
-			resizable="true" closable="false" collapsible="true" effect="drop" effectSpeed="slow" >
-			<ui:include src="/resources/includes/oportunidade/filtro.xhtml"></ui:include>
+			resizable="true" closable="false" collapsible="true" effect="drop" effectSpeed="slow" visible="false">
+			
 		</p:layoutUnit>
 	</ui:define>
 

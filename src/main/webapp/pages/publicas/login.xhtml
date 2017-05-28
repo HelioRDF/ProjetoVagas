@@ -1,35 +1,26 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
 	xmlns:p="http://primefaces.org/ui"
-	xmlns:f="http://xmlns.jcp.org/jsf/core">
-
-
-<h:head>
-	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
-	<title>Login</title>
-	<h:outputStylesheet library="css" name="estilos.css"></h:outputStylesheet>
-
-</h:head>
-
-<h:body style="background-color:#ffffff;">
-
-	<h1>@ Encodetech</h1>
-
-
-
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	template="/resources/templates/templateEditar.xhtml">
+	
+	<ui:define name="insertCenter">
+			
+			<!-- Menu Publico -->
+			<ui:include  src="/resources/includes/menuPublico.xhtml"></ui:include>
+			<span style="margin: 100px;"></span>		
+			
 	<div id="login-dialog">
 		<p:messages id="msg" closable="true" style="width: 120%;" />
 		<h:form id="frm">
 
 
 			<h:panelGrid columns="1" styleClass="grid-login">
-				<h2>Login</h2>
-				<p:selectOneButton value="#{loginBean.tipoLogin}" style="margin: 0px 0px 0px 22%; width:80%; font-size: 14px;" >
-					<f:selectItem itemLabel="Usuário" itemValue="1"   />
-					<f:selectItem itemLabel="Empresa" itemValue="0" />
-				</p:selectOneButton>
+				<h2>Login de usuário</h2>
+			
 
 
 				<p:separator />
@@ -40,21 +31,18 @@
 
 					<p:outputLabel style="padding-top:15px;" value="E-Mail:"
 						for="usuario" />
-					<p:inputText id="usuario" size="20"
+					<p:inputText id="usuario" size="23"
 					value="#{loginBean.usuario.email}" />
 					<p:outputLabel value="Senha:" for="senha" />
-					<p:password id="senha" size="20" value="#{loginBean.usuario.senha}" />
+					<p:password id="senha" size="23" value="#{loginBean.usuario.senha}" />
 
 				</h:panelGrid>
 				<p:separator />
 				<p:commandButton update=":msg:"
-					actionListener="#{loginBean.autenticar}" value="Entrar"
+					actionListener="#{loginBean.autenticar}" value="Entrar" icon="ui-icon-circle-check"
 					style="margin: 5px 0px 0px 30%; width:40%; " />
 
-					<p:commandButton update=":msg:"
-					actionListener="#{loginBean.teste}" value="Teste"
-					style="margin: 5px 0px 0px 30%; width:40%; " />
-					
+								
 			</h:panelGrid>
 
 			<h:link id="lembrarsenha" value="Esqueci minha senha."></h:link>
@@ -65,6 +53,12 @@
 
 	<div id="rodape"></div>
 
+			
+			
+	</ui:define>
 
-</h:body>
-</html>
+
+
+
+
+</ui:composition>

@@ -37,7 +37,6 @@
 		<mapping class="br.com.projetovagas.domain.empresas.Empresa"/>
 		<mapping class="br.com.projetovagas.domain.complementos.Oportunidade"/>
 		<mapping class="br.com.projetovagas.domain.usuarios.Usuario"/>
-		
 		<mapping class="br.com.projetovagas.domain.usuarios.FormacaoAcademica"/>
 		<mapping class="br.com.projetovagas.domain.usuarios.ExperienciaProfissional"/>
 		<mapping class="br.com.projetovagas.domain.usuarios.AtividadesProfissionais"/>
