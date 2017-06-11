@@ -6,14 +6,17 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.event.ActionEvent;
 
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.omnifaces.util.Messages;
 
 import br.com.projetovagas.dao.localizacao.CidadeDAO;
+import br.com.projetovagas.dao.usuarios.FormacaoAcademicaDAO;
 import br.com.projetovagas.dao.usuarios.UsuarioDAO;
 import br.com.projetovagas.domain.localizacao.Cidade;
 import br.com.projetovagas.domain.localizacao.Estado;
+import br.com.projetovagas.domain.usuarios.FormacaoAcademica;
 import br.com.projetovagas.domain.usuarios.Usuario;
 
 @SuppressWarnings("serial")
@@ -24,6 +27,13 @@ public class UsuarioBean implements Serializable {
 	Usuario usuarioLogado = LoginBean.getUsuarioLogado();
 	UsuarioDAO dao;
 	String NomeTest;
+	
+	FormacaoAcademica formacaoAcademica;
+	Boolean botaoFormacao = true;
+	List <FormacaoAcademica> listaFormacao;
+	FormacaoAcademicaDAO formacaoAcademicaDAO;
+	
+	
 	
 	private Estado estado;
 	private List<Estado> listaEstado;
@@ -46,6 +56,11 @@ public class UsuarioBean implements Serializable {
 		auxCidade = LoginBean.getUsuarioLogado().getCidade().getNome();
 		auxEstado = LoginBean.getUsuarioLogado().getCidade().getEstado().getNome();
 		listaEstado = LoginBean.getListaEstado();
+		formacaoAcademicaDAO = new FormacaoAcademicaDAO();
+		formacaoAcademica = new FormacaoAcademica();
+		listaFormacao = formacaoAcademicaDAO.listar();
+		
+	
 
 		
 		
@@ -118,8 +133,166 @@ public class UsuarioBean implements Serializable {
 
 	}
 
-	// -------------------------------------------------------------------------------------------
+	// Salvar Formação
+	// ------------------------------------------------------------------------------------------------------------------------------------------------------
 
+	public void salvarFormacao() {
+
+		try {
+
+			
+			formacaoAcademica.setUsuario(usuarioLogado);
+			formacaoAcademicaDAO.salvar(formacaoAcademica);
+			
+			int total = formacaoAcademicaDAO.buscarPorUsuario(usuarioLogado.getCodigo()).size();
+			listaFormacao = formacaoAcademicaDAO.listar();
+			
+			if(total >= 7){
+				botaoFormacao = false;
+			}
+			
+			
+						
+		} catch (Exception e) {
+			// TODO: handle exception
+		} finally {
+
+		}
+
+	}
+
+
+	
+	// Instancia de Formação
+	// ------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	public void getinstanciaFormação(ActionEvent evento) {
+
+		try {
+			botaoFormacao = true;
+			
+			formacaoAcademica = (FormacaoAcademica) evento.getComponent().getAttributes().get("meuSelect");
+			Messages.addGlobalInfo("Seleção: " + formacaoAcademica.getNomeCurso());
+
+		} catch (Exception e) {
+			Messages.addGlobalError("Erro ao Editar: " + formacaoAcademica.getNomeCurso());
+
+		}
+
+	}
+	
+	
+	
+	// Excluir Formacao
+	// -------------------------------------------------------------------------------------------
+	public void excluirFormacao(ActionEvent evento) {
+
+		try {
+
+			formacaoAcademica = (FormacaoAcademica) evento.getComponent().getAttributes().get("meuSelect");
+
+			
+			Messages.addGlobalInfo("Formação removida com sucesso: " + formacaoAcademica.getNomeCurso());
+			formacaoAcademicaDAO.excluir(formacaoAcademica);
+			carregarCurriculo();
+
+		} catch (Exception e) {
+			Messages.addGlobalError("Erro ao Remover: " + formacaoAcademica.getNomeCurso());
+
+		} finally {
+
+		}
+
+	}
+	
+	
+	
+	
+	
+	
+	
+	// Carregar Curriculo
+		// -------------------------------------------------------------------------------------------
+		public void carregarCurriculo() {
+
+			// Atividades Profissionais
+			// ----------------------------------------------------------
+
+//			try {
+//
+//				atividadesProfissionais = new AtividadesProfissionais();
+//				daoAtividades = new AtividadesProfissionaisDAO();
+//				listaAtividades = daoAtividades.buscarPorUsuario(usuario.getCodigo());
+//
+//				if (listaAtividades.size() < 10) {
+//					botaoAtividades = true;
+//
+//				} else {
+//					botaoAtividades = false;
+//					Messages.addGlobalWarn("Numéro maximo de Qualificações atingido. (max = 10)");
+//
+//				}
+//
+//			} catch (Exception e) {
+//				Messages.addGlobalError("Falha ao tentar  atualizadar a lista  ");
+//			}
+
+			// Fim Atividades Profissionais
+			// ----------------------------------------------------------
+
+			// Experiência
+			// ----------------------------------------------------------
+//			try {
+//
+//				experienciaProfissional = new ExperienciaProfissional();
+//				daoExperiencia = new ExperienciaProfissionalDAO();
+//				listaExperiencia = daoExperiencia.buscarPorUsuario(usuario.getCodigo());
+//
+//				if (listaExperiencia.size() < 4) {
+//					botaoExperiencia = true;
+//
+//				} else {
+//					botaoExperiencia = false;
+//					Messages.addGlobalWarn("Numéro maximo de Experiência atingido. (max = 4)");
+//
+//				}
+//
+//			} catch (Exception e) {
+//				Messages.addGlobalError("Falha ao tentar  atualizadar a lista  ");
+//			}
+			// Fim Experiência
+			// ----------------------------------------------------------
+
+			// Formação Academica
+			// ----------------------------------------------------------
+			try {
+			formacaoAcademica = new FormacaoAcademica();
+			formacaoAcademicaDAO = new FormacaoAcademicaDAO();
+				listaFormacao = formacaoAcademicaDAO.buscarPorUsuario(usuarioLogado.getCodigo());
+
+				if (listaFormacao.size() < 7) {
+					botaoFormacao = true;
+
+				} else {
+					botaoFormacao = false;
+					Messages.addGlobalWarn("Numéro maximo de Formações atingido. (max = 7)");
+
+				}
+
+			} catch (Exception e) {
+				Messages.addGlobalError("Falha ao tentar  atualizadar a lista  ");
+			}
+
+			// Fim Formação Academica
+			// ----------------------------------------------------------
+
+		}
+		
+		
+
+	// -------------------------------------------------------------------------------------------
+	
+	
 	public Usuario getUsuarioLogado() {
 		return usuarioLogado;
 	}
@@ -175,6 +348,44 @@ public class UsuarioBean implements Serializable {
 	public void setListaCidade(List<Cidade> listaCidade) {
 		this.listaCidade = listaCidade;
 	}
+
+
+
+	public FormacaoAcademica getFormacaoAcademica() {
+		return formacaoAcademica;
+	}
+
+
+
+	public void setFormacaoAcademica(FormacaoAcademica formacaoAcademica) {
+		this.formacaoAcademica = formacaoAcademica;
+	}
+
+
+
+	public Boolean getBotaoFormacao() {
+		return botaoFormacao;
+	}
+
+
+
+	public void setBotaoFormacao(Boolean botaoFormacao) {
+		this.botaoFormacao = botaoFormacao;
+	}
+
+
+
+	public List<FormacaoAcademica> getListaFormacao() {
+		return listaFormacao;
+	}
+
+
+
+	public void setListaFormacao(List<FormacaoAcademica> listaFormacao) {
+		this.listaFormacao = listaFormacao;
+	}
+	
+	
 	
 	
 
