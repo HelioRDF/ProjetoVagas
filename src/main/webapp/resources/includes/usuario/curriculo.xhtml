@@ -414,6 +414,157 @@ value="#{usuarioBean.listaExperiencia}"	style=" text-align:center;"  >
    
    
    
+   <!-- _________________________________________________________________________________________________________________________________ -->
+
+   
+   <p:tab title="Qualificações e Atividades Profissionais ">
+       
+
+
+<!-- QUALIFICAÇÕES  01 -->
+ <p:fieldset legend="Adicionar"  toggleable="true"  collapsed="true" toggleSpeed="880">
+        
+        <h:panelGrid columns="2" >
+        
+<p:outputLabel value="Instituição" style="margin-right:30px" />       
+ 
+<p:inputText maxlength="30" size="25" 
+	value="#{usuarioBean.atividadesProfissionais.instituicao}" >
+<f:validateLength minimum="3" disabled="true" />
+
+</p:inputText>
+                                
+ <p:outputLabel value="Curso"  />
+<p:inputText style="margin-left:2px" maxlength="40" size="35" 
+	value="#{usuarioBean.atividadesProfissionais.nomeCurso}" >
+<f:validateLength minimum="3" disabled="true" />
+
+</p:inputText>     
+            
+
+</h:panelGrid>
+
+    <h:panelGrid columns="6" >	
+<p:outputLabel value="Conclusão: " style="margin-right:30px" />
+ 	<p:calendar locale="pt_BR"  
+		navigator="true" pages="1"
+		value="#{usuarioBean.atividadesProfissionais.anoCurso}"
+		size="8"  > 
+</p:calendar>
+	<p:graphicImage style="float:center;" value="/images/calendar (3).png" />
+	
+	
+	<p:outputLabel  value="Carga Horária: " style="margin-left:8px" />
+<p:inputNumber   maxValue="9999"  minValue="0" decimalPlaces="0" maxlength="50"
+	size="5" value="#{usuarioBean.atividadesProfissionais.cargaHoraria}"
+	>
+	<f:convertNumber locale="pt_BR" pattern="##" minIntegerDigits="4" />
+<f:validateLength minimum="3" disabled="true" />
+
+</p:inputNumber>
+<p:outputLabel  value="Hrs" />
+
+</h:panelGrid>	
+
+
+
+
+<p:commandButton action="#{usuarioBean.salvarAtividades}"
+value="Salvar" rendered="#{usuarioBean.botaoAtividades}" style="margin:10px auto;" icon="ui-icon-squaresmall-plus"
+ validateClient="true"  update=":dialogformCurriculo: dialogformCurriculo:IDtabView:dataTableQualificacoes"></p:commandButton>
+
+  
+  </p:fieldset>
+     <p:separator></p:separator>
+  
+  
+<!-- Data Table -->
+<p:dataTable id="dataTableQualificacoes" emptyMessage="Nenhum Registro encontrado"	var="dataVarQualificacoes" 
+value="#{usuarioBean.listaAtividades}"	style=" text-align:center;"  >
+
+<!-- _________________________________________________________________________________________________________________________________ -->
+<!-- Informações das Colunas -->
+
+	
+
+			<p:column headerText="ID" width="11%" sortBy="#{dataVarQualificacoes.codigo}"  >
+				<p:outputLabel value="#{dataVarQualificacoes.codigo}"  />
+			</p:column>
+
+			<p:column headerText="Curso" sortBy="#{dataVarQualificacoes.nomeCurso}" >
+			<p:outputLabel value="#{dataVarQualificacoes.nomeCurso}"   />
+			</p:column>
+
+			<p:column headerText="Instituição" >
+			<p:outputLabel value="#{dataVarQualificacoes.instituicao}"   />
+			</p:column>
+			
+			<p:column headerText="Ano do Curso" >
+			<p:outputLabel value="#{dataVarQualificacoes.anoCurso}"   />
+			</p:column>
+			
+						
+			<p:column headerText="Carga horária" >
+			<p:outputLabel value="#{dataVarQualificacoes.cargaHoraria}"   />
+			</p:column>
+			
+
+
+			<p:column headerText="Opções" width="18%">
+			
+
+				<!-- Editar -->
+				<p:commandButton title="Editar" icon="ui-icon-pencil"
+					actionListener="#{usuarioBean.getinstanciaQualificacao}" update=":dialogformCurriculo:">
+					<f:attribute name="meuSelect" value="#{dataVarQualificacoes}" />
+				</p:commandButton>
+		
+
+				<!-- Excluir -->
+				<p:commandButton title="Excluir" icon="ui-icon-trash"
+					actionListener="#{usuarioBean.excluirQualificacao}" update=":dialogformCurriculo:">
+					<p:confirm header="Confirmação"
+						message="Deseja excluir o usuário ?" icon="ui-icon-alert" />
+					<f:attribute name="meuSelect" value="#{dataVarQualificacoes}" />
+				</p:commandButton>
+
+				<!-- Dialogo Global -->
+				<p:confirmDialog global="true">
+					<p:commandButton value="sim" type="button"
+						styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+					<p:commandButton value="não" type="button"
+						styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+				</p:confirmDialog>
+
+			
+
+
+			</p:column>
+
+
+
+		</p:dataTable>
+		
+  
+  
+  <br></br>
+				<h:outputLabel style="font-size:12px; color: orange;" value="Máximo '10' Qualificações"></h:outputLabel>
+
+<br></br><br></br><br></br><br></br> <br></br>
+
+
+
+
+
+   </p:tab>
+
+
+
+
+
+
+<!-- _________________________________________________________________________________________________________________________________ -->
+
    
    
     
