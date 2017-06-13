@@ -28,28 +28,24 @@ public class UsuarioBean implements Serializable {
 	UsuarioDAO dao;
 	String NomeTest;
 	
+	private Boolean statusBoolean = false;
+
 	FormacaoAcademica formacaoAcademica;
 	Boolean botaoFormacao = true;
-	List <FormacaoAcademica> listaFormacao;
+	List<FormacaoAcademica> listaFormacao;
 	FormacaoAcademicaDAO formacaoAcademicaDAO;
-	
-	
-	
+
 	private Estado estado;
 	private List<Estado> listaEstado;
 	private String auxEstado = " Selecione um Estado";
-	
 
 	private CidadeDAO cidadeDAO;
 	private String auxCidade = "Selecione uma Cidade";
 	private List<Cidade> listaCidade;
 
-
-	
-
 	// Editar usuário
 	// -------------------------------------------------------------------------------------------
-	
+
 	@PostConstruct
 	public void inicia() {
 
@@ -59,15 +55,9 @@ public class UsuarioBean implements Serializable {
 		formacaoAcademicaDAO = new FormacaoAcademicaDAO();
 		formacaoAcademica = new FormacaoAcademica();
 		listaFormacao = formacaoAcademicaDAO.listar();
-		
-	
 
-		
-		
 	}
 
-	
-	
 	// Editar usuário
 	// -------------------------------------------------------------------------------------------
 	public void editar() {
@@ -113,9 +103,8 @@ public class UsuarioBean implements Serializable {
 		}
 
 	}
-	
-	
-	// Buscar  Cidades
+
+	// Buscar Cidades
 	// ------------------------------------------------------------------------------------------------------------------------------------------------------
 
 	public void buscarCidade() {
@@ -139,30 +128,39 @@ public class UsuarioBean implements Serializable {
 	public void salvarFormacao() {
 
 		try {
+			if (botaoFormacao = true) {
 
-			
-			formacaoAcademica.setUsuario(usuarioLogado);
-			formacaoAcademicaDAO.salvar(formacaoAcademica);
-			
-			int total = formacaoAcademicaDAO.buscarPorUsuario(usuarioLogado.getCodigo()).size();
-			listaFormacao = formacaoAcademicaDAO.listar();
-			
-			if(total >= 7){
-				botaoFormacao = false;
+				if (statusBoolean.equals(true)) {
+					formacaoAcademica.setStatus("Concluído");
+				} else {
+					formacaoAcademica.setStatus("Incompleto");
+				}
+				
+				
+				if (formacaoAcademica.getNomeCurso().trim().isEmpty()
+						|| formacaoAcademica.getInstituicao().trim().isEmpty()) {
+
+					Messages.addGlobalWarn("Preencha os campos corretamente.");
+					carregarFormacao();
+
+				} else {
+				
+				
+
+				formacaoAcademica.setUsuario(usuarioLogado);
+				formacaoAcademicaDAO.merge(formacaoAcademica);
+
+				Messages.addGlobalInfo("Formação  salva com sucesso: " + formacaoAcademica.getNomeCurso());
+				carregarFormacao();
 			}
-			
-			
-						
+			}
 		} catch (Exception e) {
-			// TODO: handle exception
+			Messages.addGlobalError("Não foi possível salvar a formação, Preencha os campos corretamente. ");
+
 		} finally {
 
 		}
-
 	}
-
-
-	
 	// Instancia de Formação
 	// ------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -170,7 +168,7 @@ public class UsuarioBean implements Serializable {
 
 		try {
 			botaoFormacao = true;
-			
+
 			formacaoAcademica = (FormacaoAcademica) evento.getComponent().getAttributes().get("meuSelect");
 			Messages.addGlobalInfo("Seleção: " + formacaoAcademica.getNomeCurso());
 
@@ -180,9 +178,7 @@ public class UsuarioBean implements Serializable {
 		}
 
 	}
-	
-	
-	
+
 	// Excluir Formacao
 	// -------------------------------------------------------------------------------------------
 	public void excluirFormacao(ActionEvent evento) {
@@ -191,7 +187,6 @@ public class UsuarioBean implements Serializable {
 
 			formacaoAcademica = (FormacaoAcademica) evento.getComponent().getAttributes().get("meuSelect");
 
-			
 			Messages.addGlobalInfo("Formação removida com sucesso: " + formacaoAcademica.getNomeCurso());
 			formacaoAcademicaDAO.excluir(formacaoAcademica);
 			carregarCurriculo();
@@ -204,95 +199,100 @@ public class UsuarioBean implements Serializable {
 		}
 
 	}
-	
-	
-	
-	
-	
-	
-	
+
 	// Carregar Curriculo
-		// -------------------------------------------------------------------------------------------
-		public void carregarCurriculo() {
-
-			// Atividades Profissionais
-			// ----------------------------------------------------------
-
-//			try {
-//
-//				atividadesProfissionais = new AtividadesProfissionais();
-//				daoAtividades = new AtividadesProfissionaisDAO();
-//				listaAtividades = daoAtividades.buscarPorUsuario(usuario.getCodigo());
-//
-//				if (listaAtividades.size() < 10) {
-//					botaoAtividades = true;
-//
-//				} else {
-//					botaoAtividades = false;
-//					Messages.addGlobalWarn("Numéro maximo de Qualificações atingido. (max = 10)");
-//
-//				}
-//
-//			} catch (Exception e) {
-//				Messages.addGlobalError("Falha ao tentar  atualizadar a lista  ");
-//			}
-
-			// Fim Atividades Profissionais
-			// ----------------------------------------------------------
-
-			// Experiência
-			// ----------------------------------------------------------
-//			try {
-//
-//				experienciaProfissional = new ExperienciaProfissional();
-//				daoExperiencia = new ExperienciaProfissionalDAO();
-//				listaExperiencia = daoExperiencia.buscarPorUsuario(usuario.getCodigo());
-//
-//				if (listaExperiencia.size() < 4) {
-//					botaoExperiencia = true;
-//
-//				} else {
-//					botaoExperiencia = false;
-//					Messages.addGlobalWarn("Numéro maximo de Experiência atingido. (max = 4)");
-//
-//				}
-//
-//			} catch (Exception e) {
-//				Messages.addGlobalError("Falha ao tentar  atualizadar a lista  ");
-//			}
-			// Fim Experiência
-			// ----------------------------------------------------------
-
-			// Formação Academica
-			// ----------------------------------------------------------
-			try {
-			formacaoAcademica = new FormacaoAcademica();
-			formacaoAcademicaDAO = new FormacaoAcademicaDAO();
-				listaFormacao = formacaoAcademicaDAO.buscarPorUsuario(usuarioLogado.getCodigo());
-
-				if (listaFormacao.size() < 7) {
-					botaoFormacao = true;
-
-				} else {
-					botaoFormacao = false;
-					Messages.addGlobalWarn("Numéro maximo de Formações atingido. (max = 7)");
-
-				}
-
-			} catch (Exception e) {
-				Messages.addGlobalError("Falha ao tentar  atualizadar a lista  ");
-			}
-
-			// Fim Formação Academica
-			// ----------------------------------------------------------
-
-		}
+	// -------------------------------------------------------------------------------------------
+	public void carregarCurriculo() {
 		
-		
+		carregarFormacao();
+
+		// Atividades Profissionais
+		// ----------------------------------------------------------
+
+		// try {
+		//
+		// atividadesProfissionais = new AtividadesProfissionais();
+		// daoAtividades = new AtividadesProfissionaisDAO();
+		// listaAtividades =
+		// daoAtividades.buscarPorUsuario(usuario.getCodigo());
+		//
+		// if (listaAtividades.size() < 10) {
+		// botaoAtividades = true;
+		//
+		// } else {
+		// botaoAtividades = false;
+		// Messages.addGlobalWarn("Numéro maximo de Qualificações atingido. (max
+		// = 10)");
+		//
+		// }
+		//
+		// } catch (Exception e) {
+		// Messages.addGlobalError("Falha ao tentar atualizadar a lista ");
+		// }
+
+		// Fim Atividades Profissionais
+		// ----------------------------------------------------------
+
+		// Experiência
+		// ----------------------------------------------------------
+		// try {
+		//
+		// experienciaProfissional = new ExperienciaProfissional();
+		// daoExperiencia = new ExperienciaProfissionalDAO();
+		// listaExperiencia =
+		// daoExperiencia.buscarPorUsuario(usuario.getCodigo());
+		//
+		// if (listaExperiencia.size() < 4) {
+		// botaoExperiencia = true;
+		//
+		// } else {
+		// botaoExperiencia = false;
+		// Messages.addGlobalWarn("Numéro maximo de Experiência atingido. (max =
+		// 4)");
+		//
+		// }
+		//
+		// } catch (Exception e) {
+		// Messages.addGlobalError("Falha ao tentar atualizadar a lista ");
+		// }
+		// Fim Experiência
+		// ----------------------------------------------------------
+
+	}
+	
+	// -------------------------------------------------------------------------------------------
+
 
 	// -------------------------------------------------------------------------------------------
-	
-	
+	// Formação Academica
+	// ----------------------------------------------------------
+
+	public void carregarFormacao() {
+
+		try {
+			formacaoAcademica = new FormacaoAcademica();
+			formacaoAcademicaDAO = new FormacaoAcademicaDAO();
+			listaFormacao = formacaoAcademicaDAO.buscarPorUsuario(usuarioLogado.getCodigo());
+
+			if (listaFormacao.size() < 7) {
+				botaoFormacao = true;
+
+			} else {
+				botaoFormacao = false;
+				Messages.addGlobalWarn("Numéro maximo de Formações atingido. (max = 7)");
+
+			}
+
+		} catch (Exception e) {
+			Messages.addGlobalError("Falha ao tentar  atualizadar a lista  ");
+		}
+	}
+
+	// Fim Formação Academica
+	// ----------------------------------------------------------
+
+	// -------------------------------------------------------------------------------------------
+
 	public Usuario getUsuarioLogado() {
 		return usuarioLogado;
 	}
@@ -349,44 +349,28 @@ public class UsuarioBean implements Serializable {
 		this.listaCidade = listaCidade;
 	}
 
-
-
 	public FormacaoAcademica getFormacaoAcademica() {
 		return formacaoAcademica;
 	}
-
-
 
 	public void setFormacaoAcademica(FormacaoAcademica formacaoAcademica) {
 		this.formacaoAcademica = formacaoAcademica;
 	}
 
-
-
 	public Boolean getBotaoFormacao() {
 		return botaoFormacao;
 	}
-
-
 
 	public void setBotaoFormacao(Boolean botaoFormacao) {
 		this.botaoFormacao = botaoFormacao;
 	}
 
-
-
 	public List<FormacaoAcademica> getListaFormacao() {
 		return listaFormacao;
 	}
 
-
-
 	public void setListaFormacao(List<FormacaoAcademica> listaFormacao) {
 		this.listaFormacao = listaFormacao;
 	}
-	
-	
-	
-	
 
 }

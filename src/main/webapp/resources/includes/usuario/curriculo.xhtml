@@ -70,7 +70,7 @@ value="Salvar"  style="margin:10px auto;" icon="ui-icon-squaresmall-plus"
 
  
  
-<p:fieldset   legend="Adicionar"  toggleable="true"  collapsed="true" toggleSpeed="880"> 
+<p:fieldset   legend="Adicionar / Editar"  toggleable="true"  collapsed="true" toggleSpeed="880"> 
 
 <!-- Formação 01 -->
 
@@ -81,9 +81,10 @@ value="Salvar"  style="margin:10px auto;" icon="ui-icon-squaresmall-plus"
         
        <h:panelGrid columns="4">
   <p:outputLabel value="Curso:" style="margin-right:30px;" />
-<p:inputText  style="margin-right:20px" maxlength="60" size="33" 
+<p:inputText  style="margin-right:20px" maxlength="60" size="33" validatorMessage="???"
 	value="#{usuarioBean.formacaoAcademica.nomeCurso}" required="false" requiredMessage="Preencha o campo Curso corretamente">
-</p:inputText>          
+	</p:inputText>   
+       
         
   <p:outputLabel value="Instituição:"  />
  <p:inputText maxlength="30" size="25" style="margin:auto;"
@@ -135,7 +136,7 @@ value="Salvar"  style="margin:10px auto;" icon="ui-icon-squaresmall-plus"
 		<p:calendar locale="pt_BR" 
 		navigator="true" pages="1"
 		value="#{usuarioBean.formacaoAcademica.fim}" required="false"
-		size="8" requiredMessage="Preencha o campo fim do curso" > 
+		size="8" requiredMessage="Preencha o campo fim do " > 
 	
 </p:calendar>
 
@@ -148,8 +149,8 @@ value="Salvar"  style="margin:10px auto;" icon="ui-icon-squaresmall-plus"
  </h:panelGrid>
  </h:panelGrid>
 <p:commandButton action="#{usuarioBean.salvarFormacao}"
-value="Salvar" rendered="#{usuarioBean.botaoFormacao}" style="margin:10px auto;" icon="ui-icon-squaresmall-plus"
- validateClient="true"  update=":dialogformCurriculo: dialogformCurriculo:IDtabView:dataTableFormacao"></p:commandButton>
+value="Salvar" rendered="#{usuarioBean.botaoFormacao}" style="margin:10px auto;" icon="ui-icon-squaresmall-plus" 
+   update=":dialogformCurriculo: dialogformCurriculo:IDtabView:dataTableFormacao"></p:commandButton>
 
 
 
@@ -170,7 +171,7 @@ value="#{usuarioBean.listaFormacao}"	style=" text-align:center;"  >
 				<p:rowToggler />
 			</p:column>
 
-			<p:column headerText="ID" width="11%" sortBy="#{dataVarFormacao.codigo}"  >
+			<p:column visible="false" headerText="ID" width="11%" sortBy="#{dataVarFormacao.codigo}"  >
 				<p:outputLabel value="#{dataVarFormacao.codigo}"  />
 			</p:column>
 
@@ -229,12 +230,19 @@ value="#{usuarioBean.listaFormacao}"	style=" text-align:center;"  >
 					<h:outputText value="Fim: #{dataVarFormacao.fim}" />
 					
 				</p:panelGrid>
+				
+				
+				<p:separator style=" height:10px;background-color:#e6e6ff"></p:separator>
 
 			</p:rowExpansion>
-
+	
 		</p:dataTable>
+			<br></br>
+				<h:outputLabel style="font-size:12px; color: orange;" value="Máximo 7 formações"></h:outputLabel>	
+			
+		<br></br><br></br><br></br> <br></br>
 		
-		<br></br><br></br><br></br><br></br> <br></br>
+	
 
 </p:tab>
 
@@ -243,8 +251,10 @@ value="#{usuarioBean.listaFormacao}"	style=" text-align:center;"  >
 <!-- _________________________________________________________________________________________________________________________________ -->
    
        
+    
+       
       </p:tabView>
-		
+	
 	
 </h:form>
 
