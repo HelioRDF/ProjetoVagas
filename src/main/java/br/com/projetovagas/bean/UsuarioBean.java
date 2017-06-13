@@ -12,10 +12,12 @@ import org.apache.shiro.crypto.hash.SimpleHash;
 import org.omnifaces.util.Messages;
 
 import br.com.projetovagas.dao.localizacao.CidadeDAO;
+import br.com.projetovagas.dao.usuarios.ExperienciaProfissionalDAO;
 import br.com.projetovagas.dao.usuarios.FormacaoAcademicaDAO;
 import br.com.projetovagas.dao.usuarios.UsuarioDAO;
 import br.com.projetovagas.domain.localizacao.Cidade;
 import br.com.projetovagas.domain.localizacao.Estado;
+import br.com.projetovagas.domain.usuarios.ExperienciaProfissional;
 import br.com.projetovagas.domain.usuarios.FormacaoAcademica;
 import br.com.projetovagas.domain.usuarios.Usuario;
 
@@ -31,9 +33,15 @@ public class UsuarioBean implements Serializable {
 	private Boolean statusBoolean = false;
 
 	FormacaoAcademica formacaoAcademica;
-	Boolean botaoFormacao = true;
+	Boolean botaoFormacao = false;
 	List<FormacaoAcademica> listaFormacao;
 	FormacaoAcademicaDAO formacaoAcademicaDAO;
+	
+	private ExperienciaProfissional experienciaProfissional;
+	private Boolean botaoExperiencia = false;
+	private ExperienciaProfissionalDAO daoExperiencia;
+	private List<ExperienciaProfissional> listaExperiencia;
+	
 
 	private Estado estado;
 	private List<Estado> listaEstado;
@@ -52,9 +60,14 @@ public class UsuarioBean implements Serializable {
 		auxCidade = LoginBean.getUsuarioLogado().getCidade().getNome();
 		auxEstado = LoginBean.getUsuarioLogado().getCidade().getEstado().getNome();
 		listaEstado = LoginBean.getListaEstado();
+		
 		formacaoAcademicaDAO = new FormacaoAcademicaDAO();
 		formacaoAcademica = new FormacaoAcademica();
 		listaFormacao = formacaoAcademicaDAO.listar();
+		
+		daoExperiencia = new ExperienciaProfissionalDAO();
+		experienciaProfissional = new ExperienciaProfissional();
+		listaExperiencia = daoExperiencia.listar();
 
 	}
 
@@ -199,12 +212,123 @@ public class UsuarioBean implements Serializable {
 		}
 
 	}
+	
+	
+	// Salvar Experiência
+	// -------------------------------------------------------------------------------------
+	public void salvarExperiencia() {
+
+		try {
+			if (botaoExperiencia = true) {
+				
+				
+	
+				
+				if (experienciaProfissional.getNomeEmpresa().trim().isEmpty()
+						|| experienciaProfissional.getCargo().trim().isEmpty()) {
+
+					Messages.addGlobalWarn("Preencha os campos corretamente.");
+					carregarExperiencia();
+
+				} else {	
+				
+				
+				
+				experienciaProfissional.setUsuario(usuarioLogado);
+				daoExperiencia.merge(experienciaProfissional);
+				Messages.addGlobalInfo("Experiencia  salva com sucesso: " + experienciaProfissional.getCargo());
+				carregarExperiencia();
+				}
+			}
+
+		} catch (Exception e) {
+			Messages.addGlobalError("Não foi possível salvar a formação, Preencha os campos corretamente. ");
+
+		} finally {
+
+		}
+	}
+	// Carregar Experiência
+	// -------------------------------------------------------------------------------------------
+
+	public void carregarExperiencia(){
+		
+		
+		// Experiência
+				// ----------------------------------------------------------
+				try {
+
+					experienciaProfissional = new ExperienciaProfissional();
+					daoExperiencia = new ExperienciaProfissionalDAO();
+					listaExperiencia = daoExperiencia.buscarPorUsuario(usuarioLogado.getCodigo());
+
+					if (listaExperiencia.size() < 4) {
+						botaoExperiencia = true;
+
+					} else {
+						botaoExperiencia = false;
+						Messages.addGlobalWarn("Numéro maximo de Experiência atingido. (max = 4)");
+
+					}
+
+				} catch (Exception e) {
+					Messages.addGlobalError("Falha ao tentar  atualizadar a lista  ");
+				}
+				// Fim Experiência
+				// ----------------------------------------------------------
+		
+	}
+	
+	
+	
+	// Instancia de Experiencia
+	// ------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	public void getinstanciaExperiencia(ActionEvent evento) {
+
+		try {
+			botaoExperiencia = true;
+
+			experienciaProfissional = (ExperienciaProfissional) evento.getComponent().getAttributes().get("meuSelect");
+			Messages.addGlobalInfo("Seleção: " + experienciaProfissional.getCargo());
+
+		} catch (Exception e) {
+			Messages.addGlobalError("Erro ao Editar: " + experienciaProfissional.getCargo());
+
+		}
+
+	}
+	
+	
+	// Excluir Exp
+		// -------------------------------------------------------------------------------------------
+		public void excluirExperiencia(ActionEvent evento) {
+
+			try {
+
+				experienciaProfissional = (ExperienciaProfissional) evento.getComponent().getAttributes().get("meuSelect");
+
+				ExperienciaProfissionalDAO dao = new ExperienciaProfissionalDAO();
+				Messages.addGlobalInfo("Experiência removida com sucesso: " + experienciaProfissional.getCargo());
+				dao.excluir(experienciaProfissional);
+				carregarCurriculo();
+
+			} catch (Exception e) {
+				Messages.addGlobalError("Erro ao Remover: " + experienciaProfissional.getCargo());
+
+			} finally {
+
+			}
+
+		}
+	
 
 	// Carregar Curriculo
 	// -------------------------------------------------------------------------------------------
 	public void carregarCurriculo() {
 		
 		carregarFormacao();
+		carregarExperiencia();
 
 		// Atividades Profissionais
 		// ----------------------------------------------------------
@@ -372,5 +496,40 @@ public class UsuarioBean implements Serializable {
 	public void setListaFormacao(List<FormacaoAcademica> listaFormacao) {
 		this.listaFormacao = listaFormacao;
 	}
+
+	public Boolean getStatusBoolean() {
+		return statusBoolean;
+	}
+
+	public void setStatusBoolean(Boolean statusBoolean) {
+		this.statusBoolean = statusBoolean;
+	}
+
+	public ExperienciaProfissional getExperienciaProfissional() {
+		return experienciaProfissional;
+	}
+
+	public void setExperienciaProfissional(ExperienciaProfissional experienciaProfissional) {
+		this.experienciaProfissional = experienciaProfissional;
+	}
+
+	public Boolean getBotaoExperiencia() {
+		return botaoExperiencia;
+	}
+
+	public void setBotaoExperiencia(Boolean botaoExperiencia) {
+		this.botaoExperiencia = botaoExperiencia;
+	}
+
+	public List<ExperienciaProfissional> getListaExperiencia() {
+		return listaExperiencia;
+	}
+
+	public void setListaExperiencia(List<ExperienciaProfissional> listaExperiencia) {
+		this.listaExperiencia = listaExperiencia;
+	}
+	
+	
+	
 
 }

@@ -114,7 +114,7 @@ value="Salvar"  style="margin:10px auto;" icon="ui-icon-squaresmall-plus"
 </p:selectOneMenu>
 
   <p:selectBooleanButton onLabel="Concluído" offLabel="Incompleto" 
-	value="#{usuarioBean.formacaoAcademica.status}" required="true" 
+	value="#{usuarioBean.statusBoolean}" required="true" 
 	requiredMessage="Verificar campo Status">
 </p:selectBooleanButton>
 	
@@ -238,7 +238,7 @@ value="#{usuarioBean.listaFormacao}"	style=" text-align:center;"  >
 	
 		</p:dataTable>
 			<br></br>
-				<h:outputLabel style="font-size:12px; color: orange;" value="Máximo 7 formações"></h:outputLabel>	
+				<h:outputLabel style="font-size:12px; color: orange;" value="Máximo '7' formações"></h:outputLabel>	
 			
 		<br></br><br></br><br></br> <br></br>
 		
@@ -246,14 +246,181 @@ value="#{usuarioBean.listaFormacao}"	style=" text-align:center;"  >
 
 </p:tab>
 
+   
+   
+<!-- _________________________________________________________________________________________________________________________________ -->
+   
+   
+<p:tab title="Experiência Profissional">
+  
+  
+ <!-- Experiencia  01 -->
+ <p:fieldset legend="Adicionar / Editar"  toggleable="true"  collapsed="true" toggleSpeed="880">  
+        
+ <h:panelGrid columns="4" >
+ 
+ 
+<p:outputLabel value="Empresa: " style="margin-right:68px" />
+<p:inputText maxlength="35" size="25" value="#{usuarioBean.experienciaProfissional.nomeEmpresa}" 
+>
+<f:validateLength minimum="3" disabled="true" />
+
+</p:inputText>
+
+<p:outputLabel value="Cargo: " style="margin-left:45px" />
+<p:inputText maxlength="35" size="25" value="#{usuarioBean.experienciaProfissional.cargo}" 
+>
+<f:validateLength minimum="3" disabled="true" />
+
+</p:inputText>
+
+</h:panelGrid>
+
+    <h:panelGrid columns="6" >	
+<p:outputLabel value="Inicio: " style="margin-right:90px" />
+ 	<p:calendar locale="pt_BR"  
+		navigator="true" pages="1"
+		value="#{usuarioBean.experienciaProfissional.entrada}"
+		size="10"  > 
+</p:calendar>
+	<p:graphicImage style="float:center;" value="/images/calendar (3).png" />
+	
+	
+	
+ <p:outputLabel value="Saída: " style="margin-left:140px" />	
+		<p:calendar locale="pt_BR" 
+		navigator="true" pages="1"
+		value="#{usuarioBean.experienciaProfissional.saida}"
+		size="10" requiredMessage="Preencha o campo saída do curso" > 
+	
+</p:calendar>
+
+		<p:graphicImage style="float:center;" value="/images/calendar (3).png" />
+	
+</h:panelGrid>	
+<h:panelGrid columns="2">
+<p:outputLabel value="Atividade: " style="margin-right:60px; " />
+<p:inputTextarea maxlength="250"  rows="3" cols="75" value="#{usuarioBean.experienciaProfissional.principaisAtividades}" 
+>
+<f:validateLength minimum="3" disabled="true" />
+</p:inputTextarea>
+</h:panelGrid>
+
+
+
+<p:commandButton action="#{usuarioBean.salvarExperiencia}"
+value="Salvar" rendered="#{usuarioBean.botaoExperiencia}" style="margin:10px auto;" icon="ui-icon-squaresmall-plus"
+ validateClient="true"  update=":dialogformCurriculo: dialogformCurriculo:IDtabView:dataTableExperiencia"></p:commandButton>
+
+
+
+    </p:fieldset>
+  
+  
+  
+  
+  
+  
+     <p:separator></p:separator>
+  
+  
+<!-- Data Table -->
+<p:dataTable id="dataTableExperiencia" emptyMessage="Nenhum Registro encontrado"	var="dataVarExperiencia" 
+value="#{usuarioBean.listaExperiencia}"	style=" text-align:center;"  >
+
+<!-- _________________________________________________________________________________________________________________________________ -->
+<!-- Informações das Colunas -->
+
+			<p:column headerText="Exp" width="6%">
+				<!-- Expandir infos -->
+				<p:rowToggler />
+			</p:column>
+
+			<p:column headerText="ID" width="11%" sortBy="#{dataVarExperiencia.codigo}"  >
+				<p:outputLabel value="#{dataVarExperiencia.codigo}"  />
+			</p:column>
+
+			<p:column headerText="Nome da Empresa" sortBy="#{dataVarExperiencia.nomeEmpresa}" >
+			<p:outputLabel value="#{dataVarExperiencia.nomeEmpresa}"   />
+			</p:column>
+
+			<p:column headerText="Cargo" >
+			<p:outputLabel value="#{dataVarExperiencia.cargo}"   />
+			</p:column>
+			
+
+
+			<p:column headerText="Opções" width="18%">
+		 
+		 	
+
+				<!-- Editar -->
+				<p:commandButton title="Editar" icon="ui-icon-pencil"
+					actionListener="#{usuarioBean.getinstanciaExperiencia}" update=":dialogformCurriculo:">
+					<f:attribute name="meuSelect" value="#{dataVarExperiencia}" />
+				</p:commandButton>
+		
+
+				<!-- Excluir -->
+				<p:commandButton title="Excluir" icon="ui-icon-trash"
+					actionListener="#{usuarioBean.excluirExperiencia}" update=":dialogformCurriculo:">
+					<p:confirm header="Confirmação"
+						message="Deseja excluir o usuário ?" icon="ui-icon-alert" />
+					<f:attribute name="meuSelect" value="#{dataVarExperiencia}" />
+				</p:commandButton>
+
+				<!-- Dialogo Global -->
+				<p:confirmDialog global="true">
+					<p:commandButton value="sim" type="button"
+						styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+					<p:commandButton value="não" type="button"
+						styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+				</p:confirmDialog>
+
+			
+
+
+			</p:column>
 
 
 <!-- _________________________________________________________________________________________________________________________________ -->
+<!-- Informações após expandir linha -->
+
+			<p:rowExpansion styleClass=" width=37%">
+
+				<p:panelGrid columns="1" columnClasses="label,value" style="text-align:left;">
+
+					<h:outputText value="Início: #{dataVarExperiencia.entrada}" />
+					<h:outputText value="Fim: #{dataVarExperiencia.saida}" />
+					
+					
+				
+					<h:inputTextarea cols="100" rows="5"  readonly="true" value="Principais Atividades: #{dataVarExperiencia.principaisAtividades}" />
+					
+					
+				</p:panelGrid>
+
+			</p:rowExpansion>
+
+		</p:dataTable>
+		
+  
+  <br></br>
+				<h:outputLabel style="font-size:12px; color: orange;" value="Máximo '4' Experiências"></h:outputLabel>	
+	
+<br></br><br></br><br></br><br></br> <br></br>
+     
+ </p:tab>
    
-       
+   
+   
+   
+   
     
        
       </p:tabView>
+      
+	
 	
 	
 </h:form>
