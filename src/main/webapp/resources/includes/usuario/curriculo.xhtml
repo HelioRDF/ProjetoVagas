@@ -13,7 +13,7 @@
 <!--   Curriculo             -->
 
 
-<h:form id="dialogformCurriculo"  >
+<h:form id="dialogformCurriculo" onkeypress="if (event.keyCode == 13) { return false; }" >
 	<p:growl  id="msgCurriculo" life="8000" />
 	
 	
@@ -51,7 +51,7 @@ value="#{usuarioBean.usuarioLogado.pretensaoSalarial}" required="false" required
             
             
             
-<p:commandButton action="#{usuarioBean.editar}"
+<p:commandButton action="#{usuarioBean.editar}" 
 value="Salvar"  style="margin:10px auto;" icon="ui-icon-squaresmall-plus"
  validateClient="true"  update=":dialogformCurriculo:">
 </p:commandButton>
@@ -422,7 +422,7 @@ value="#{usuarioBean.listaExperiencia}"	style=" text-align:center;"  >
 
 
 <!-- QUALIFICAÇÕES  01 -->
- <p:fieldset legend="Adicionar"  toggleable="true"  collapsed="true" toggleSpeed="880">
+ <p:fieldset legend="Adicionar / Editar"  toggleable="true"  collapsed="true" toggleSpeed="880">
         
         <h:panelGrid columns="2" >
         
@@ -556,7 +556,7 @@ value="#{usuarioBean.listaAtividades}"	style=" text-align:center;"  >
 
 
 
-   </p:tab>
+ </p:tab>
 
 
 

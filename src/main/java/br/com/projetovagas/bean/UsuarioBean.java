@@ -68,19 +68,34 @@ public class UsuarioBean implements Serializable {
 		auxEstado = LoginBean.getUsuarioLogado().getCidade().getEstado().getNome();
 		listaEstado = LoginBean.getListaEstado();
 		
+
+		
+		
+
+	}
+	
+	
+	public void carregarCurriculo(){
+		
+		System.out.println("acionado ..........................................xxxxxxxxxxxxxx");
+		
 		formacaoAcademicaDAO = new FormacaoAcademicaDAO();
 		formacaoAcademica = new FormacaoAcademica();
 		listaFormacao = formacaoAcademicaDAO.listar();
+		carregarFormacao();
 		
 		daoExperiencia = new ExperienciaProfissionalDAO();
 		experienciaProfissional = new ExperienciaProfissional();
 		listaExperiencia = daoExperiencia.listar();
+		carregarExperiencia();
 		
 		daoAtividades = new AtividadesProfissionaisDAO();
 		atividadesProfissionais = new AtividadesProfissionais();
 		listaAtividades = daoAtividades.listar();
+		carregarAtividades();
 
 	}
+	
 
 	// Editar usuário
 	// -------------------------------------------------------------------------------------------
@@ -373,8 +388,7 @@ public class UsuarioBean implements Serializable {
 			
 			 atividadesProfissionais = new AtividadesProfissionais();
 			 daoAtividades = new AtividadesProfissionaisDAO();
-			 listaAtividades =
-			 daoAtividades.buscarPorUsuario(usuarioLogado.getCodigo());
+			 listaAtividades = daoAtividades.buscarPorUsuario(usuarioLogado.getCodigo());
 			
 			 if (listaAtividades.size() < 10) {
 			 botaoAtividades = true;
