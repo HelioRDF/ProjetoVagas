@@ -1,6 +1,7 @@
 package br.com.projetovagas.bean;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -67,6 +68,8 @@ public class UsuarioBean implements Serializable {
 		auxCidade = LoginBean.getUsuarioLogado().getCidade().getNome();
 		auxEstado = LoginBean.getUsuarioLogado().getCidade().getEstado().getNome();
 		listaEstado = LoginBean.getListaEstado();
+		
+		
 		
 
 		

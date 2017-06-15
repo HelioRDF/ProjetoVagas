@@ -2,6 +2,7 @@ package br.com.projetovagas.bean;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -84,6 +85,8 @@ public class LoginBean implements Serializable {
 
 				// Usuário Ok...
 				Faces.redirect("./pages/administrativas/oportunidades.xhtml");
+				usuarioLogado.setUltimoLogin( new Date());
+				usuarioDAO.editar(usuarioLogado);
 				buscarEstados();
 
 			} catch (IOException e) {

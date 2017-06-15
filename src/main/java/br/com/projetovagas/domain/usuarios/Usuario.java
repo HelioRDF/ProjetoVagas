@@ -48,6 +48,10 @@ public class Usuario extends GenericDomain {
 	@Column(nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataCadastro;
+	
+	@Column(nullable = false)
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date ultimoLogin = new Date();
 
 	@Column(nullable = false)
 	private Boolean status;
@@ -336,6 +340,16 @@ public class Usuario extends GenericDomain {
 
 	public void setAdmin(Boolean admin) {
 		this.admin = admin;
+	}
+
+
+	public Date getUltimoLogin() {
+		return ultimoLogin;
+	}
+
+
+	public void setUltimoLogin(Date ultimoLogin) {
+		this.ultimoLogin = ultimoLogin;
 	}
 
 	
