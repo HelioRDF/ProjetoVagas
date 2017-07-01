@@ -292,8 +292,37 @@ public class OportunidadeBean implements Serializable {
 
 	// Filtrar Cidade 2, precisei replicar o método, devido a um erro na linha
 	// quando chamada dentro do getinstance, por conta do param (actionevent)
-	// ------------------------------------------------------------------------------------------------------------------------------------------------------
+	
+	
+	
+	
+	// Instanciar
+		// -------------------------------------------------------------------------------------------
 
+		public void selecionarVaga(ActionEvent evento) {
+
+			try {
+
+				oportunidade = (Oportunidade) evento.getComponent().getAttributes().get("meuSelect");
+
+				Messages.addGlobalInfo("Cargo:  " +oportunidade.getCargo() +" - ( ID: "+  oportunidade.getCodigo()+")");
+
+			} catch (Exception e) {
+				Messages.addGlobalError("Erro ao Editar: ");
+
+			}
+
+		}
+
+	
+	
+	
+	// ------------------------------------------------------------------------------------------------------------------------------------------------------
+	
+	
+	
+	
+	
 	public Boolean getBotaoEditar() {
 		return botaoEditar;
 	}

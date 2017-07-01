@@ -2,12 +2,15 @@ package br.com.projetovagas.domain.complementos;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -86,7 +89,7 @@ public class Oportunidade extends GenericDomain {
 	private Boolean pcd;
 
 	@ManyToOne
-	@JoinColumn(nullable = false)
+	@JoinColumn(name="empresa_Codigo")
 	private Empresa empresa;
 
 	@Column
@@ -94,8 +97,18 @@ public class Oportunidade extends GenericDomain {
 
 	@Column
 	private String area; // MKT | Engenharia | ???
+	
+	@Column
+	@Lob
+	private String pergunta;
+	
+	@OneToMany(mappedBy="oportunidade_id", fetch = FetchType.EAGER)
+	private List<Ficha> candidatos;
+	
 
 	// --------------------------------------------------
+	
+	
 
 	public String getDescricao() {
 		return descricao;
@@ -241,4 +254,24 @@ public class Oportunidade extends GenericDomain {
 		this.salarioAux = salarioAux;
 	}
 
+	public List<Ficha> getCandidatos() {
+		return candidatos;
+	}
+
+	public void setCandidatos(List<Ficha> candidatos) {
+		this.candidatos = candidatos;
+	}
+
+	public String getPergunta() {
+		return pergunta;
+	}
+
+	public void setPergunta(String pergunta) {
+		this.pergunta = pergunta;
+	}
+	
+	
+
+
+	
 }

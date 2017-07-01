@@ -174,12 +174,12 @@ public class OportunidadeDAO extends GenericDAO<Oportunidade> {
 
 		BigDecimal salarioMaior = new BigDecimal(0.00);
 		;
-		BigDecimal salarioMenor = new BigDecimal(99999.00);
+		BigDecimal salarioMenor = new BigDecimal(99999.99);
 		;
 
 		if (salario == 0) {
 			salarioMaior = new BigDecimal(0.00);
-			salarioMenor = new BigDecimal(99999.00);
+			salarioMenor = new BigDecimal(99999.99);
 		}
 
 		if (salario == 1) {
@@ -210,7 +210,7 @@ public class OportunidadeDAO extends GenericDAO<Oportunidade> {
 
 		if (salario == 6) {
 			salarioMaior = new BigDecimal(5000.00);
-			salarioMenor = new BigDecimal(99999.00);
+			salarioMenor = new BigDecimal(99999.99);
 		}
 
 		Session sessao = HibernateUtil.getFabricadeSessoes().openSession();

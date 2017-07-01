@@ -101,10 +101,11 @@
 			<p:column headerText="Opções" width="16%">
 
 
+
 				<!-- Editar -->
-				<p:commandButton title="Cadastrar" icon="ui-icon-star"
-					value="Candidatar-Se"
-					actionListener="#{oportunidadeBean.getinstancia}">
+				<p:commandButton title="Cadastrar" icon="ui-icon-star" 
+					value="Candidatar-Se" oncomplete="PF('dialogo').show();"
+					actionListener="#{oportunidadeBean.selecionarVaga}">
 					<f:attribute name="meuSelect" value="#{dataVar}" />
 				</p:commandButton>
 
@@ -160,5 +161,8 @@
 
 		</p:dataTable>
 	</h:form>
+	
+	
+
 
 </ui:composition>

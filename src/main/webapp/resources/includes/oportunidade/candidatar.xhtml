@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+
+
+
+
+	<p:dialog appendTo="@(body)" header="Confirmar" widgetVar="dialogo"
+		id="dl" maximizable="true" responsive="true" draggable="true"
+		modal="true">
+	<p:separator></p:separator>
+
+<p:messages autoUpdate="true" ></p:messages>
+
+	
+
+		<p:fieldset legend="Informações">
+			<p:panelGrid columns="1" >
+			
+			<p:outputLabel value="#{oportunidadeBean.oportunidade.empresa.nomeEmpresa}"></p:outputLabel>
+	
+			</p:panelGrid>
+
+		</p:fieldset>
+
+
+	</p:dialog>
+
+</ui:composition>
