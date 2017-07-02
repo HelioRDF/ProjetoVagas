@@ -103,7 +103,8 @@
 
 
 				<!-- Editar -->
-				<p:commandButton title="Cadastrar" icon="ui-icon-star" 
+				<p:commandButton 
+				title="Cadastrar" icon="ui-icon-star"  update=":formCandidatar"
 					value="Candidatar-Se" oncomplete="PF('dialogo').show();"
 					actionListener="#{oportunidadeBean.selecionarVaga}">
 					<f:attribute name="meuSelect" value="#{dataVar}" />

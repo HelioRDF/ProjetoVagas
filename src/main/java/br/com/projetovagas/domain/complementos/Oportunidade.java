@@ -14,6 +14,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import br.com.projetovagas.domain.empresas.Empresa;
 import br.com.projetovagas.domain.localizacao.Cidade;
@@ -36,6 +37,9 @@ import br.com.projetovagas.domain.localizacao.Estado;
 @SuppressWarnings("serial")
 @Entity
 public class Oportunidade extends GenericDomain {
+	
+	@Transient
+	private Boolean cadastrado;
 
 	@Column()
 	@Temporal(TemporalType.TIMESTAMP)
@@ -268,6 +272,14 @@ public class Oportunidade extends GenericDomain {
 
 	public void setPergunta(String pergunta) {
 		this.pergunta = pergunta;
+	}
+
+	public Boolean getCadastrado() {
+		return cadastrado;
+	}
+
+	public void setCadastrado(Boolean cadastrado) {
+		this.cadastrado = cadastrado;
 	}
 	
 	

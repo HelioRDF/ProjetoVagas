@@ -20,10 +20,10 @@ public class Ficha extends GenericDomain {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataCadastro;
 
-	@JoinColumn(name = "candidato_id")
+	@JoinColumn(name = "candidato_id" )
 	@OneToOne
-	private Usuario candidato;
-
+	private Usuario candidato_id;
+	
 	@JoinColumn(name = "oportunidade_id")
 	@OneToOne
 	private Oportunidade oportunidade_id;
@@ -34,13 +34,7 @@ public class Ficha extends GenericDomain {
 
 	// --------------------------------------------------
 
-	public Usuario getCandidato() {
-		return candidato;
-	}
-
-	public void setCandidato(Usuario candidato) {
-		this.candidato = candidato;
-	}
+	
 
 	public Date getDataCadastro() {
 		return dataCadastro;
@@ -64,6 +58,14 @@ public class Ficha extends GenericDomain {
 
 	public void setResposta(String resposta) {
 		this.resposta = resposta;
+	}
+
+	public Usuario getCandidato_id() {
+		return candidato_id;
+	}
+
+	public void setCandidato_id(Usuario candidato_id) {
+		this.candidato_id = candidato_id;
 	}
 	
 	

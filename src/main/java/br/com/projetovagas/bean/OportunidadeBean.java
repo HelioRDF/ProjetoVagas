@@ -13,10 +13,12 @@ import javax.faces.event.ActionEvent;
 import org.omnifaces.util.Messages;
 import org.primefaces.context.RequestContext;
 
+import br.com.projetovagas.dao.complementos.FichaDAO;
 import br.com.projetovagas.dao.complementos.OportunidadeDAO;
 import br.com.projetovagas.dao.empresas.EmpresaDAO;
 import br.com.projetovagas.dao.localizacao.CidadeDAO;
 import br.com.projetovagas.dao.localizacao.EstadoDAO;
+import br.com.projetovagas.domain.complementos.Ficha;
 import br.com.projetovagas.domain.complementos.Oportunidade;
 import br.com.projetovagas.domain.empresas.Empresa;
 import br.com.projetovagas.domain.localizacao.Cidade;
@@ -57,6 +59,9 @@ public class OportunidadeBean implements Serializable {
 	private String filtrarNivel = "";
 	private String filtrarModalidade = "";
 	private int FiltrarPcD = 3;
+	
+	private String resposta="";
+	
 
 	// Salvar usuário
 	// -------------------------------------------------------------------------------------
@@ -232,6 +237,9 @@ public class OportunidadeBean implements Serializable {
 	public void BuscarEstados() {
 
 		try {
+			
+			FichaDAO fichaDAO = new FichaDAO();
+			//List<Ficha> resultado = fichaDAO.buscarFichas(3l);
 
 			CidadeDAO cidadeDAO = new CidadeDAO();
 			meuEstado = LoginBean.getUsuarioLogado().getCidade().getEstado().getCodigo();
@@ -296,7 +304,7 @@ public class OportunidadeBean implements Serializable {
 	
 	
 	
-	// Instanciar
+	// Seleciona uma vaga da table
 		// -------------------------------------------------------------------------------------------
 
 		public void selecionarVaga(ActionEvent evento) {
@@ -314,7 +322,32 @@ public class OportunidadeBean implements Serializable {
 
 		}
 
-	
+		// Seleciona uma vaga da table
+		// -------------------------------------------------------------------------------------------
+
+		public void candidatar() {
+
+			try {
+				
+				
+				Ficha ficha = new Ficha();
+				ficha.setCandidato_id(LoginBean.getUsuarioLogado());
+				ficha.setDataCadastro(new Date());
+				ficha.setResposta(resposta);
+				ficha.setOportunidade_id(oportunidade);
+				
+				FichaDAO dao = new FichaDAO();
+				dao.merge(ficha);
+
+				Messages.addGlobalInfo("Ficha enviada com Sucesso!");
+
+			} catch (Exception e) {
+				Messages.addGlobalError("Erro ao enviar ficha ");
+
+			}
+
+		}
+
 	
 	
 	// ------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -468,6 +501,17 @@ public class OportunidadeBean implements Serializable {
 	public void setTotasVagas(int totasVagas) {
 		this.totasVagas = totasVagas;
 	}
+
+	public String getResposta() {
+		return resposta;
+	}
+
+	public void setResposta(String resposta) {
+		this.resposta = resposta;
+	}
+
+
+	
 	
 	
 

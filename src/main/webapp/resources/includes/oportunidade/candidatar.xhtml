@@ -6,29 +6,77 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://xmlns.jcp.org/jsf/core">
 
-
-
+<p:growl life="9000" id="msg" ></p:growl>
 
 
 	<p:dialog appendTo="@(body)" header="Confirmar" widgetVar="dialogo"
-		id="dl" maximizable="true" responsive="true" draggable="true"
-		modal="true">
-	<p:separator></p:separator>
+		height="460px" width="585px" id="dl" maximizable="true"
+		responsive="true" draggable="true" modal="true">
 
-<p:messages autoUpdate="true" ></p:messages>
 
-	
 
-		<p:fieldset legend="Informações">
-			<p:panelGrid columns="1" >
+
+		<h:form id="formCandidatar">
+
+			<p:messages autoUpdate="true"></p:messages>
+
+
+
+			<p:fieldset>
+				<h:panelGrid columns="2">
+
+					<h:outputText value="Salário:" style="font-weight: bold;" />
+					<h:outputText
+						value="R$: #{oportunidadeBean.oportunidade.salarioAux}"
+						rendered="#{oportunidadeBean.oportunidade.mostrarSalario}"
+						style="color:#60a8d1; margin:5px;" />
+					<h:outputText value="Confidêncial"
+						rendered="#{!oportunidadeBean.oportunidade.mostrarSalario}"
+						style="color:#60a8d1; margin:5px;" />
+
+					<h:outputText value="Empresa:" style="font-weight: bold;" />
+					<h:outputText
+						value="#{oportunidadeBean.oportunidade.empresa.nomeEmpresa}"
+						style="color:#60a8d1; margin:5px;" />
+
+					<h:outputText value="Contratação:" style="font-weight: bold;" />
+					<h:outputText value=" #{oportunidadeBean.oportunidade.modalidade}"
+						style="color:#60a8d1; margin:5px;" />
+
+					<h:outputText value="Pré-Requisitos:" style="font-weight: bold;" />
+					<h:outputText
+						value=" #{oportunidadeBean.oportunidade.preRequisitos}"
+						style="color:#60a8d1; margin:5px;" />
+
+				</h:panelGrid>
+
+			</p:fieldset>
+			<p:separator></p:separator>
+			<h:panelGrid columns="1"
+				rendered="#{not empty oportunidadeBean.oportunidade.pergunta }"
+				style="margin-top:20px;">
+				
+				<h:outputText value="#{oportunidadeBean.oportunidade.pergunta}"
+					style=" font-weight: bold;
+					 margin-top:15px; margin-left:10px;"></h:outputText>
+				<p:inputTextarea cols="65" rows="4" style="margin-top:10px;"
+					value="#{oportunidadeBean.resposta}" />
+			</h:panelGrid>
+
+
+			<div style="position: absolute; bottom: 0; margin-left: 5px;">
 			
-			<p:outputLabel value="#{oportunidadeBean.oportunidade.empresa.nomeEmpresa}"></p:outputLabel>
-	
-			</p:panelGrid>
+				<p:commandButton value="Confirmar" oncomplete="PF('dialogo').hide();" update=":msg: :form:"
+					action="#{oportunidadeBean.candidatar}">
+				</p:commandButton>
+				
+				<p:commandButton value="Cancelar" style="background-color:#d40404; margin-left:10px;"
+					oncomplete="PF('dialogo').hide();">
+				</p:commandButton>
+				<p:separator style=" margin-bottom:35px;  width:auto;"></p:separator>
+			</div>
 
-		</p:fieldset>
-
-
+		</h:form>
 	</p:dialog>
 
 </ui:composition>
