@@ -6,7 +6,6 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
@@ -93,7 +92,7 @@ public class Oportunidade extends GenericDomain {
 	private Boolean pcd;
 
 	@ManyToOne
-	@JoinColumn(name="empresa_Codigo")
+	@JoinColumn(name="empresa_codigo")
 	private Empresa empresa;
 
 	@Column
@@ -106,8 +105,12 @@ public class Oportunidade extends GenericDomain {
 	@Lob
 	private String pergunta;
 	
-	@OneToMany(mappedBy="oportunidade_id", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy="oportunidade_id")
 	private List<Ficha> candidatos;
+	
+	
+	
+	
 	
 
 	// --------------------------------------------------

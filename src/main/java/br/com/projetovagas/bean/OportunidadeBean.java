@@ -35,8 +35,10 @@ public class OportunidadeBean implements Serializable {
 	private Oportunidade oportunidade;
 	private OportunidadeDAO dao;
 	private List<Oportunidade> listaOportunidade;
+	private List<Oportunidade> minhasOportunidade;
 	private String filtrarCargo = "";
-	private int totasVagas;
+	private int totalVagas;
+	private int minhasVagas;
 
 	private Estado estado;
 	private EstadoDAO estadoDAO;
@@ -61,6 +63,7 @@ public class OportunidadeBean implements Serializable {
 	private int FiltrarPcD = 3;
 	
 	private String resposta="";
+	private Ficha registro ;
 	
 
 	// Salvar usuário
@@ -68,6 +71,7 @@ public class OportunidadeBean implements Serializable {
 	public void salvar() {
 
 		try {
+			
 
 			System.out.println("Método salvar");
 
@@ -118,15 +122,21 @@ public class OportunidadeBean implements Serializable {
 	// CarregarFiltrando
 	// -------------------------------------------------------------------------------------------
 
+	
 	public void carregarFiltrando() {
+		
+		System.out.println("-------------------------Filtrando");
 
 		try {
 			dao = new OportunidadeDAO();
-
-			listaOportunidade = dao.buscarVagas(filtrarCargo, meuEstado, minhaCidade, filtrarSalario, filtrarNivel,
-					filtrarModalidade, FiltrarPcD);
-			totasVagas = listaOportunidade.size();
+			
+			listaOportunidade = (List<Oportunidade>) dao.buscarVagas(filtrarCargo, meuEstado, minhaCidade, filtrarSalario, filtrarNivel,
+			filtrarModalidade, FiltrarPcD);
+		
+			
+			totalVagas = listaOportunidade.size();
 			Messages.addGlobalInfo("Lista atualizada com sucesso ");
+			
 			
 		
 			
@@ -137,6 +147,34 @@ public class OportunidadeBean implements Serializable {
 		}
 
 	}
+	
+	
+	
+	// CarregarFiltrando
+		// -------------------------------------------------------------------------------------------
+
+		public void carregarMinhasOportunidades() {
+
+			try {
+				dao = new OportunidadeDAO();
+
+				minhasOportunidade = dao.buscarMinhasOportunidades();
+				minhasVagas = minhasOportunidade.size();
+				System.out.println("Metodo retorna..."+minhasOportunidade);
+				Messages.addGlobalInfo("Lista atualizada com sucesso ");
+				
+			
+				
+			} catch (Exception e) {
+				Messages.addGlobalError("Falha ao tentar  atualizadar a lista  ");
+			} finally {
+
+			}
+
+		}
+	
+	
+	
 
 	// Excluir usuário
 	// -------------------------------------------------------------------------------------------
@@ -238,9 +276,6 @@ public class OportunidadeBean implements Serializable {
 
 		try {
 			
-			FichaDAO fichaDAO = new FichaDAO();
-			//List<Ficha> resultado = fichaDAO.buscarFichas(3l);
-
 			CidadeDAO cidadeDAO = new CidadeDAO();
 			meuEstado = LoginBean.getUsuarioLogado().getCidade().getEstado().getCodigo();
 			listaCidade = cidadeDAO.buscarPorEstado(meuEstado);
@@ -251,8 +286,11 @@ public class OportunidadeBean implements Serializable {
 			auxCidade = LoginBean.getUsuarioLogado().getCidade().getNome();
 			auxEstado = LoginBean.getUsuarioLogado().getCidade().getEstado().getNome();
 
-			listaOportunidade = dao.buscarVagas(filtrarCargo, meuEstado, minhaCidade, filtrarSalario, filtrarNivel, filtrarModalidade, FiltrarPcD);
-			totasVagas = listaOportunidade.size();
+			listaOportunidade = (List<Oportunidade>) dao.buscarVagas(filtrarCargo, meuEstado, minhaCidade, filtrarSalario, filtrarNivel, filtrarModalidade, FiltrarPcD);
+			//listaOportunidade = (List<Oportunidade>) dao.buscarTodasOportunidades();
+			
+			
+			totalVagas = listaOportunidade.size();
 			Messages.addGlobalInfo("Lista atualizada com sucesso ");
 
 		} catch (Exception e) {
@@ -340,6 +378,8 @@ public class OportunidadeBean implements Serializable {
 				dao.merge(ficha);
 
 				Messages.addGlobalInfo("Ficha enviada com Sucesso!");
+				carregarFiltrando();
+				resposta=null;
 
 			} catch (Exception e) {
 				Messages.addGlobalError("Erro ao enviar ficha ");
@@ -352,7 +392,18 @@ public class OportunidadeBean implements Serializable {
 	
 	// ------------------------------------------------------------------------------------------------------------------------------------------------------
 	
-	
+		public void carregarRegistro(ActionEvent evento){
+				
+			oportunidade = (Oportunidade) evento.getComponent().getAttributes().get("meuSelect");
+			FichaDAO dao = new FichaDAO();
+			registro = new Ficha();			
+			registro = dao.buscarRegistro(oportunidade);
+			
+			
+		}
+		
+	// ------------------------------------------------------------------------------------------------------------------------------------------------------
+		
 	
 	
 	
@@ -368,13 +419,7 @@ public class OportunidadeBean implements Serializable {
 		this.oportunidade = oportunidade;
 	}
 
-	public List<Oportunidade> getListaOportunidade() {
-		return listaOportunidade;
-	}
 
-	public void setListaOportunidade(List<Oportunidade> listaOportunidade) {
-		this.listaOportunidade = listaOportunidade;
-	}
 
 	public void setBotaoEditar(Boolean botaoEditar) {
 		this.botaoEditar = botaoEditar;
@@ -494,13 +539,7 @@ public class OportunidadeBean implements Serializable {
 		FiltrarPcD = filtrarPcD;
 	}
 
-	public int getTotasVagas() {
-		return totasVagas;
-	}
 
-	public void setTotasVagas(int totasVagas) {
-		this.totasVagas = totasVagas;
-	}
 
 	public String getResposta() {
 		return resposta;
@@ -510,7 +549,51 @@ public class OportunidadeBean implements Serializable {
 		this.resposta = resposta;
 	}
 
+	public List<Oportunidade> getMinhasOportunidade() {
+		return minhasOportunidade;
+	}
 
+	public void setMinhasOportunidade(List<Oportunidade> minhasOportunidade) {
+		this.minhasOportunidade = minhasOportunidade;
+	}
+
+	public int getTotalVagas() {
+		return totalVagas;
+	}
+
+	public void setTotalVagas(int totalVagas) {
+		this.totalVagas = totalVagas;
+	}
+
+	public int getMinhasVagas() {
+		return minhasVagas;
+	}
+
+	public void setMinhasVagas(int minhasVagas) {
+		this.minhasVagas = minhasVagas;
+	}
+
+	public Ficha getRegistro() {
+		return registro;
+	}
+
+	public void setRegistro(Ficha registro) {
+		this.registro = registro;
+	}
+
+	public List<Oportunidade> getListaOportunidade() {
+		return listaOportunidade;
+	}
+
+	public void setListaOportunidade(List<Oportunidade> listaOportunidade) {
+		this.listaOportunidade = listaOportunidade;
+	}
+
+	
+	
+	
+
+	
 	
 	
 	

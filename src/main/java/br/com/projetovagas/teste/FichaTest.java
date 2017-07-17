@@ -9,6 +9,16 @@ import br.com.projetovagas.dao.usuarios.UsuarioDAO;
 import br.com.projetovagas.domain.usuarios.Usuario;
 
 public class FichaTest {
+	
+	
+	@Test
+	//@Ignore
+	public void listarOportunidades(){
+		
+		
+	
+		
+	}
 
 	@Test
 	@Ignore
@@ -18,7 +28,7 @@ public class FichaTest {
 
 		UsuarioDAO usuarioDAO = new UsuarioDAO();
 		Usuario usuario = new Usuario();
-		usuario = usuarioDAO.buscar(3l);
+		usuario = usuarioDAO.buscar(1l);
 
 		FichaDAO dao = new FichaDAO();
 		dao.buscarFichas(usuario);
@@ -30,6 +40,7 @@ public class FichaTest {
 	
 	
 	@Test
+	@Ignore
 	public void validarVagas() {
 		UsuarioDAO usuarioDAO = new UsuarioDAO();
 		Usuario usuario = new Usuario();

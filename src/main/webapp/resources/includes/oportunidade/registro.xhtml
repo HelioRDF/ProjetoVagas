@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+	<p:growl life="9000" id="msg"></p:growl>
+
+
+	<p:dialog appendTo="@(body)" header="Ficha" widgetVar="dialogoRegistro"
+		height="460px" width="600px" id="dl" maximizable="true"
+		responsive="true" draggable="true" modal="true">
+
+
+
+
+		<h:form id="formRegistro">
+
+			<p:messages autoUpdate="true"></p:messages>
+
+			<p:separator></p:separator>
+
+			<p:fieldset>
+				<h:panelGrid columns="2">
+
+					<h:outputText value="ID Oportunidade:" style="font-weight: bold;" />
+					<h:outputText
+						value="#{oportunidadeBean.registro.oportunidade_id.codigo}" />
+
+					<h:outputText value="Data de Cadastro:" style="font-weight: bold;" />
+					<h:outputText value="#{oportunidadeBean.registro.dataCadastro}" />
+
+
+
+
+
+
+				</h:panelGrid>
+				<br></br>
+				<p:separator />
+
+				<h:panelGrid columns="1"
+					rendered="#{not empty oportunidadeBean.registro.resposta}"
+					style="margin-top:20px;">
+
+					<h:outputText value="#{oportunidadeBean.oportunidade.pergunta}"
+						style=" font-weight: bold;
+					 margin-top:15px; margin-left:10px;"></h:outputText>
+					<p:inputTextarea cols="60" rows="4" style="margin-top:10px;"
+						value="#{oportunidadeBean.registro.resposta}" required="true"
+						requiredMessage="Responda o questionário para prosseguir." />
+				</h:panelGrid>
+
+
+			</p:fieldset>
+
+
+
+
+			<div style="position: absolute; bottom: 0; margin-left: 5px;">
+
+				<p:commandButton value="Ok" icon="ui-icon-check"
+					onclick="PF('dialogoRegistro').hide();" update="@this">
+				</p:commandButton>
+
+
+				<p:separator style=" margin-bottom:35px;  width:auto;"></p:separator>
+			</div>
+
+		</h:form>
+	</p:dialog>
+
+</ui:composition>

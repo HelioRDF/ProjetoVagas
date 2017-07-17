@@ -41,9 +41,6 @@
 		<mapping class="br.com.projetovagas.domain.usuarios.FormacaoAcademica"/>
 		<mapping class="br.com.projetovagas.domain.usuarios.ExperienciaProfissional"/>
 		<mapping class="br.com.projetovagas.domain.usuarios.AtividadesProfissionais"/>
-	
-		
-		
 		
 
 	</session-factory>

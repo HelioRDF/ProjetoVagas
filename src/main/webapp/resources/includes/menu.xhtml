@@ -37,7 +37,9 @@
 					
 				<p:separator style="margin:10px auto 15px auto;"></p:separator>
 				
-				<p:menuitem value="Minhas Oportunidades" icon="ui-icon-star" />
+				<p:menuitem value="Minhas Oportunidades" icon="ui-icon-star" ajax="false"
+				actionListener="#{oportunidadeBean.carregarMinhasOportunidades}"
+				action="/pages/administrativas/minhasOportunidades.xhtml"  />
 				
 				<p:menuitem value="Cadastrar Bicos" icon="ui-icon-wrench" />
 				

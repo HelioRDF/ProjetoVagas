@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+	<h:form id="form">
+		<p:growl id="msgGrowl" life="3000" />
+
+		<p:fieldset>
+
+			<!-- _________________________________________________________________________________________________________________________________ -->
+			<!-- Informações de cabeçalho da tabela -->
+
+			<p:dataTable id="dataTable" rowsPerPageTemplate="7,15,30,50,100"
+				emptyMessage="Nenhum Registro encontrado" rows="7" paginator="true"
+				var="dataVar" value="#{oportunidadeBean.minhasOportunidade}"
+				style=" text-align:center;" paginatorPosition="top">
+
+				<f:facet name="header">
+
+					<p:panelGrid>
+
+
+
+						<!-- Header -->
+						<h:outputLabel styleClass="nameheader"
+							value="Minhas Oportunidades (#{oportunidadeBean.minhasVagas})"></h:outputLabel>
+
+					</p:panelGrid>
+				</f:facet>
+
+
+				<f:facet name="footer">
+					<!--Vazio...-->
+				</f:facet>
+
+				<!-- _________________________________________________________________________________________________________________________________ -->
+				<!-- Informações das Colunas -->
+
+				<p:column headerText="Ver" width="4%">
+					<!-- Expandir infos -->
+
+					<p:rowToggler />
+				</p:column>
+
+
+
+				<p:column headerText="ID" width="10%" sortBy="#{dataVar.codigo}"
+					filterBy="#{dataVar.codigo}">
+					<p:outputLabel value="#{dataVar.codigo}" />
+				</p:column>
+
+
+
+				<p:column filterBy="#{dataVar.cargo}  " width="14%"
+					headerText="Cargo" filterMatchMode="contains"
+					sortBy="#{dataVar.cargo}">
+
+
+					<p:outputLabel style="color:#e8cf2a;"
+						value="#{dataVar.cargo} - PcD" rendered="#{dataVar.pcd == true}" />
+					<p:outputLabel value="#{dataVar.cargo}"
+						rendered="#{dataVar.pcd == false}" />
+				</p:column>
+
+
+
+				<p:column headerText="Salário" width="12%"
+					sortBy="#{dataVar.salarioAux}">
+
+					<p:outputLabel value="R$ #{dataVar.salarioAux}"
+						rendered="#{dataVar.mostrarSalario}">
+						<f:convertNumber type="currency" pattern="#0.00" locale="pt_BR"
+							minFractionDigits="2">
+						</f:convertNumber>
+					</p:outputLabel>
+
+					<p:outputLabel value=" Confidêncial "
+						rendered="#{!dataVar.mostrarSalario}"></p:outputLabel>
+
+				</p:column>
+
+
+
+
+
+
+
+
+				<p:column headerText="Nível" width="13%" sortBy="#{dataVar.nivel}">
+					<p:outputLabel value="#{dataVar.nivel}" />
+
+				</p:column>
+
+				<p:column headerText="Vagas" width="10%"
+					sortBy="#{dataVar.quantidade}">
+					<p:outputLabel value="#{dataVar.quantidade}" />
+				</p:column>
+
+				<p:column headerText="Registro" width="5%">
+
+					<!-- Registro -->
+					<p:commandButton title="Registro" icon="ui-icon-info"
+						update=":formRegistro" oncomplete="PF('dialogoRegistro').show();"
+						actionListener="#{oportunidadeBean.carregarRegistro}">
+						<f:attribute name="meuSelect" value="#{dataVar}" />
+					</p:commandButton>
+
+				</p:column>
+
+
+				<!-- _________________________________________________________________________________________________________________________________ -->
+				<!-- Informações após expandir linha -->
+
+				<p:rowExpansion>
+
+					<p:panelGrid columns="1" columnClasses="label,value"
+						style="text-align:left;">
+
+
+						<h:outputText value="Empresa: #{dataVar.empresa.nomeEmpresa}"
+							rendered="#{dataVar.mostrarEmpresa}" />
+
+						<p:outputLabel value="Empresa: Confidêncial"
+							rendered="#{!dataVar.mostrarEmpresa}"></p:outputLabel>
+
+						<h:outputText
+							value=" Estado: #{dataVar.cidade.estado.nome} (#{dataVar.cidade.estado.sigla})" />
+						<h:outputText value="Cidade: #{dataVar.cidade.nome}" />
+
+						<h:outputText value="Área: #{dataVar.area}" />
+
+						<h:outputText
+							value=" Modalidade de Contratação: #{dataVar.modalidade}" />
+
+						<h:outputText value="Horário: #{dataVar.horario}" />
+
+
+						<h:inputTextarea cols="100" rows="4" readonly="true"
+							value="Descrição: #{dataVar.descricao}" />
+						<h:inputTextarea cols="100" rows="4" readonly="true"
+							value="Pré-Requisito: #{dataVar.preRequisitos}" />
+						<h:inputTextarea cols="100" rows="4" readonly="true"
+							value="Benefícios: #{dataVar.beneficios}" />
+
+
+
+					</p:panelGrid>
+
+					<!-- <p:separator style="border: 2px solid #c1c7d9; border-radius: 100px/9px; background-color:  #d4d5e6; height:8px;"> </p:separator>  -->
+					<p:separator
+						style=" height:7px;border-radius: 100px/9px; background-color:#ffffff"></p:separator>
+					<p:separator style=" height:10px;background-color:#e6e6ff"></p:separator>
+
+				</p:rowExpansion>
+
+			</p:dataTable>
+		</p:fieldset>
+	</h:form>
+
+
+
+
+</ui:composition>

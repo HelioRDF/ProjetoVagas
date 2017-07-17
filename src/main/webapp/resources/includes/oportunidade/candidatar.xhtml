@@ -56,22 +56,22 @@
 				rendered="#{not empty oportunidadeBean.oportunidade.pergunta }"
 				style="margin-top:20px;">
 				
-				<h:outputText value="#{oportunidadeBean.oportunidade.pergunta}"
+				<h:outputText value="#{oportunidadeBean.oportunidade.pergunta}" 
 					style=" font-weight: bold;
 					 margin-top:15px; margin-left:10px;"></h:outputText>
 				<p:inputTextarea cols="65" rows="4" style="margin-top:10px;"
-					value="#{oportunidadeBean.resposta}" />
+					value="#{oportunidadeBean.resposta}"  required="true" requiredMessage="Responda o questionário para prosseguir."/>
 			</h:panelGrid>
 
 
 			<div style="position: absolute; bottom: 0; margin-left: 5px;">
 			
-				<p:commandButton value="Confirmar" oncomplete="PF('dialogo').hide();" update=":msg: :form:"
-					action="#{oportunidadeBean.candidatar}">
+				<p:commandButton value="Confirmar" icon="ui-icon-check" onsuccess="PF('dialogo').hide();"  update=":msg: :form:"
+					action="#{oportunidadeBean.candidatar}" >
 				</p:commandButton>
 				
-				<p:commandButton value="Cancelar" style="background-color:#d40404; margin-left:10px;"
-					oncomplete="PF('dialogo').hide();">
+				<p:commandButton value="Cancelar" icon="ui-icon-close" style="background-color:#d40404; margin-left:10px;"
+					oncomplete="PF('dialogo').hide();" update="@this">
 				</p:commandButton>
 				<p:separator style=" margin-bottom:35px;  width:auto;"></p:separator>
 			</div>
