@@ -9,8 +9,29 @@
 	overflow: visible !important;
 }
 
+.home {
+	background-color: #e6e6e6;
+}
+
+p, .subt {
+	margin: 20px 15px 10px 10px;
+	width: 53%;
+	text-indent: 2em;
+}
+
+.cadastro	{
+	font-size:26px;
+	color:#4ab967;	
+	text-decoration: underline;
+	margin-left:25px;
+	
+	
+	
+	
+}
+
 h1 {
-	font-size: 20px;
+	font-size: 22px;
 	color: #bf9876;
 	background-image: url("../images/banner02.png");
 	margin: 5px auto 0 auto;
@@ -20,18 +41,16 @@ h1 {
 	border-width: 1px;
 	border-radius: 8px;
 	font-family: Times New Roman, serif;
-	 
+	height: 55px;
 }
 
 h2 {
-	
 	background-color: CadetBlue;
 	color: #ffffff;
 	font-size: 24px;
 	margin: 0% 0% 0% 0%;
 	font-family: Times New Roman, serif;
 	text-align: center;
-		
 	border-radius: 8px;
 	border-style: solid;
 	border-color: #C2C1D4;
@@ -39,8 +58,6 @@ h2 {
 	width: 100%;
 	height: auto;
 }
-
-
 
 #login-dialog {
 	width: 260px;
@@ -52,17 +69,14 @@ h2 {
 	background-color: #F2F2F2;
 	border-radius: 8px;
 	border: 1px solid #ccc;
-	margin-top: 0px;
+	margin-top: 10px;
 	margin-bottom: 10px;
 	padding: 5px 5px 5px 5px;
 	width: 120%
 }
 
-
-
-#menu {
-	
-	text-align:right;
+.menu {
+	text-align: right;
 	font-size: 16px;
 	color: #bf9876;
 	background-image: url("../images/banner02.png");
@@ -72,6 +86,7 @@ h2 {
 	border-width: 1px;
 	border-radius: 8px;
 	font-family: Times New Roman, serif;
+	height: 35px;
 }
 
 .cabecalhoInfo {
@@ -81,9 +96,6 @@ h2 {
 	vertical-align: right;
 }
 
-
-
-
 .nameheader {
 	font-size: 18px;
 	color: orange;
@@ -91,7 +103,3 @@ h2 {
 	margin: auto 24% auto 15%;
 	vertical-align: center;
 }
-
-
-
-

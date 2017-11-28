@@ -8,54 +8,77 @@
 
 	<!-- Rodapé da Página -->
 	<h:form>
-		<div id="menu">
-			<p:outputLabel value=" Encodetech"
-				style="float:left; margin: 2px auto auto auto; font-size: 18px;"></p:outputLabel>
-			
-			
-			<p:outputLabel styleClass="cabecalhoInfo" 
-				value="#{usuarioBean.usuarioLogado.nome}"></p:outputLabel>
-				
+		<div class="menu">
 
+
+
+			<!-- Botão image Home -->
+			<h:commandButton image="/images/home-ok.png"
+				style="float:left; margin: 0px 9px 10px auto;"
+				action="/index.xhtml?faces-redirect=true" />
+
+
+
+			<p:outputLabel value=" Encodetech" id="label"
+				style="float:left; margin: 9px auto auto auto; font-size:18px; "></p:outputLabel>
+
+
+
+			<p:outputLabel styleClass="cabecalhoInfo"
+				value="#{usuarioBean.usuarioLogado.nome}"
+				rendered="#{loginBean.userlogadoB}"></p:outputLabel>
+
+			<p:outputLabel styleClass="cabecalhoInfo" value="Visitante"
+				rendered="#{!loginBean.userlogadoB}"></p:outputLabel>
+
+			<p:commandButton  value="Candidatos" action="/pages/publicas/login.xhtml?faces-redirect=true"
+			icon="ui-icon-person" styleClass="cabecalhoInfo" style="background:#794949;" rendered="#{!loginBean.userlogadoB}" />
+			
+						<p:commandButton  value="Empresas" action="/pages/publicas/login.xhtml?faces-redirect=true"
+			icon="ui-icon-lightbulb" styleClass="cabecalhoInfo" style="background:#0d7188;" rendered="#{!loginBean.userlogadoB}" />
+			
 			<p:commandButton id="dynaButton" value="Menu" type="button"
-				icon="ui-icon-arrow-4-diag" styleClass="cabecalhoInfo" />
+				rendered="#{loginBean.userlogadoB}" icon="ui-icon-arrow-4-diag"
+				styleClass="cabecalhoInfo" />
 			<p:menu overlay="true" trigger="dynaButton" my="left top"
 				at="left bottom">
 
-				<p:menuitem value="Home" ajax="false" icon="ui-icon-home"
-					outcome="/index.xhtml" style="margin:5px auto" />
-				<p:separator style="margin:5px auto 10px auto;"></p:separator>
-				
-				
-				
-				<p:menuitem value="Editar Perfil" ajax="false" icon="ui-icon-pencil"
-				outcome="/pages/administrativas/usuario/editarPerfil.xhtml" />
-				
-				<p:menuitem value="Editar Curriculo" ajax="false" 
-					icon="ui-icon-bookmark"  actionListener="#{usuarioBean.carregarCurriculo}"
-					action="/pages/administrativas/usuario/editarCurriculo.xhtml"  />
-					
-				<p:separator style="margin:10px auto 15px auto;"></p:separator>
-				
-				<p:menuitem value="Minhas Oportunidades" icon="ui-icon-star" ajax="false"
-				actionListener="#{oportunidadeBean.carregarMinhasOportunidades}"
-				action="/pages/administrativas/minhasOportunidades.xhtml"  />
-				
-				<p:menuitem value="Cadastrar Bicos" icon="ui-icon-wrench" />
-				
-				<p:menuitem value="Buscar Vagas" icon="ui-icon-search"
-				outcome="/pages/administrativas/oportunidades.xhtml" />
-					
-				<p:menuitem value="Buscar Bicos" icon="ui-icon-search" />
-				
+	
 
-				
+				<p:menuitem value="Editar Perfil" ajax="false" icon="ui-icon-pencil"
+					outcome="/pages/administrativas/usuario/editarPerfil.xhtml" />
+
+				<p:menuitem value="Editar Curriculo" ajax="false"
+					icon="ui-icon-bookmark"
+					actionListener="#{usuarioBean.carregarCurriculo}"
+					action="/pages/administrativas/usuario/editarCurriculo.xhtml?faces-redirect=true" />
+
+				<p:separator style="margin:10px auto 15px auto;"></p:separator>
+
+				<p:menuitem value="Minhas Oportunidades" icon="ui-icon-star"
+					ajax="false"
+					actionListener="#{oportunidadeBean.carregarMinhasOportunidades}"
+					action="/pages/administrativas/minhasOportunidades.xhtml?faces-redirect=true" />
+
+				<p:menuitem value="Buscar Vagas" icon="ui-icon-search"
+					outcome="/pages/administrativas/oportunidades.xhtml" />
+
+				<p:menuitem value="Cadastrar Bicos" icon="ui-icon-wrench"
+					title="Em Breve" disabled="true" />
+
+
+
+				<p:menuitem value="Buscar Bicos" icon="ui-icon-search"
+					title="Em Breve" disabled="true" />
+
+
+
 				<p:separator style="margin:10px auto auto auto;"></p:separator>
-				
+
 				<p:menuitem value="Sair" actionListener="#{loginBean.sair}"
 					icon="ui-icon-extlink" style="margin:5px auto;" />
-					
-					
+
+
 
 
 

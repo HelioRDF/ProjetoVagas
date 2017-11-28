@@ -14,24 +14,32 @@ public class AutenticacaoListener implements PhaseListener {
 	private static final long serialVersionUID = 5370242150329490062L;
 	long tempoInicial = System.currentTimeMillis(); //Captura o tempo inicial da execução da Classe
 
+	
+	@SuppressWarnings("static-access")
 	@Override
 	public void afterPhase(PhaseEvent event) {
 		System.out.println("\n--------------------------------------");
 		
 		
 		String paginaAtual = Faces.getViewId();
-		boolean paginaDeLogin = paginaAtual.contains("login.xhtml");
+		boolean paginaPublica=false;
 		LoginBean loginBean =  new LoginBean();
 		Usuario usuario = new Usuario();
 		
+		
+		
+		if( paginaAtual.contains("login.xhtml") || paginaAtual.contains("index.xhtml") || paginaAtual.contains("telaCadastroUsuario.xhtml")){
+			paginaPublica=true;
+		};
+	
 		// Verifica se a tela é publica ou privada
-		if (!paginaDeLogin) {
+		if (!paginaPublica) {
 
 			loginBean = Faces.getSessionAttribute("loginBean");
 
 			// Verifica se o Bean foi criado
 			if (loginBean == null) {
-				Faces.navigate("/pages/publicas/login.xhtml");
+				Faces.navigate("/pages/publicas/login.xhtml?faces-redirect=true");
 				return;
 
 			}
@@ -39,7 +47,7 @@ public class AutenticacaoListener implements PhaseListener {
 			// Verifica se o usuário existe
 			usuario = loginBean.getUsuarioLogado();
 			if (usuario == null) {
-				Faces.navigate("/pages/publicas/login.xhtml");
+				Faces.navigate("/pages/publicas/login.xhtml?faces-redirect=true");
 
 				return;
 			}

@@ -20,7 +20,7 @@
 
 <!-- _________________________________________________________________________________________________________________________________ -->
 <!-- Informações de cabeçalho da tabela -->
-	<p:tabView  id="IDtabView">
+	<p:tabView  id="IDtabView" effect="fade" effectDuration="slow" >
   
  <!-- _________________________________________________________________________________________________________________________________ -->     
   <!-- Informações Adicionais -->
@@ -42,7 +42,7 @@ value="#{usuarioBean.usuarioLogado.pretensaoSalarial}" required="false" required
 <h:panelGrid columns="2" style="margin-top:20px;">	       
  
 <p:outputLabel  value="Informações Adicionais:" style="margin-right:8px" />
-<p:inputTextarea   maxlength="250"  rows="4" cols="95"
+<p:inputTextarea   maxlength="250"  rows="10" cols="70" autoResize="true" style="width:90%;"
  value="#{usuarioBean.usuarioLogado.descricao}" 
 ></p:inputTextarea>
                

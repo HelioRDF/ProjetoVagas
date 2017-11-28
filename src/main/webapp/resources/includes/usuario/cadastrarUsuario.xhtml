@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+	<h:form id="dialogform" style="width:90%; margin:15px 20px;">
+	<p:growl></p:growl>
+
+		<br></br>
+		<br></br>
+		<!-- LOGIN -->
+		<p:outputPanel deferred="true">
+			<h2 style="text-align:left;  padding:9px; width:73%;">Cadastro de Usuário</h2>
+			<br></br>
+			<h3>- Informações de Login.</h3>
+		</p:outputPanel>
+
+		<p:panelGrid columns="2" id="dialogpanel" layout="tabular"
+			style="width:75%;">
+
+
+			<p:outputLabel value="E-mail:" />
+			<p:inputText id="email" maxlength="40" size="25"
+				value="#{novoUsuarioBean.usuario.email}" required="true"
+				requiredMessage="Verificar campo E-Mail"
+				validatorMessage="Erro de validação: o e-mail não é válido ">
+				<f:validateRegex disabled="false" for="email"
+					pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+			</p:inputText>
+
+			<p:outputLabel value="Digite uma Senha:" />
+			<p:password autocomplete="false" id="senha" match="confirmar"
+				maxlength="13" size="18" feedback="true" inline="true"
+				value="#{novoUsuarioBean.usuario.senhaSemCriptografia}"
+				required="true" requiredMessage="Verificar campo Senha"
+				validatorMessage="Erro de validação: o comprimento é menor do que o mínimo permitido. '4 dígitos' ">
+				<f:validateLength minimum="4" />
+			</p:password>
+
+			<p:outputLabel value="Confirmar senha:" />
+			<p:password id="confirmar" maxlength="13" size="18"
+				value="#{novoUsuarioBean.usuario.senhaSemCriptografia}"
+				required="true" requiredMessage="Verificar campo Confirmar Senha"
+				validatorMessage="Erro de validação: o comprimento é menor do que o mínimo permitido. '4 dígitos' ">
+				<f:validateLength minimum="4" />
+			</p:password>
+
+		</p:panelGrid>
+
+		<br></br>
+		<!-- Pessoais -->
+		<p:outputPanel deferred="true" style="margin-top:20px;">
+			<h3>- Informações Pessoais.</h3>
+		</p:outputPanel>
+
+		<p:panelGrid columns="2" id="dialogpanel2" layout="tabular"
+			style="width:75%;">
+
+			<p:outputLabel value="Sexo: " />
+			<p:selectOneRadio id="sexo" value="#{novoUsuarioBean.usuario.sexo}"
+				required="true" requiredMessage="Verificar campo Sexo">
+				<f:selectItem itemValue="masculino" itemLabel="Masculino" />
+				<f:selectItem itemValue="feminino" itemLabel="Feminino" />
+			</p:selectOneRadio>
+
+			<p:outputLabel value="Nome  Completo: ">
+			</p:outputLabel>
+			<p:inputText id="nome" maxlength="30" size="25" label="nome"
+				value="#{novoUsuarioBean.usuario.nome}" required="true"
+				requiredMessage="Verificar campo Nome"
+				validatorMessage="Erro de validação: Dígite seu nome completo">
+				<f:validateLength minimum="5" />
+				<f:validateRegex disabled="false" for="nome"
+					pattern="[ A-ZãÃáÁàÀâÂäÄéÉèÈêÊëËÚúíÍóÓõÕôÔöÖüÜñÑçÇa-z ]* + *[ A-ZãÃáÁàÀâÂäÄéÉèÈêÊëËÚúíÍóÓõÕôÔöÖüÜñÑçÇa-z ]*" />
+			</p:inputText>
+
+			<p:outputLabel value="CPF: " />
+			<p:inputMask mask="999.999.999-99" id="cpf" maxlength="50" size="20"
+				value="#{novoUsuarioBean.usuario.cpf}" required="true"
+				requiredMessage="Verificar campo CPF"
+				validatorMessage="Erro de validação: o comprimento é menor do que o mínimo permitido. '11 dígitos' ">
+				<f:validateLength minimum="11" disabled="true" />
+			</p:inputMask>
+
+			<p:outputLabel value="RG: " />
+			<p:inputText id="rg" maxlength="11" size="16"
+				value="#{novoUsuarioBean.usuario.rg}" required="true"
+				requiredMessage="Verificar campo RG"
+				validatorMessage="Erro de validação: o comprimento é menor do que o mínimo permitido. '5 dígitos' ">
+				<f:validateLength minimum="5" disabled="true" />
+			</p:inputText>
+
+			<p:outputLabel value="Data de Nasc: " />
+			<h:panelGrid columns="2">
+				<p:calendar locale="pt_BR" showButtonPanel="true" id="calendario"
+					yearRange="c-60:c+1" navigator="true" pages="1"
+					value="#{novoUsuarioBean.usuario.dataNascimento}" required="true"
+					size="10" requiredMessage="Verificar campo Data de Nascimento">
+				</p:calendar>
+
+				<p:graphicImage style="float:center;"
+					value="/images/calendar (3).png" />
+			</h:panelGrid>
+
+		</p:panelGrid>
+
+
+
+		<br></br>
+		<!-- Endereço -->
+		<p:outputPanel deferred="true" style="margin-top:20px;">
+			<h3>- Endereço.</h3>
+		</p:outputPanel>
+
+		<p:panelGrid columns="2" id="dialogpanel3" layout="tabular"
+			style="width:75%;">
+
+
+
+			<p:outputLabel value="Rua:" />
+			<p:inputText maxlength="30" size="30" label="rua"
+				value="#{novoUsuarioBean.usuario.rua}" required="true">
+			</p:inputText>
+			<p:outputLabel value="Número: "></p:outputLabel>
+			<p:inputText maxlength="5" size="10"
+				value="#{novoUsuarioBean.usuario.numero}" required="true"
+				requiredMessage="Preencha o campo Número">
+			</p:inputText>
+			<p:outputLabel value="Bairro:"></p:outputLabel>
+			<p:inputText maxlength="20" size="20"
+				value="#{novoUsuarioBean.usuario.bairro}" required="true"
+				requiredMessage="Preencha o campo bairro">
+			</p:inputText>
+
+			<p:outputLabel value="Complemento: " />
+			<p:inputText maxlength="20" id="complemento" size="20"
+				label="complemento" value="#{novoUsuarioBean.usuario.complemento}"
+				required="false" requiredMessage="Preencha o campo complemento">
+			</p:inputText>
+
+			<p:outputLabel value="CEP: " />
+			<p:inputMask size="18" mask="99999-999" id="cep"
+				value="#{novoUsuarioBean.usuario.cep}" required="true"
+				requiredMessage="Preencha o campo CEP">
+			</p:inputMask>
+
+			<p:outputLabel value="Telefone: " />
+			<p:inputMask size="15" mask="(99) 9999-9999" id="tel"
+				value="#{novoUsuarioBean.usuario.telefone}" required="false"
+				requiredMessage="Preencha o campo telefone">
+				<f:validateLength minimum="8" maximum="18"></f:validateLength>
+			</p:inputMask>
+
+			<p:outputLabel value="Celular: " />
+			<p:inputMask size="15" mask="(99) 9 9999-9999" id="cel"
+				value="#{novoUsuarioBean.usuario.celular}" required="false"
+				requiredMessage="Preencha o campo celular">
+				<f:validateLength minimum="10" maximum="17"></f:validateLength>
+			</p:inputMask>
+		</p:panelGrid>
+
+		<p:commandButton value="Salvar"
+			actionListener="#{novoUsuarioBean.salvar}"
+			style="float:left; margin: 10px 0 200px 0;" validateClient="true"
+			update=":dialogform:">
+		</p:commandButton>
+
+	</h:form>
+
+</ui:composition>

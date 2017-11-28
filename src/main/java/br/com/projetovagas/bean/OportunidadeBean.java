@@ -74,6 +74,7 @@ public class OportunidadeBean implements Serializable {
 			
 
 			System.out.println("Método salvar");
+			
 
 			if (!oportunidade.getMostrarSalario()) {
 				oportunidade.setSalarioAux(new BigDecimal(1.00));
@@ -99,14 +100,14 @@ public class OportunidadeBean implements Serializable {
 	// Novo
 	// -------------------------------------------------------------------------------------------
 
-	public void novo() {
+	public void novo()  {
 
 		botaoEditar = false;
 		botaoSalvar = true;
 		listarInfos();
 		oportunidade = new Oportunidade();
 		dao = new OportunidadeDAO();
-
+	
 	}
 
 	// Fechar

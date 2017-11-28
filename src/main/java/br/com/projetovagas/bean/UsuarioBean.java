@@ -11,6 +11,7 @@ import javax.faces.event.ActionEvent;
 
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.omnifaces.util.Messages;
+import org.primefaces.context.RequestContext;
 
 import br.com.projetovagas.dao.localizacao.CidadeDAO;
 import br.com.projetovagas.dao.usuarios.AtividadesProfissionaisDAO;
@@ -30,76 +31,127 @@ import br.com.projetovagas.domain.usuarios.Usuario;
 public class UsuarioBean implements Serializable {
 
 	Usuario usuarioLogado = LoginBean.getUsuarioLogado();
+	private Usuario usuario = new Usuario();
+
 	UsuarioDAO dao;
 	String NomeTest;
-	
+
 	private Boolean statusBoolean = false;
 
 	FormacaoAcademica formacaoAcademica;
 	Boolean botaoFormacao = false;
 	List<FormacaoAcademica> listaFormacao;
 	FormacaoAcademicaDAO formacaoAcademicaDAO;
-	
+
 	private ExperienciaProfissional experienciaProfissional;
 	private Boolean botaoExperiencia = false;
 	private ExperienciaProfissionalDAO daoExperiencia;
 	private List<ExperienciaProfissional> listaExperiencia;
-	
+
 	private AtividadesProfissionais atividadesProfissionais;
 	private Boolean botaoAtividades = false;
 	private AtividadesProfissionaisDAO daoAtividades;
 	private List<AtividadesProfissionais> listaAtividades;
-	
 
 	private Estado estado;
 	private List<Estado> listaEstado;
 	private String auxEstado = " Selecione um Estado";
 
 	private CidadeDAO cidadeDAO;
+
 	private String auxCidade = "Selecione uma Cidade";
 	private List<Cidade> listaCidade;
+	Cidade cidade = new Cidade();
+
+	private Boolean telaEditar = false;
+	private Boolean botaoEditar = false;
+	private Boolean botaoSalvar = false;
 
 	// Editar usuário
 	// -------------------------------------------------------------------------------------------
 
 	@PostConstruct
 	public void inicia() {
+	
 
 		auxCidade = LoginBean.getUsuarioLogado().getCidade().getNome();
 		auxEstado = LoginBean.getUsuarioLogado().getCidade().getEstado().getNome();
 		listaEstado = LoginBean.getListaEstado();
-		
-		
-		
-
-		
-		
 
 	}
-	
-	
-	public void carregarCurriculo(){
-		
+
+	public void carregarCurriculo() {
+
 		System.out.println("acionado ..........................................xxxxxxxxxxxxxx");
-		
+
 		formacaoAcademicaDAO = new FormacaoAcademicaDAO();
 		formacaoAcademica = new FormacaoAcademica();
 		listaFormacao = formacaoAcademicaDAO.listar();
 		carregarFormacao();
-		
+
 		daoExperiencia = new ExperienciaProfissionalDAO();
 		experienciaProfissional = new ExperienciaProfissional();
 		listaExperiencia = daoExperiencia.listar();
 		carregarExperiencia();
-		
+
 		daoAtividades = new AtividadesProfissionaisDAO();
 		atividadesProfissionais = new AtividadesProfissionais();
 		listaAtividades = daoAtividades.listar();
 		carregarAtividades();
 
 	}
-	
 
+	// Salvar usuário
+	// -------------------------------------------------------------------------------------
+	public void salvar() {
+		
+		
+		Boolean permitir = dao.validarEmail(usuario.getEmail());
+		
+
+		if (!permitir) {
+			Messages.addGlobalError("O Endereço de e-mail já existe ... ");
+
+			return;
+
+		}
+
+		try {
+
+			// Cria um hash e criptografa a senha
+			SimpleHash hash = new SimpleHash("md5", usuario.getSenhaSemCriptografia());
+			usuario.setSenha(hash.toHex());
+			usuario.setDataCadastro(new Date());
+			usuario.setCidade(cidade);
+
+			dao.salvar(usuario);
+			Messages.addGlobalInfo("Usuário(a) " + usuario.getNome() + ", salvo com sucesso.");
+
+		} catch (Exception e) {
+
+			Messages.addGlobalError("Não foi possível salvar o usuário, tente novamente mais tarde ... ");
+
+			System.out.println("Erro" + e);
+
+		} finally {
+
+			fechar();
+
+		}
+	}
+
+	// Fechar
+	// -------------------------------------------------------------------------------------------
+	public void fechar() {
+
+		RequestContext.getCurrentInstance().reset("dialogform");
+		usuario = new Usuario();
+		dao = new UsuarioDAO();
+
+		System.out.println("Método fechar");
+
+	}
+	
 	// Editar usuário
 	// -------------------------------------------------------------------------------------------
 	public void editar() {
@@ -177,8 +229,7 @@ public class UsuarioBean implements Serializable {
 				} else {
 					formacaoAcademica.setStatus("Incompleto");
 				}
-				
-				
+
 				if (formacaoAcademica.getNomeCurso().trim().isEmpty()
 						|| formacaoAcademica.getInstituicao().trim().isEmpty()) {
 
@@ -186,15 +237,13 @@ public class UsuarioBean implements Serializable {
 					carregarFormacao();
 
 				} else {
-				
-				
 
-				formacaoAcademica.setUsuario(usuarioLogado);
-				formacaoAcademicaDAO.merge(formacaoAcademica);
+					formacaoAcademica.setUsuario(usuarioLogado);
+					formacaoAcademicaDAO.merge(formacaoAcademica);
 
-				Messages.addGlobalInfo("Formação  salva com sucesso: " + formacaoAcademica.getNomeCurso());
-				carregarFormacao();
-			}
+					Messages.addGlobalInfo("Formação  salva com sucesso: " + formacaoAcademica.getNomeCurso());
+					carregarFormacao();
+				}
 			}
 		} catch (Exception e) {
 			Messages.addGlobalError("Não foi possível salvar a formação, Preencha os campos corretamente. ");
@@ -241,7 +290,7 @@ public class UsuarioBean implements Serializable {
 		}
 
 	}
-	
+
 	// -------------------------------------------------------------------------------------------
 	// Formação Academica
 	// ----------------------------------------------------------
@@ -270,32 +319,25 @@ public class UsuarioBean implements Serializable {
 	// Fim Formação Academica
 	// ----------------------------------------------------------
 
-	
-	
 	// Salvar Experiência
 	// -------------------------------------------------------------------------------------
 	public void salvarExperiencia() {
 
 		try {
 			if (botaoExperiencia = true) {
-				
-				
-	
-				
+
 				if (experienciaProfissional.getNomeEmpresa().trim().isEmpty()
 						|| experienciaProfissional.getCargo().trim().isEmpty()) {
 
 					Messages.addGlobalWarn("Preencha os campos corretamente.");
 					carregarExperiencia();
 
-				} else {	
-				
-				
-				
-				experienciaProfissional.setUsuario(usuarioLogado);
-				daoExperiencia.merge(experienciaProfissional);
-				Messages.addGlobalInfo("Experiencia  salva com sucesso: " + experienciaProfissional.getCargo());
-				carregarExperiencia();
+				} else {
+
+					experienciaProfissional.setUsuario(usuarioLogado);
+					daoExperiencia.merge(experienciaProfissional);
+					Messages.addGlobalInfo("Experiencia  salva com sucesso: " + experienciaProfissional.getCargo());
+					carregarExperiencia();
 				}
 			}
 
@@ -309,36 +351,33 @@ public class UsuarioBean implements Serializable {
 	// Carregar Experiência
 	// -------------------------------------------------------------------------------------------
 
-	public void carregarExperiencia(){
-		
-		
+	public void carregarExperiencia() {
+
 		// Experiência
-				// ----------------------------------------------------------
-				try {
+		// ----------------------------------------------------------
+		try {
 
-					experienciaProfissional = new ExperienciaProfissional();
-					daoExperiencia = new ExperienciaProfissionalDAO();
-					listaExperiencia = daoExperiencia.buscarPorUsuario(usuarioLogado.getCodigo());
+			experienciaProfissional = new ExperienciaProfissional();
+			daoExperiencia = new ExperienciaProfissionalDAO();
+			listaExperiencia = daoExperiencia.buscarPorUsuario(usuarioLogado.getCodigo());
 
-					if (listaExperiencia.size() < 4) {
-						botaoExperiencia = true;
+			if (listaExperiencia.size() < 4) {
+				botaoExperiencia = true;
 
-					} else {
-						botaoExperiencia = false;
-						Messages.addGlobalWarn("Numéro maximo de Experiência atingido. (max = 4)");
+			} else {
+				botaoExperiencia = false;
+				Messages.addGlobalWarn("Numéro maximo de Experiência atingido. (max = 4)");
 
-					}
+			}
 
-				} catch (Exception e) {
-					Messages.addGlobalError("Falha ao tentar  atualizadar a lista  ");
-				}
-				// Fim Experiência
-				// ----------------------------------------------------------
-		
+		} catch (Exception e) {
+			Messages.addGlobalError("Falha ao tentar  atualizadar a lista  ");
+		}
+		// Fim Experiência
+		// ----------------------------------------------------------
+
 	}
-	
-	
-	
+
 	// Instancia de Experiencia
 	// ------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -356,131 +395,149 @@ public class UsuarioBean implements Serializable {
 		}
 
 	}
-	
-	
+
 	// Excluir Exp
-		// -------------------------------------------------------------------------------------------
-		public void excluirExperiencia(ActionEvent evento) {
+	// -------------------------------------------------------------------------------------------
+	public void excluirExperiencia(ActionEvent evento) {
 
-			try {
+		try {
 
-				experienciaProfissional = (ExperienciaProfissional) evento.getComponent().getAttributes().get("meuSelect");
+			experienciaProfissional = (ExperienciaProfissional) evento.getComponent().getAttributes().get("meuSelect");
 
-				ExperienciaProfissionalDAO dao = new ExperienciaProfissionalDAO();
-				Messages.addGlobalInfo("Experiência removida com sucesso: " + experienciaProfissional.getCargo());
-				dao.excluir(experienciaProfissional);
-				carregarExperiencia();
+			ExperienciaProfissionalDAO dao = new ExperienciaProfissionalDAO();
+			Messages.addGlobalInfo("Experiência removida com sucesso: " + experienciaProfissional.getCargo());
+			dao.excluir(experienciaProfissional);
+			carregarExperiencia();
 
-			} catch (Exception e) {
-				Messages.addGlobalError("Erro ao Remover: " + experienciaProfissional.getCargo());
+		} catch (Exception e) {
+			Messages.addGlobalError("Erro ao Remover: " + experienciaProfissional.getCargo());
 
-			} finally {
-
-			}
+		} finally {
 
 		}
-	
-		// Carregar Curriculo
-		// -------------------------------------------------------------------------------------------
-		public void carregarAtividades() {
-			
-			// Atividades Profissionais
-			// ----------------------------------------------------------
 
-			 try {
-			
-			 atividadesProfissionais = new AtividadesProfissionais();
-			 daoAtividades = new AtividadesProfissionaisDAO();
-			 listaAtividades = daoAtividades.buscarPorUsuario(usuarioLogado.getCodigo());
-			
-			 if (listaAtividades.size() < 10) {
-			 botaoAtividades = true;
-			
-			 } else {
-			 botaoAtividades = false;
-			 Messages.addGlobalWarn("Numéro maximo de Qualificações atingido. (max	 = 10)");
-			
-			 }
-			
-			 } catch (Exception e) {
-			 Messages.addGlobalError("Falha ao tentar atualizadar a lista ");
-			 }
+	}
 
-			// Fim Atividades Profissionais
-			// ----------------------------------------------------------
-			
-		}
-		// Salvar Atividades
-		// -------------------------------------------------------------------------------------
-		public void salvarAtividades() {
+	// Carregar Curriculo
+	// -------------------------------------------------------------------------------------------
+	public void carregarAtividades() {
 
-			try {
-				if (botaoAtividades = true) {
-					
-					
-					if(atividadesProfissionais.getNomeCurso().trim().isEmpty() || atividadesProfissionais.getInstituicao().trim().isEmpty() ){
-						Messages.addGlobalWarn("Preencha os campos corretamente.");
-						carregarAtividades();
-					}else{
-					
-					atividadesProfissionais.setUsuario(usuarioLogado);
-					daoAtividades.merge(atividadesProfissionais);
-					Messages.addGlobalInfo("Qualificação  salva com sucesso: " + atividadesProfissionais.getNomeCurso());
-					carregarAtividades();
-				}}
+		// Atividades Profissionais
+		// ----------------------------------------------------------
 
-			} catch (Exception e) {
-				Messages.addGlobalError("Não foi possível salvar a Qualificação, Preencha os campos corretamente. ");
+		try {
 
-			} finally {
+			atividadesProfissionais = new AtividadesProfissionais();
+			daoAtividades = new AtividadesProfissionaisDAO();
+			listaAtividades = daoAtividades.buscarPorUsuario(usuarioLogado.getCodigo());
 
-			}
-		}		
-		
-		
-		// Instancia de Qualificações
-		// ------------------------------------------------------------------------------------------------------------------------------------------------------
-
-		public void getinstanciaQualificacao(ActionEvent evento) {
-
-			try {
+			if (listaAtividades.size() < 10) {
 				botaoAtividades = true;
 
-				atividadesProfissionais = (AtividadesProfissionais) evento.getComponent().getAttributes().get("meuSelect");
-				Messages.addGlobalInfo("Seleção: " + atividadesProfissionais.getNomeCurso());
-
-			} catch (Exception e) {
-				Messages.addGlobalError("Erro ao Editar: " + atividadesProfissionais.getNomeCurso());
+			} else {
+				botaoAtividades = false;
+				Messages.addGlobalWarn("Numéro maximo de Qualificações atingido. (max	 = 10)");
 
 			}
 
+		} catch (Exception e) {
+			Messages.addGlobalError("Falha ao tentar atualizadar a lista ");
 		}
-		
-		// Excluir Qualificação
-		// -------------------------------------------------------------------------------------------
-		public void excluirQualificacao(ActionEvent evento) {
 
-			try {
+		// Fim Atividades Profissionais
+		// ----------------------------------------------------------
 
-				atividadesProfissionais = (AtividadesProfissionais) evento.getComponent().getAttributes().get("meuSelect");
+	}
 
-				AtividadesProfissionaisDAO dao = new AtividadesProfissionaisDAO();
-				Messages.addGlobalInfo("Qualificação removida com sucesso: " + atividadesProfissionais.getNomeCurso());
-				dao.excluir(atividadesProfissionais);
-				carregarAtividades();
+	// Salvar Atividades
+	// -------------------------------------------------------------------------------------
+	public void salvarAtividades() {
 
-			} catch (Exception e) {
-				Messages.addGlobalError("Erro ao Remover: " + atividadesProfissionais.getNomeCurso());
+		try {
+			if (botaoAtividades = true) {
 
-			} finally {
+				if (atividadesProfissionais.getNomeCurso().trim().isEmpty()
+						|| atividadesProfissionais.getInstituicao().trim().isEmpty()) {
+					Messages.addGlobalWarn("Preencha os campos corretamente.");
+					carregarAtividades();
+				} else {
 
+					atividadesProfissionais.setUsuario(usuarioLogado);
+					daoAtividades.merge(atividadesProfissionais);
+					Messages.addGlobalInfo(
+							"Qualificação  salva com sucesso: " + atividadesProfissionais.getNomeCurso());
+					carregarAtividades();
+				}
 			}
 
+		} catch (Exception e) {
+			Messages.addGlobalError("Não foi possível salvar a Qualificação, Preencha os campos corretamente. ");
+
+		} finally {
+
+		}
+	}
+
+	// Instancia de Qualificações
+	// ------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	public void getinstanciaQualificacao(ActionEvent evento) {
+
+		try {
+			botaoAtividades = true;
+
+			atividadesProfissionais = (AtividadesProfissionais) evento.getComponent().getAttributes().get("meuSelect");
+			Messages.addGlobalInfo("Seleção: " + atividadesProfissionais.getNomeCurso());
+
+		} catch (Exception e) {
+			Messages.addGlobalError("Erro ao Editar: " + atividadesProfissionais.getNomeCurso());
+
 		}
 
+	}
 
+	// Excluir Qualificação
+	// -------------------------------------------------------------------------------------------
+	public void excluirQualificacao(ActionEvent evento) {
+
+		try {
+
+			atividadesProfissionais = (AtividadesProfissionais) evento.getComponent().getAttributes().get("meuSelect");
+
+			AtividadesProfissionaisDAO dao = new AtividadesProfissionaisDAO();
+			Messages.addGlobalInfo("Qualificação removida com sucesso: " + atividadesProfissionais.getNomeCurso());
+			dao.excluir(atividadesProfissionais);
+			carregarAtividades();
+
+		} catch (Exception e) {
+			Messages.addGlobalError("Erro ao Remover: " + atividadesProfissionais.getNomeCurso());
+
+		} finally {
+
+		}
+
+	}
 
 	// -------------------------------------------------------------------------------------------
+
+	// Filtrar Cidade
+	// ------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	public void filtrarCidade() {
+
+		try {
+
+			cidadeDAO = new CidadeDAO();
+			listaCidade = cidadeDAO.buscarPorEstado(estado.getCodigo());
+			auxCidade = "Selecione uma Cidade";
+
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+
+	}
+
+	// ------------------------------------------------------------------------------------------------------------------------------------------------------
 
 	public Usuario getUsuarioLogado() {
 		return usuarioLogado;
@@ -617,8 +674,48 @@ public class UsuarioBean implements Serializable {
 	public void setListaAtividades(List<AtividadesProfissionais> listaAtividades) {
 		this.listaAtividades = listaAtividades;
 	}
-	
-	
+
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
+
+	public Boolean getTelaEditar() {
+		return telaEditar;
+	}
+
+	public void setTelaEditar(Boolean telaEditar) {
+		this.telaEditar = telaEditar;
+	}
+
+	public Boolean getBotaoEditar() {
+		return botaoEditar;
+	}
+
+	public void setBotaoEditar(Boolean botaoEditar) {
+		this.botaoEditar = botaoEditar;
+	}
+
+	public Cidade getCidade() {
+		return cidade;
+	}
+
+	public void setCidade(Cidade cidade) {
+		this.cidade = cidade;
+	}
+
+	public Boolean getBotaoSalvar() {
+		return botaoSalvar;
+	}
+
+	public void setBotaoSalvar(Boolean botaoSalvar) {
+		this.botaoSalvar = botaoSalvar;
+	}
+
+
 	
 
 }

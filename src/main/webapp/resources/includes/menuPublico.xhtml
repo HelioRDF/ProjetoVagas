@@ -8,14 +8,24 @@
 
 	<!-- Rodapé da Página -->
 	<h:form>
-		<div id="menu">
-			<p:outputLabel value=" Encodetech"
-				style="float:left; margin: 2px auto auto auto; font-size: 18px;"></p:outputLabel>
+		<div class="menu">
+			<!-- Botão image Home -->
+			<h:commandButton image="/images/home-ok.png"
+				style="float:left; margin: 0px 9px 10px auto;"
+				action="/index.xhtml?faces-redirect=true"  />
 
-			
 
-			<p:commandButton id="dynaButton" value="Empresas" type="button"
-				icon="ui-icon-lightbulb" styleClass="cabecalhoInfo" />
+			<p:outputLabel value=" Encodetech" id="label"
+				style="float:left; margin: 9px auto auto auto; font-size:18px; "></p:outputLabel>
+	
+			<p:outputLabel styleClass="cabecalhoInfo"
+				value="#{usuarioBean.usuarioLogado.nome}"
+				rendered="#{loginBean.userlogadoB}"></p:outputLabel>
+
+			<p:outputLabel styleClass="cabecalhoInfo" value="Visitante"
+				rendered="#{!loginBean.userlogadoB}"></p:outputLabel>
+
+
 			
 					
 
