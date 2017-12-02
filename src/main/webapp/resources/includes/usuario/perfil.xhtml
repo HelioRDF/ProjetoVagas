@@ -10,19 +10,21 @@
 
 	<h:form id="formPerfil" style=" margin:0 2%;">
 		<p:growl id="global" autoUpdate="true" closable="true" />
-		
+		<br></br>
 
-	
+		<h2 style="text-align: left; padding: 9px; ">Editar Perfil</h2>
+		<br></br>
+
+		<p:fieldset>
 
 
+			<p:outputPanel deferred="true">
+				<h3>- Informações Pessoais.</h3>
+			</p:outputPanel>
 
 
-		<p:outputPanel deferred="true">
-			<h3>- Informações Pessoais.</h3>
-		</p:outputPanel>
-
-		
-			<p:panelGrid columns="2" id="dialogpanel" layout="tabular" style="width:65%;">
+			<p:panelGrid columns="2" id="dialogpanel" layout="tabular"
+				>
 
 
 				<p:outputLabel value="E-mail:" style="margin:0 150px 0 0;" />
@@ -92,114 +94,117 @@
 						value="/images/calendar (3).png" />
 				</h:panelGrid>
 			</p:panelGrid>
-	
-
-
-	<!-- 	!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" -->
-
-
-	
-
-
-		<p:outputPanel deferred="true">
-			<h3>- Endereço.</h3>
-			<!--         <p>Lorem ipsum dolor sit amet...</p> -->
-		</p:outputPanel>
-
-		<p:panelGrid columns="2" id="dialogpanel2" layout="tabular" style="width:65%;">
-
-			<p:outputLabel value="Estado: " style="margin:0 150px 0 0;" />
-			<p:selectOneMenu filter="true" value="#{usuarioBean.estado}"
-				autoWidth="false" effect="explode" style="width:180px"
-				converter="omnifaces.SelectItemsConverter"
-				requiredMessage="Informe o Estado corretamente">
-
-				<f:selectItem noSelectionOption="true" itemDisabled="true"
-					itemLabel="#{usuarioBean.auxEstado}">
-				</f:selectItem>
-
-				<f:selectItems value="#{usuarioBean.listaEstado}" var="es"
-					itemValue="#{es}" itemLabel="#{es.nome} - #{es.sigla}" />
-				<p:ajax listener="#{usuarioBean.buscarCidade}"
-					update=":formPerfil:cidade"></p:ajax>
-			</p:selectOneMenu>
 
 
 
-
-			<p:outputLabel value="Cidade: " />
-			<p:selectOneMenu id="cidade" filter="true" autoWidth="false"
-				effect="drop" style="width:180px"
-				value="#{usuarioBean.usuarioLogado.cidade}"
-				converter="omnifaces.SelectItemsConverter"
-				requiredMessage="Informe a Cidade corretamente">
-
-				<f:selectItem noSelectionOption="true" itemDisabled="true"
-					itemLabel="#{usuarioBean.auxCidade}" />
-
-				<f:selectItems value="#{usuarioBean.listaCidade}" var="ci"
-					itemValue="#{ci}" itemLabel="#{ci.nome}" />
-			</p:selectOneMenu>
+			<!-- 	!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" -->
 
 
 
 
 
-			<p:outputLabel value="Rua:" />
-			<p:inputText maxlength="30" size="30" label="rua"
-				value="#{usuarioBean.usuarioLogado.rua}" required="true">
-			</p:inputText>
+			<p:outputPanel deferred="true">
+				<h3>- Endereço.</h3>
+				<!--         <p>Lorem ipsum dolor sit amet...</p> -->
+			</p:outputPanel>
 
-			<p:outputLabel value="Número: "></p:outputLabel>
-			<p:inputText maxlength="5" size="10"
-				value="#{usuarioBean.usuarioLogado.numero}" required="true"
-				requiredMessage="Preencha o campo Número">
-			</p:inputText>
+			<p:panelGrid columns="2" id="dialogpanel2" layout="tabular"
+				>
 
-			<p:outputLabel value="Bairro:"></p:outputLabel>
-			<p:inputText maxlength="20" size="20"
-				value="#{usuarioBean.usuarioLogado.bairro}" required="true"
-				requiredMessage="Preencha o campo bairro">
-			</p:inputText>
+				<p:outputLabel value="Estado: " style="margin:0 150px 0 0;" />
+				<p:selectOneMenu filter="true" value="#{usuarioBean.estado}"
+					autoWidth="false" effect="explode" style="width:180px"
+					converter="omnifaces.SelectItemsConverter"
+					requiredMessage="Informe o Estado corretamente">
 
-			<p:outputLabel value="Complemento: " />
-			<p:inputText maxlength="20" id="complemento" size="20"
-				label="complemento" value="#{usuarioBean.usuarioLogado.complemento}"
-				required="false" requiredMessage="Preencha o campo complemento">
-			</p:inputText>
+					<f:selectItem noSelectionOption="true" itemDisabled="true"
+						itemLabel="#{usuarioBean.auxEstado}">
+					</f:selectItem>
 
-			<p:outputLabel value="CEP: " />
-			<p:inputMask size="18" mask="99999-999" id="cep"
-				value="#{usuarioBean.usuarioLogado.cep}" required="true"
-				requiredMessage="Preencha o campo CEP">
-			</p:inputMask>
+					<f:selectItems value="#{usuarioBean.listaEstado}" var="es"
+						itemValue="#{es}" itemLabel="#{es.nome} - #{es.sigla}" />
+					<p:ajax listener="#{usuarioBean.buscarCidade}"
+						update=":formPerfil:cidade"></p:ajax>
+				</p:selectOneMenu>
 
-			<p:outputLabel value="Telefone: " />
-			<p:inputMask size="15" mask="(99) 9999-9999" id="tel"
-				value="#{usuarioBean.usuarioLogado.telefone}" required="false"
-				requiredMessage="Preencha o campo telefone">
-				<f:validateLength minimum="8" maximum="18"></f:validateLength>
-			</p:inputMask>
 
-			<p:outputLabel value="Celular: " />
-			<p:inputMask size="15" mask="(99) 9 9999-9999" id="cel"
-				value="#{usuarioBean.usuarioLogado.celular}" required="false"
-				requiredMessage="Preencha o campo celular">
-				<f:validateLength minimum="10" maximum="17"></f:validateLength>
-			</p:inputMask>
 
-		</p:panelGrid>
-		
-		
-					
-	<p:commandButton value="Salvar Alterações" style="float:left; margin: 10px 0 200px 0;"
-		actionListener="#{usuarioBean.editar}" validateClient="true"
-		update=":formPerfil: ">
-	</p:commandButton>
-		
-		
 
-	
+				<p:outputLabel value="Cidade: " />
+				<p:selectOneMenu id="cidade" filter="true" autoWidth="false"
+					effect="drop" style="width:180px"
+					value="#{usuarioBean.usuarioLogado.cidade}"
+					converter="omnifaces.SelectItemsConverter"
+					requiredMessage="Informe a Cidade corretamente">
+
+					<f:selectItem noSelectionOption="true" itemDisabled="true"
+						itemLabel="#{usuarioBean.auxCidade}" />
+
+					<f:selectItems value="#{usuarioBean.listaCidade}" var="ci"
+						itemValue="#{ci}" itemLabel="#{ci.nome}" />
+				</p:selectOneMenu>
+
+
+
+
+
+				<p:outputLabel value="Rua:" />
+				<p:inputText maxlength="30" size="30" label="rua"
+					value="#{usuarioBean.usuarioLogado.rua}" required="true">
+				</p:inputText>
+
+				<p:outputLabel value="Número: "></p:outputLabel>
+				<p:inputText maxlength="5" size="10"
+					value="#{usuarioBean.usuarioLogado.numero}" required="true"
+					requiredMessage="Preencha o campo Número">
+				</p:inputText>
+
+				<p:outputLabel value="Bairro:"></p:outputLabel>
+				<p:inputText maxlength="20" size="20"
+					value="#{usuarioBean.usuarioLogado.bairro}" required="true"
+					requiredMessage="Preencha o campo bairro">
+				</p:inputText>
+
+				<p:outputLabel value="Complemento: " />
+				<p:inputText maxlength="20" id="complemento" size="20"
+					label="complemento"
+					value="#{usuarioBean.usuarioLogado.complemento}" required="false"
+					requiredMessage="Preencha o campo complemento">
+				</p:inputText>
+
+				<p:outputLabel value="CEP: " />
+				<p:inputMask size="18" mask="99999-999" id="cep"
+					value="#{usuarioBean.usuarioLogado.cep}" required="true"
+					requiredMessage="Preencha o campo CEP">
+				</p:inputMask>
+
+				<p:outputLabel value="Telefone: " />
+				<p:inputMask size="15" mask="(99) 9999-9999" id="tel"
+					value="#{usuarioBean.usuarioLogado.telefone}" required="false"
+					requiredMessage="Preencha o campo telefone">
+					<f:validateLength minimum="8" maximum="18"></f:validateLength>
+				</p:inputMask>
+
+				<p:outputLabel value="Celular: " />
+				<p:inputMask size="15" mask="(99) 9 9999-9999" id="cel"
+					value="#{usuarioBean.usuarioLogado.celular}" required="false"
+					requiredMessage="Preencha o campo celular">
+					<f:validateLength minimum="10" maximum="17"></f:validateLength>
+				</p:inputMask>
+
+			</p:panelGrid>
+
+
+
+			<p:commandButton value="Salvar Alterações"
+				style="float:left; margin: 10px 0 200px 0; padding:10px;" icon="ui-icon-check"
+				actionListener="#{usuarioBean.editar}" validateClient="true"
+				update=":formPerfil: ">
+			</p:commandButton>
+
+
+		</p:fieldset>
+
 	</h:form>
 
 </ui:composition>

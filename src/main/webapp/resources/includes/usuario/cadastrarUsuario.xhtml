@@ -6,26 +6,30 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://xmlns.jcp.org/jsf/core">
 
-	<h:form id="dialogform" style="width:90%; margin:15px 20px;">
+	<h:form id="dialogform" style="width:95%; margin:15px 20px;">
 		<p:messages closable="true" ></p:messages>
 		<p:growl></p:growl>
 
 		<br></br>
-		<br></br>
+	
 		<!-- LOGIN -->
 		<p:outputPanel deferred="true">
-			<h2 style="text-align: left; padding: 9px; width: 73%;">Cadastro
+			<h2 style="text-align: left; padding: 9px; ">Cadastro
 				de Usuário</h2>
 			<br></br>
-			<h3>- Informações de Login.</h3>
+			
+	
+		
 		</p:outputPanel>
+<p:fieldset >
 
-		<p:panelGrid columns="2" id="dialogpanel" layout="tabular"
-			style="width:75%;">
+	<h3>- Informações de Login.</h3>
+		<p:panelGrid columns="2" id="dialogpanel" layout="tabular" 
+			>
 
 
-			<p:outputLabel value="E-mail:" />
-			<p:inputText id="email" maxlength="40" size="25"
+			<p:outputLabel value="E-mail:"   />
+			<p:inputText id="email" maxlength="40" size="25" 
 				value="#{novoUsuarioBean.usuario.email}" required="true"
 				requiredMessage="Verificar campo E-Mail"
 				validatorMessage="Erro de validação: o e-mail não é válido ">
@@ -33,8 +37,8 @@
 					pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
 			</p:inputText>
 
-			<p:outputLabel value="Digite uma Senha:" />
-			<p:password autocomplete="false" id="senha" match="confirmar"
+			<p:outputLabel value="Digite uma Senha:" style="margin-right:100px;"/>
+			<p:password autocomplete="false" id="senha" match="confirmar" 
 				maxlength="13" size="18" feedback="true" inline="true"
 				value="#{novoUsuarioBean.usuario.senhaSemCriptografia}"
 				required="true" requiredMessage="Verificar campo Senha"
@@ -43,7 +47,7 @@
 			</p:password>
 
 			<p:outputLabel value="Confirmar senha:" />
-			<p:password id="confirmar" maxlength="13" size="18"
+			<p:password id="confirmar" maxlength="13" size="18" 
 				value="#{novoUsuarioBean.usuario.senhaSemCriptografia}"
 				required="true" requiredMessage="Verificar campo Confirmar Senha"
 				validatorMessage="Senha: o comprimento é menor do que o mínimo permitido. '4 dígitos' ">
@@ -59,7 +63,7 @@
 		</p:outputPanel>
 
 		<p:panelGrid columns="2" id="dialogpanel2" layout="tabular"
-			style="width:75%;">
+			>
 
 			<p:outputLabel value="Sexo: " />
 			<p:selectOneRadio id="sexo" value="#{novoUsuarioBean.usuario.sexo}"
@@ -68,9 +72,9 @@
 				<f:selectItem itemValue="feminino" itemLabel="Feminino" />
 			</p:selectOneRadio>
 
-			<p:outputLabel value="Nome  Completo: ">
+			<p:outputLabel value="Nome  Completo: " style="margin-right:100px;">
 			</p:outputLabel>
-			<p:inputText id="nome" maxlength="30" size="25" label="nome"
+			<p:inputText id="nome" maxlength="30" size="25" label="nome" styleClass="cadastro"
 				value="#{novoUsuarioBean.usuario.nome}" required="true"
 				requiredMessage="Verificar campo Nome"
 				validatorMessage="Erro de validação: Dígite seu nome completo">
@@ -80,7 +84,7 @@
 			</p:inputText>
 
 			<p:outputLabel value="CPF: " />
-			<p:inputMask mask="999.999.999-99" id="cpf" maxlength="50" size="20"
+			<p:inputMask mask="999.999.999-99" id="cpf" maxlength="50" size="20" 
 				value="#{novoUsuarioBean.usuario.cpf}" required="true"
 				requiredMessage="Verificar campo CPF"
 				validatorMessage="Erro de validação: o comprimento é menor do que o mínimo permitido. '11 dígitos' ">
@@ -88,7 +92,7 @@
 			</p:inputMask>
 
 			<p:outputLabel value="RG: " />
-			<p:inputText id="rg" maxlength="11" size="16"
+			<p:inputText id="rg" maxlength="11" size="16" 
 				value="#{novoUsuarioBean.usuario.rg}" required="true"
 				requiredMessage="Verificar campo RG"
 				validatorMessage="Erro de validação: o comprimento é menor do que o mínimo permitido. '5 dígitos' ">
@@ -117,8 +121,8 @@
 			<h3>- Endereço.</h3>
 		</p:outputPanel>
 
-		<p:panelGrid columns="2" id="dialogpanel3" layout="tabular"
-			style="width:75%;">
+		<p:panelGrid  columns="2"  id="dialogpanel3" layout="tabular"
+			>
 
 
 
@@ -127,7 +131,7 @@
 
 
 
-			<p:outputLabel value="Estado: " />
+			<p:outputLabel value="Estado: "  />
 			<p:selectOneMenu filter="true" value="#{novoUsuarioBean.estado}"
 				converter="omnifaces.SelectItemsConverter"
 				required="true"
@@ -164,7 +168,7 @@
 
 
 			<p:outputLabel value="Rua:" />
-			<p:inputText maxlength="30" size="30" label="rua"
+			<p:inputText maxlength="30" size="27" label="rua"
 				value="#{novoUsuarioBean.usuario.rua}" required="true"
 				requiredMessage="Preencha o campo Rua">
 			</p:inputText>
@@ -179,7 +183,7 @@
 				requiredMessage="Preencha o campo bairro">
 			</p:inputText>
 
-			<p:outputLabel value="Complemento: " />
+			<p:outputLabel value="Complemento: " style="margin-right:100px;" />
 			<p:inputText maxlength="20" id="complemento" size="20"
 				label="complemento" value="#{novoUsuarioBean.usuario.complemento}"
 				required="false" requiredMessage="Preencha o campo complemento">
@@ -204,14 +208,19 @@
 				requiredMessage="Preencha o campo celular">
 				<f:validateLength minimum="10" maximum="17"></f:validateLength>
 			</p:inputMask>
+			
+			
 		</p:panelGrid>
-
-		<p:commandButton value="Salvar"
+	<br></br>
+			  <p:captcha label="Captcha"  required="true" theme="dark"/>
+  
+  
+		<p:commandButton value="Cadastrar" icon="ui-icon-circle-check"
 			actionListener="#{novoUsuarioBean.salvar}"
-			style="float:left; margin: 10px 0 200px 0;" validateClient="true"
+			style="float:left; margin: 10px 0 100px 0; padding:10px; background:CadetBlue;" validateClient="true"
 			update=":dialogform: @this">
 		</p:commandButton>
-
+</p:fieldset>
 	</h:form>
 
 </ui:composition>

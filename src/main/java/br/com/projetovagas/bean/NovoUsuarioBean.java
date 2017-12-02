@@ -5,8 +5,10 @@ import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.omnifaces.util.Messages;
@@ -33,20 +35,24 @@ public class NovoUsuarioBean implements Serializable {
 	private Estado estado;
 	private List<Estado> listaEstado;
 	private String auxEstado = " Selecione um Estado";
-	
+
 	Cidade cidade;
 	private CidadeDAO cidadeDAO;
 	private String auxCidade = "Selecione uma Cidade";
 	private List<Cidade> listaCidade;
-	
 
 	@PostConstruct
 	public void inicia() {
-		
+
 		usuario = new Usuario();
-		//LISTA ESTADOS 
+		// LISTA ESTADOS
 		EstadoDAO estadoDao = new EstadoDAO();
 		listaEstado = estadoDao.listar("nome");
+	}
+
+	public void submit() {
+		FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Correct", "Correct");
+		FacesContext.getCurrentInstance().addMessage(null, msg);
 	}
 
 	// Salvar usuário
@@ -70,7 +76,8 @@ public class NovoUsuarioBean implements Serializable {
 			usuario.setDataCadastro(new Date());
 			usuario.setAdmin(false);
 			usuario.setStatus(true);
-			
+			usuario.setCidade(cidade);
+
 			dao = new UsuarioDAO();
 			dao.salvar(usuario);
 			Messages.addGlobalInfo("Usuário(a) " + usuario.getNome() + ", salvo com sucesso.");
@@ -85,7 +92,6 @@ public class NovoUsuarioBean implements Serializable {
 
 		}
 	}
-
 
 	// Buscar Cidades
 	// ------------------------------------------------------------------------------------------------------------------------------------------------------
