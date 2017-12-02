@@ -52,11 +52,11 @@ public class NovoUsuarioBean implements Serializable {
 	// Salvar usuário
 	// -------------------------------------------------------------------------------------
 	public void salvar() {
-
+		dao = new UsuarioDAO();
 		Boolean permitir = dao.validarEmail(usuario.getEmail());
 
 		if (!permitir) {
-			Messages.addGlobalError("O Endereço de e-mail já existe ... ");
+			Messages.addGlobalWarn("O Endereço de e-mail já existe");
 
 			return;
 
@@ -68,7 +68,8 @@ public class NovoUsuarioBean implements Serializable {
 			SimpleHash hash = new SimpleHash("md5", usuario.getSenhaSemCriptografia());
 			usuario.setSenha(hash.toHex());
 			usuario.setDataCadastro(new Date());
-			
+			usuario.setAdmin(false);
+			usuario.setStatus(true);
 			
 			dao = new UsuarioDAO();
 			dao.salvar(usuario);

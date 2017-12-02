@@ -7,13 +7,15 @@
 	xmlns:f="http://xmlns.jcp.org/jsf/core">
 
 	<h:form id="dialogform" style="width:90%; margin:15px 20px;">
-	<p:growl></p:growl>
+		<p:messages closable="true" ></p:messages>
+		<p:growl></p:growl>
 
 		<br></br>
 		<br></br>
 		<!-- LOGIN -->
 		<p:outputPanel deferred="true">
-			<h2 style="text-align:left;  padding:9px; width:73%;">Cadastro de Usuário</h2>
+			<h2 style="text-align: left; padding: 9px; width: 73%;">Cadastro
+				de Usuário</h2>
 			<br></br>
 			<h3>- Informações de Login.</h3>
 		</p:outputPanel>
@@ -36,7 +38,7 @@
 				maxlength="13" size="18" feedback="true" inline="true"
 				value="#{novoUsuarioBean.usuario.senhaSemCriptografia}"
 				required="true" requiredMessage="Verificar campo Senha"
-				validatorMessage="Erro de validação: o comprimento é menor do que o mínimo permitido. '4 dígitos' ">
+				validatorMessage="Senha: o comprimento é menor do que o mínimo permitido. '4 dígitos' ">
 				<f:validateLength minimum="4" />
 			</p:password>
 
@@ -44,7 +46,7 @@
 			<p:password id="confirmar" maxlength="13" size="18"
 				value="#{novoUsuarioBean.usuario.senhaSemCriptografia}"
 				required="true" requiredMessage="Verificar campo Confirmar Senha"
-				validatorMessage="Erro de validação: o comprimento é menor do que o mínimo permitido. '4 dígitos' ">
+				validatorMessage="Senha: o comprimento é menor do que o mínimo permitido. '4 dígitos' ">
 				<f:validateLength minimum="4" />
 			</p:password>
 
@@ -120,9 +122,51 @@
 
 
 
+
+
+
+
+
+			<p:outputLabel value="Estado: " />
+			<p:selectOneMenu filter="true" value="#{novoUsuarioBean.estado}"
+				converter="omnifaces.SelectItemsConverter"
+				required="true"
+				requiredMessage="Informe o Estado corretamente">
+
+
+				<f:selectItem noSelectionOption="true" itemDisabled="true"
+					itemLabel="#{novoUsuarioBean.auxEstado}">
+				</f:selectItem>
+
+
+				<f:selectItems value="#{novoUsuarioBean.listaEstado}" var="es"
+					itemValue="#{es}" itemLabel="#{es.nome} - #{es.sigla}" />
+				<p:ajax listener="#{novoUsuarioBean.filtrarCidade}"
+					update=":dialogform:cidade"></p:ajax>
+			</p:selectOneMenu>
+
+
+			<p:outputLabel value="Cidade: " />
+			<p:selectOneMenu id="cidade" filter="true"
+				value="#{novoUsuarioBean.cidade}"
+				converter="omnifaces.SelectItemsConverter"
+				required="true"
+				
+				requiredMessage="Informe a Cidade corretamente">
+
+				<f:selectItem noSelectionOption="true" itemDisabled="true"
+					itemLabel="#{novoUsuarioBean.auxCidade}" />
+
+
+				<f:selectItems value="#{novoUsuarioBean.listaCidade}" var="ci"
+					itemValue="#{ci}" itemLabel="#{ci.nome}" />
+			</p:selectOneMenu>
+
+
 			<p:outputLabel value="Rua:" />
 			<p:inputText maxlength="30" size="30" label="rua"
-				value="#{novoUsuarioBean.usuario.rua}" required="true">
+				value="#{novoUsuarioBean.usuario.rua}" required="true"
+				requiredMessage="Preencha o campo Rua">
 			</p:inputText>
 			<p:outputLabel value="Número: "></p:outputLabel>
 			<p:inputText maxlength="5" size="10"

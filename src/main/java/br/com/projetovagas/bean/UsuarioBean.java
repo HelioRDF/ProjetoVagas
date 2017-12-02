@@ -1,7 +1,6 @@
 package br.com.projetovagas.bean;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -11,7 +10,6 @@ import javax.faces.event.ActionEvent;
 
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.omnifaces.util.Messages;
-import org.primefaces.context.RequestContext;
 
 import br.com.projetovagas.dao.localizacao.CidadeDAO;
 import br.com.projetovagas.dao.usuarios.AtividadesProfissionaisDAO;
@@ -100,57 +98,57 @@ public class UsuarioBean implements Serializable {
 		carregarAtividades();
 
 	}
+//
+//	// Salvar usuário
+//	// -------------------------------------------------------------------------------------
+//	public void salvar() {
+//		
+//		
+//		Boolean permitir = dao.validarEmail(usuario.getEmail());
+//		
+//
+//		if (!permitir) {
+//			Messages.addGlobalError("O Endereço de e-mail já existe ... ");
+//
+//			return;
+//
+//		}
+//
+//		try {
+//
+//			// Cria um hash e criptografa a senha
+//			SimpleHash hash = new SimpleHash("md5", usuario.getSenhaSemCriptografia());
+//			usuario.setSenha(hash.toHex());
+//			usuario.setDataCadastro(new Date());
+//			usuario.setCidade(cidade);
+//
+//			dao.salvar(usuario);
+//			Messages.addGlobalInfo("Usuário(a) " + usuario.getNome() + ", salvo com sucesso.");
+//
+//		} catch (Exception e) {
+//
+//			Messages.addGlobalError("Não foi possível salvar o usuário, tente novamente mais tarde ... ");
+//
+//			System.out.println("Erro" + e);
+//
+//		} finally {
+//
+//			fechar();
+//
+//		}
+//	}
 
-	// Salvar usuário
-	// -------------------------------------------------------------------------------------
-	public void salvar() {
-		
-		
-		Boolean permitir = dao.validarEmail(usuario.getEmail());
-		
-
-		if (!permitir) {
-			Messages.addGlobalError("O Endereço de e-mail já existe ... ");
-
-			return;
-
-		}
-
-		try {
-
-			// Cria um hash e criptografa a senha
-			SimpleHash hash = new SimpleHash("md5", usuario.getSenhaSemCriptografia());
-			usuario.setSenha(hash.toHex());
-			usuario.setDataCadastro(new Date());
-			usuario.setCidade(cidade);
-
-			dao.salvar(usuario);
-			Messages.addGlobalInfo("Usuário(a) " + usuario.getNome() + ", salvo com sucesso.");
-
-		} catch (Exception e) {
-
-			Messages.addGlobalError("Não foi possível salvar o usuário, tente novamente mais tarde ... ");
-
-			System.out.println("Erro" + e);
-
-		} finally {
-
-			fechar();
-
-		}
-	}
-
-	// Fechar
-	// -------------------------------------------------------------------------------------------
-	public void fechar() {
-
-		RequestContext.getCurrentInstance().reset("dialogform");
-		usuario = new Usuario();
-		dao = new UsuarioDAO();
-
-		System.out.println("Método fechar");
-
-	}
+//	// Fechar
+//	// -------------------------------------------------------------------------------------------
+//	public void fechar() {
+//
+//		RequestContext.getCurrentInstance().reset("dialogform");
+//		usuario = new Usuario();
+//		dao = new UsuarioDAO();
+//
+//		System.out.println("Método fechar");
+//
+//	}
 	
 	// Editar usuário
 	// -------------------------------------------------------------------------------------------
@@ -714,8 +712,5 @@ public class UsuarioBean implements Serializable {
 	public void setBotaoSalvar(Boolean botaoSalvar) {
 		this.botaoSalvar = botaoSalvar;
 	}
-
-
-	
 
 }

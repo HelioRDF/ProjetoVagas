@@ -32,7 +32,7 @@ public class LoginBean implements Serializable {
 
 	private Usuario usuario;
 	private static Usuario usuarioLogado;
-	private  Boolean userlogadoB=false;
+
 	
 
 	private Empresa empresa;
@@ -86,7 +86,6 @@ public class LoginBean implements Serializable {
 				}
 
 				// Usuário Ok...
-				userlogadoB = true;
 				Faces.redirect("./pages/administrativas/oportunidades.xhtml");
 				usuarioLogado.setUltimoLogin( new Date());
 				usuarioDAO.editar(usuarioLogado);
@@ -144,7 +143,6 @@ public class LoginBean implements Serializable {
 	public void sair() {
 
 		try {
-			userlogadoB = false;
 			usuarioLogado = null;
 			empresaLogada = null;
 
@@ -305,14 +303,6 @@ public class LoginBean implements Serializable {
 
 	public void setAuxEstado(String auxEstado) {
 		this.auxEstado = auxEstado;
-	}
-
-	public Boolean getUserlogadoB() {
-		return userlogadoB;
-	}
-
-	public void setUserlogadoB(Boolean userlogadoB) {
-		this.userlogadoB = userlogadoB;
 	}
 
 	
